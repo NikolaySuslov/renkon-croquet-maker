@@ -268,4 +268,54 @@ return {}
 }`.trim();
 }
 
+export function loader(docName, maybeFetch) {
+  const myFetch = maybeFetch || fetch;
+
+  myFetch(docName).then((resp) => resp.text()).then((result) => {
+    const index = result.indexOf("{__codeMap: true, value:");
+    let code;
+    if (index < 0) {
+      console.log("unknown type of data");
+      return;
+    }
+
+    let data1 = JSON.parse(result.slice(0, index));
+    let windowEnabledMap = new Map();
+    if (data1?.windowEnabled?.map?.values) {
+      windowEnabledMap = new Map(data1?.windowEnabled?.map?.values);
+    }
+    let windowTypesMap = new Map();
+    if (data1?.windowTypes?.map?.values) {
+      windowTypesMap = new Map(data1?.windowTypes?.map?.values);
+    }
+
+    let titlesMap = new Map();
+    if (data1?.titles?.map?.values) {
+      titlesMap = new Map(data1?.titles?.map?.values);
+    }
+
+    const data2 = result.slice(index);
+    const array = eval("(" + data2 + ")");
+    code = array.value;
+    const croquet = code.find(([id, _obj]) => titlesMap.get(id).title === "Croquet")?.[1];
+    code = code.filter((pair) => (
+      !windowEnabledMap.get(pair[0]) ||
+        (windowEnabledMap.get(pair[0]).enabled && windowTypesMap.get(pair[0]) === "code" &&
+         titlesMap.get(pair[0]).title !== "Croquet")
+    ));
+
+    function trimParenthesis(str) {
+      let match = /^\(+([^()]+)\)+$/m.exec(str);
+      if (!match) return str;
+      return match[1];
+    }
+
+    const trimmed = trimParenthesis(croquet);
+    const {name, realm, appParameters} = JSON.parse(trimmed);
+    code = code.map(((pair) => pair[1]));
+    const {model, view} = croquetify(toFunction(code, name), name, new Map(realm.model.map((key) => [key, "Model"])), Croquet);
+
+    window.Croquet.Session.join({...appParameters, model, view});
+  });
+}
 /* globals Croquet */
