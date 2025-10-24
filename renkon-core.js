@@ -22,67 +22,67 @@ var keywords$1 = {
 var keywordRelationalOperator = /^in(stanceof)?$/;
 var nonASCIIidentifierStart = new RegExp("[" + nonASCIIidentifierStartChars + "]");
 var nonASCIIidentifier = new RegExp("[" + nonASCIIidentifierStartChars + nonASCIIidentifierChars + "]");
-function isInAstralSet(code, set) {
+function isInAstralSet(code2, set) {
   var pos = 65536;
   for (var i2 = 0; i2 < set.length; i2 += 2) {
     pos += set[i2];
-    if (pos > code) {
+    if (pos > code2) {
       return false;
     }
     pos += set[i2 + 1];
-    if (pos >= code) {
+    if (pos >= code2) {
       return true;
     }
   }
   return false;
 }
-function isIdentifierStart(code, astral) {
-  if (code < 65) {
-    return code === 36;
+function isIdentifierStart(code2, astral) {
+  if (code2 < 65) {
+    return code2 === 36;
   }
-  if (code < 91) {
+  if (code2 < 91) {
     return true;
   }
-  if (code < 97) {
-    return code === 95;
+  if (code2 < 97) {
+    return code2 === 95;
   }
-  if (code < 123) {
+  if (code2 < 123) {
     return true;
   }
-  if (code <= 65535) {
-    return code >= 170 && nonASCIIidentifierStart.test(String.fromCharCode(code));
+  if (code2 <= 65535) {
+    return code2 >= 170 && nonASCIIidentifierStart.test(String.fromCharCode(code2));
   }
   if (astral === false) {
     return false;
   }
-  return isInAstralSet(code, astralIdentifierStartCodes);
+  return isInAstralSet(code2, astralIdentifierStartCodes);
 }
-function isIdentifierChar(code, astral) {
-  if (code < 48) {
-    return code === 36;
+function isIdentifierChar(code2, astral) {
+  if (code2 < 48) {
+    return code2 === 36;
   }
-  if (code < 58) {
+  if (code2 < 58) {
     return true;
   }
-  if (code < 65) {
+  if (code2 < 65) {
     return false;
   }
-  if (code < 91) {
+  if (code2 < 91) {
     return true;
   }
-  if (code < 97) {
-    return code === 95;
+  if (code2 < 97) {
+    return code2 === 95;
   }
-  if (code < 123) {
+  if (code2 < 123) {
     return true;
   }
-  if (code <= 65535) {
-    return code >= 170 && nonASCIIidentifier.test(String.fromCharCode(code));
+  if (code2 <= 65535) {
+    return code2 >= 170 && nonASCIIidentifier.test(String.fromCharCode(code2));
   }
   if (astral === false) {
     return false;
   }
-  return isInAstralSet(code, astralIdentifierStartCodes) || isInAstralSet(code, astralIdentifierCodes);
+  return isInAstralSet(code2, astralIdentifierStartCodes) || isInAstralSet(code2, astralIdentifierCodes);
 }
 var TokenType = function TokenType2(label, conf) {
   if (conf === void 0) conf = {};
@@ -203,15 +203,15 @@ var types$1 = {
 };
 var lineBreak = /\r\n?|\n|\u2028|\u2029/;
 var lineBreakG = new RegExp(lineBreak.source, "g");
-function isNewLine(code) {
-  return code === 10 || code === 13 || code === 8232 || code === 8233;
+function isNewLine(code2) {
+  return code2 === 10 || code2 === 13 || code2 === 8232 || code2 === 8233;
 }
-function nextLineBreak(code, from, end) {
-  if (end === void 0) end = code.length;
+function nextLineBreak(code2, from, end) {
+  if (end === void 0) end = code2.length;
   for (var i2 = from; i2 < end; i2++) {
-    var next = code.charCodeAt(i2);
+    var next = code2.charCodeAt(i2);
     if (isNewLine(next)) {
-      return i2 < end - 1 && next === 13 && code.charCodeAt(i2 + 1) === 10 ? i2 + 2 : i2 + 1;
+      return i2 < end - 1 && next === 13 && code2.charCodeAt(i2 + 1) === 10 ? i2 + 2 : i2 + 1;
     }
   }
   return -1;
@@ -231,12 +231,12 @@ var regexpCache = /* @__PURE__ */ Object.create(null);
 function wordsRegexp(words) {
   return regexpCache[words] || (regexpCache[words] = new RegExp("^(?:" + words.replace(/ /g, "|") + ")$"));
 }
-function codePointToString(code) {
-  if (code <= 65535) {
-    return String.fromCharCode(code);
+function codePointToString(code2) {
+  if (code2 <= 65535) {
+    return String.fromCharCode(code2);
   }
-  code -= 65536;
-  return String.fromCharCode((code >> 10) + 55296, (code & 1023) + 56320);
+  code2 -= 65536;
+  return String.fromCharCode((code2 >> 10) + 55296, (code2 & 1023) + 56320);
 }
 var loneSurrogate = /(?:[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])/;
 var Position = function Position2(line, col) {
@@ -394,7 +394,7 @@ function getOptions(opts) {
   }
   return options;
 }
-function pushComment(options, array) {
+function pushComment(options, array2) {
   return function(block, text2, start, end, startLoc, endLoc) {
     var comment = {
       type: block ? "Block" : "Line",
@@ -408,7 +408,7 @@ function pushComment(options, array) {
     if (options.ranges) {
       comment.range = [start, end];
     }
-    array.push(comment);
+    array2.push(comment);
   };
 }
 var SCOPE_TOP = 1, SCOPE_FUNCTION = 2, SCOPE_ASYNC = 4, SCOPE_GENERATOR = 8, SCOPE_ARROW = 16, SCOPE_SIMPLE_CATCH = 32, SCOPE_SUPER = 64, SCOPE_DIRECT_SUPER = 128, SCOPE_CLASS_STATIC_BLOCK = 256, SCOPE_CLASS_FIELD_INIT = 512, SCOPE_VAR = SCOPE_TOP | SCOPE_FUNCTION | SCOPE_CLASS_STATIC_BLOCK;
@@ -2087,11 +2087,11 @@ types$1.backQuote.updateContext = function() {
 };
 types$1.star.updateContext = function(prevType) {
   if (prevType === types$1._function) {
-    var index = this.context.length - 1;
-    if (this.context[index] === types.f_expr) {
-      this.context[index] = types.f_expr_gen;
+    var index2 = this.context.length - 1;
+    if (this.context[index2] === types.f_expr) {
+      this.context[index2] = types.f_expr_gen;
     } else {
-      this.context[index] = types.f_gen;
+      this.context[index2] = types.f_gen;
     }
   }
   this.exprAllowed = true;
@@ -2362,19 +2362,19 @@ pp$5.parseExprSubscripts = function(refDestructuringErrors, forInit) {
   if (expr.type === "ArrowFunctionExpression" && this.input.slice(this.lastTokStart, this.lastTokEnd) !== ")") {
     return expr;
   }
-  var result = this.parseSubscripts(expr, startPos, startLoc, false, forInit);
-  if (refDestructuringErrors && result.type === "MemberExpression") {
-    if (refDestructuringErrors.parenthesizedAssign >= result.start) {
+  var result2 = this.parseSubscripts(expr, startPos, startLoc, false, forInit);
+  if (refDestructuringErrors && result2.type === "MemberExpression") {
+    if (refDestructuringErrors.parenthesizedAssign >= result2.start) {
       refDestructuringErrors.parenthesizedAssign = -1;
     }
-    if (refDestructuringErrors.parenthesizedBind >= result.start) {
+    if (refDestructuringErrors.parenthesizedBind >= result2.start) {
       refDestructuringErrors.parenthesizedBind = -1;
     }
-    if (refDestructuringErrors.trailingComma >= result.start) {
+    if (refDestructuringErrors.trailingComma >= result2.start) {
       refDestructuringErrors.trailingComma = -1;
     }
   }
-  return result;
+  return result2;
 };
 pp$5.parseSubscripts = function(base2, startPos, startLoc, noCalls, forInit) {
   var maybeAsyncArrow = this.options.ecmaVersion >= 8 && base2.type === "Identifier" && base2.name === "async" && this.lastTokEnd === base2.end && !this.canInsertSemicolon() && base2.end - base2.start === 5 && this.potentialArrowAt === base2.start;
@@ -4154,18 +4154,18 @@ pp$1.regexp_eatCharacterClassEscape = function(state) {
   if (state.switchU && this.options.ecmaVersion >= 9 && ((negate = ch === 80) || ch === 112)) {
     state.lastIntValue = -1;
     state.advance();
-    var result;
+    var result2;
     if (state.eat(
       123
       /* { */
-    ) && (result = this.regexp_eatUnicodePropertyValueExpression(state)) && state.eat(
+    ) && (result2 = this.regexp_eatUnicodePropertyValueExpression(state)) && state.eat(
       125
       /* } */
     )) {
-      if (negate && result === CharSetString) {
+      if (negate && result2 === CharSetString) {
         state.raise("Invalid property name");
       }
-      return result;
+      return result2;
     }
     state.raise("Invalid property name");
   }
@@ -4247,14 +4247,14 @@ pp$1.regexp_eatCharacterClass = function(state) {
       94
       /* ^ */
     );
-    var result = this.regexp_classContents(state);
+    var result2 = this.regexp_classContents(state);
     if (!state.eat(
       93
       /* ] */
     )) {
       state.raise("Unterminated character class");
     }
-    if (negate && result === CharSetString) {
+    if (negate && result2 === CharSetString) {
       state.raise("Negated character class may contain strings");
     }
     return true;
@@ -4342,11 +4342,11 @@ pp$1.regexp_eatClassEscape = function(state) {
   return this.regexp_eatCharacterClassEscape(state) || this.regexp_eatCharacterEscape(state);
 };
 pp$1.regexp_classSetExpression = function(state) {
-  var result = CharSetOk, subResult;
+  var result2 = CharSetOk, subResult;
   if (this.regexp_eatClassSetRange(state)) ;
   else if (subResult = this.regexp_eatClassSetOperand(state)) {
     if (subResult === CharSetString) {
-      result = CharSetString;
+      result2 = CharSetString;
     }
     var start = state.pos;
     while (state.eatChars(
@@ -4355,14 +4355,14 @@ pp$1.regexp_classSetExpression = function(state) {
     )) {
       if (state.current() !== 38 && (subResult = this.regexp_eatClassSetOperand(state))) {
         if (subResult !== CharSetString) {
-          result = CharSetOk;
+          result2 = CharSetOk;
         }
         continue;
       }
       state.raise("Invalid character in character class");
     }
     if (start !== state.pos) {
-      return result;
+      return result2;
     }
     while (state.eatChars(
       [45, 45]
@@ -4374,7 +4374,7 @@ pp$1.regexp_classSetExpression = function(state) {
       state.raise("Invalid character in character class");
     }
     if (start !== state.pos) {
-      return result;
+      return result2;
     }
   } else {
     state.raise("Invalid character in character class");
@@ -4385,10 +4385,10 @@ pp$1.regexp_classSetExpression = function(state) {
     }
     subResult = this.regexp_eatClassSetOperand(state);
     if (!subResult) {
-      return result;
+      return result2;
     }
     if (subResult === CharSetString) {
-      result = CharSetString;
+      result2 = CharSetString;
     }
   }
 };
@@ -4426,15 +4426,15 @@ pp$1.regexp_eatNestedClass = function(state) {
       94
       /* ^ */
     );
-    var result = this.regexp_classContents(state);
+    var result2 = this.regexp_classContents(state);
     if (state.eat(
       93
       /* ] */
     )) {
-      if (negate && result === CharSetString) {
+      if (negate && result2 === CharSetString) {
         state.raise("Negated character class may contain strings");
       }
-      return result;
+      return result2;
     }
     state.pos = start;
   }
@@ -4460,12 +4460,12 @@ pp$1.regexp_eatClassStringDisjunction = function(state) {
       123
       /* { */
     )) {
-      var result = this.regexp_classStringDisjunctionContents(state);
+      var result2 = this.regexp_classStringDisjunctionContents(state);
       if (state.eat(
         125
         /* } */
       )) {
-        return result;
+        return result2;
       }
     } else {
       state.raise("Invalid escape");
@@ -4475,16 +4475,16 @@ pp$1.regexp_eatClassStringDisjunction = function(state) {
   return null;
 };
 pp$1.regexp_classStringDisjunctionContents = function(state) {
-  var result = this.regexp_classString(state);
+  var result2 = this.regexp_classString(state);
   while (state.eat(
     124
     /* | */
   )) {
     if (this.regexp_classString(state) === CharSetString) {
-      result = CharSetString;
+      result2 = CharSetString;
     }
   }
-  return result;
+  return result2;
 };
 pp$1.regexp_classString = function(state) {
   var count = 0;
@@ -4707,19 +4707,19 @@ pp.nextToken = function() {
     this.readToken(this.fullCharCodeAtPos());
   }
 };
-pp.readToken = function(code) {
-  if (isIdentifierStart(code, this.options.ecmaVersion >= 6) || code === 92) {
+pp.readToken = function(code2) {
+  if (isIdentifierStart(code2, this.options.ecmaVersion >= 6) || code2 === 92) {
     return this.readWord();
   }
-  return this.getTokenFromCode(code);
+  return this.getTokenFromCode(code2);
 };
 pp.fullCharCodeAtPos = function() {
-  var code = this.input.charCodeAt(this.pos);
-  if (code <= 55295 || code >= 56320) {
-    return code;
+  var code2 = this.input.charCodeAt(this.pos);
+  if (code2 <= 55295 || code2 >= 56320) {
+    return code2;
   }
   var next = this.input.charCodeAt(this.pos + 1);
-  return next <= 56319 || next >= 57344 ? code : (code << 10) + next - 56613888;
+  return next <= 56319 || next >= 57344 ? code2 : (code2 << 10) + next - 56613888;
 };
 pp.skipBlockComment = function() {
   var startLoc = this.options.onComment && this.curPosition();
@@ -4840,11 +4840,11 @@ pp.readToken_slash = function() {
   }
   return this.finishOp(types$1.slash, 1);
 };
-pp.readToken_mult_modulo_exp = function(code) {
+pp.readToken_mult_modulo_exp = function(code2) {
   var next = this.input.charCodeAt(this.pos + 1);
   var size = 1;
-  var tokentype = code === 42 ? types$1.star : types$1.modulo;
-  if (this.options.ecmaVersion >= 7 && code === 42 && next === 42) {
+  var tokentype = code2 === 42 ? types$1.star : types$1.modulo;
+  if (this.options.ecmaVersion >= 7 && code2 === 42 && next === 42) {
     ++size;
     tokentype = types$1.starstar;
     next = this.input.charCodeAt(this.pos + 2);
@@ -4854,21 +4854,21 @@ pp.readToken_mult_modulo_exp = function(code) {
   }
   return this.finishOp(tokentype, size);
 };
-pp.readToken_pipe_amp = function(code) {
+pp.readToken_pipe_amp = function(code2) {
   var next = this.input.charCodeAt(this.pos + 1);
-  if (next === code) {
+  if (next === code2) {
     if (this.options.ecmaVersion >= 12) {
       var next2 = this.input.charCodeAt(this.pos + 2);
       if (next2 === 61) {
         return this.finishOp(types$1.assign, 3);
       }
     }
-    return this.finishOp(code === 124 ? types$1.logicalOR : types$1.logicalAND, 2);
+    return this.finishOp(code2 === 124 ? types$1.logicalOR : types$1.logicalAND, 2);
   }
   if (next === 61) {
     return this.finishOp(types$1.assign, 2);
   }
-  return this.finishOp(code === 124 ? types$1.bitwiseOR : types$1.bitwiseAND, 1);
+  return this.finishOp(code2 === 124 ? types$1.bitwiseOR : types$1.bitwiseAND, 1);
 };
 pp.readToken_caret = function() {
   var next = this.input.charCodeAt(this.pos + 1);
@@ -4877,9 +4877,9 @@ pp.readToken_caret = function() {
   }
   return this.finishOp(types$1.bitwiseXOR, 1);
 };
-pp.readToken_plus_min = function(code) {
+pp.readToken_plus_min = function(code2) {
   var next = this.input.charCodeAt(this.pos + 1);
-  if (next === code) {
+  if (next === code2) {
     if (next === 45 && !this.inModule && this.input.charCodeAt(this.pos + 2) === 62 && (this.lastTokEnd === 0 || lineBreak.test(this.input.slice(this.lastTokEnd, this.pos)))) {
       this.skipLineComment(3);
       this.skipSpace();
@@ -4892,17 +4892,17 @@ pp.readToken_plus_min = function(code) {
   }
   return this.finishOp(types$1.plusMin, 1);
 };
-pp.readToken_lt_gt = function(code) {
+pp.readToken_lt_gt = function(code2) {
   var next = this.input.charCodeAt(this.pos + 1);
   var size = 1;
-  if (next === code) {
-    size = code === 62 && this.input.charCodeAt(this.pos + 2) === 62 ? 3 : 2;
+  if (next === code2) {
+    size = code2 === 62 && this.input.charCodeAt(this.pos + 2) === 62 ? 3 : 2;
     if (this.input.charCodeAt(this.pos + size) === 61) {
       return this.finishOp(types$1.assign, size + 1);
     }
     return this.finishOp(types$1.bitShift, size);
   }
-  if (next === 33 && code === 60 && !this.inModule && this.input.charCodeAt(this.pos + 2) === 45 && this.input.charCodeAt(this.pos + 3) === 45) {
+  if (next === 33 && code2 === 60 && !this.inModule && this.input.charCodeAt(this.pos + 2) === 45 && this.input.charCodeAt(this.pos + 3) === 45) {
     this.skipLineComment(4);
     this.skipSpace();
     return this.nextToken();
@@ -4912,16 +4912,16 @@ pp.readToken_lt_gt = function(code) {
   }
   return this.finishOp(types$1.relational, size);
 };
-pp.readToken_eq_excl = function(code) {
+pp.readToken_eq_excl = function(code2) {
   var next = this.input.charCodeAt(this.pos + 1);
   if (next === 61) {
     return this.finishOp(types$1.equality, this.input.charCodeAt(this.pos + 2) === 61 ? 3 : 2);
   }
-  if (code === 61 && next === 62 && this.options.ecmaVersion >= 6) {
+  if (code2 === 61 && next === 62 && this.options.ecmaVersion >= 6) {
     this.pos += 2;
     return this.finishToken(types$1.arrow);
   }
-  return this.finishOp(code === 61 ? types$1.eq : types$1.prefix, 1);
+  return this.finishOp(code2 === 61 ? types$1.eq : types$1.prefix, 1);
 };
 pp.readToken_question = function() {
   var ecmaVersion2 = this.options.ecmaVersion;
@@ -4947,18 +4947,18 @@ pp.readToken_question = function() {
 };
 pp.readToken_numberSign = function() {
   var ecmaVersion2 = this.options.ecmaVersion;
-  var code = 35;
+  var code2 = 35;
   if (ecmaVersion2 >= 13) {
     ++this.pos;
-    code = this.fullCharCodeAtPos();
-    if (isIdentifierStart(code, true) || code === 92) {
+    code2 = this.fullCharCodeAtPos();
+    if (isIdentifierStart(code2, true) || code2 === 92) {
       return this.finishToken(types$1.privateId, this.readWord1());
     }
   }
-  this.raise(this.pos, "Unexpected character '" + codePointToString(code) + "'");
+  this.raise(this.pos, "Unexpected character '" + codePointToString(code2) + "'");
 };
-pp.getTokenFromCode = function(code) {
-  switch (code) {
+pp.getTokenFromCode = function(code2) {
+  switch (code2) {
     case 46:
       return this.readToken_dot();
     case 40:
@@ -5019,26 +5019,26 @@ pp.getTokenFromCode = function(code) {
       return this.readNumber(false);
     case 34:
     case 39:
-      return this.readString(code);
+      return this.readString(code2);
     case 47:
       return this.readToken_slash();
     case 37:
     case 42:
-      return this.readToken_mult_modulo_exp(code);
+      return this.readToken_mult_modulo_exp(code2);
     case 124:
     case 38:
-      return this.readToken_pipe_amp(code);
+      return this.readToken_pipe_amp(code2);
     case 94:
       return this.readToken_caret();
     case 43:
     case 45:
-      return this.readToken_plus_min(code);
+      return this.readToken_plus_min(code2);
     case 60:
     case 62:
-      return this.readToken_lt_gt(code);
+      return this.readToken_lt_gt(code2);
     case 61:
     case 33:
-      return this.readToken_eq_excl(code);
+      return this.readToken_eq_excl(code2);
     case 63:
       return this.readToken_question();
     case 126:
@@ -5046,7 +5046,7 @@ pp.getTokenFromCode = function(code) {
     case 35:
       return this.readToken_numberSign();
   }
-  this.raise(this.pos, "Unexpected character '" + codePointToString(code) + "'");
+  this.raise(this.pos, "Unexpected character '" + codePointToString(code2) + "'");
 };
 pp.finishOp = function(type, size) {
   var str = this.input.slice(this.pos, this.pos + size);
@@ -5100,8 +5100,8 @@ pp.readInt = function(radix, len, maybeLegacyOctalNumericLiteral) {
   var isLegacyOctalNumericLiteral = maybeLegacyOctalNumericLiteral && this.input.charCodeAt(this.pos) === 48;
   var start = this.pos, total = 0, lastCode = 0;
   for (var i2 = 0, e = len == null ? Infinity : len; i2 < e; ++i2, ++this.pos) {
-    var code = this.input.charCodeAt(this.pos), val = void 0;
-    if (allowSeparators && code === 95) {
+    var code2 = this.input.charCodeAt(this.pos), val = void 0;
+    if (allowSeparators && code2 === 95) {
       if (isLegacyOctalNumericLiteral) {
         this.raiseRecoverable(this.pos, "Numeric separator is not allowed in legacy octal numeric literals");
       }
@@ -5111,22 +5111,22 @@ pp.readInt = function(radix, len, maybeLegacyOctalNumericLiteral) {
       if (i2 === 0) {
         this.raiseRecoverable(this.pos, "Numeric separator is not allowed at the first of digits");
       }
-      lastCode = code;
+      lastCode = code2;
       continue;
     }
-    if (code >= 97) {
-      val = code - 97 + 10;
-    } else if (code >= 65) {
-      val = code - 65 + 10;
-    } else if (code >= 48 && code <= 57) {
-      val = code - 48;
+    if (code2 >= 97) {
+      val = code2 - 97 + 10;
+    } else if (code2 >= 65) {
+      val = code2 - 65 + 10;
+    } else if (code2 >= 48 && code2 <= 57) {
+      val = code2 - 48;
     } else {
       val = Infinity;
     }
     if (val >= radix) {
       break;
     }
-    lastCode = code;
+    lastCode = code2;
     total = total * radix + val;
   }
   if (allowSeparators && lastCode === 95) {
@@ -5206,21 +5206,21 @@ pp.readNumber = function(startsWithDot) {
   return this.finishToken(types$1.num, val);
 };
 pp.readCodePoint = function() {
-  var ch = this.input.charCodeAt(this.pos), code;
+  var ch = this.input.charCodeAt(this.pos), code2;
   if (ch === 123) {
     if (this.options.ecmaVersion < 6) {
       this.unexpected();
     }
     var codePos = ++this.pos;
-    code = this.readHexChar(this.input.indexOf("}", this.pos) - this.pos);
+    code2 = this.readHexChar(this.input.indexOf("}", this.pos) - this.pos);
     ++this.pos;
-    if (code > 1114111) {
+    if (code2 > 1114111) {
       this.invalidStringToken(codePos, "Code point out of bounds");
     }
   } else {
-    code = this.readHexChar(4);
+    code2 = this.readHexChar(4);
   }
-  return code;
+  return code2;
 };
 pp.readString = function(quote2) {
   var out = "", chunkStart = ++this.pos;
@@ -6189,23 +6189,23 @@ const require$$1 = /* @__PURE__ */ getAugmentedNamespace(t);
         else
           return super.parseExprAtom(refShortHandDefaultPos);
       }
-      readToken(code) {
+      readToken(code2) {
         let context = this.curContext();
         if (context === tc_expr) return this.jsx_readToken();
         if (context === tc_oTag || context === tc_cTag) {
-          if (isIdentifierStart2(code)) return this.jsx_readWord();
-          if (code == 62) {
+          if (isIdentifierStart2(code2)) return this.jsx_readWord();
+          if (code2 == 62) {
             ++this.pos;
             return this.finishToken(tok.jsxTagEnd);
           }
-          if ((code === 34 || code === 39) && context == tc_oTag)
-            return this.jsx_readString(code);
+          if ((code2 === 34 || code2 === 39) && context == tc_oTag)
+            return this.jsx_readString(code2);
         }
-        if (code === 60 && this.exprAllowed && this.input.charCodeAt(this.pos + 1) !== 33) {
+        if (code2 === 60 && this.exprAllowed && this.input.charCodeAt(this.pos + 1) !== 33) {
           ++this.pos;
           return this.finishToken(tok.jsxTagStart);
         }
-        return super.readToken(code);
+        return super.readToken(code2);
       }
       updateContext(prevType) {
         if (this.type == tt.braceL) {
@@ -6783,7 +6783,7 @@ function isCombinatorOf(node, cls, sels) {
 function findReferences(node, { filterDeclaration = () => true } = {}) {
   const locals = /* @__PURE__ */ new Map();
   const references = [];
-  const sendTarget = [];
+  const sendTargets = [];
   function hasLocal(node2, name) {
     const l2 = locals.get(node2);
     return l2 ? l2.has(name) : false;
@@ -6825,6 +6825,16 @@ function findReferences(node, { filterDeclaration = () => true } = {}) {
     }
   }
   ancestor(node, {
+    CallExpression(node2) {
+      if (isCombinatorOf(node2, "Events", ["send"])) {
+        const arg = node2.arguments[0];
+        if (arg.type === "Identifier") {
+          sendTargets.push(arg);
+        }
+      }
+    }
+  });
+  ancestor(node, {
     VariableDeclaration(node2, _state, parents) {
       let parent = null;
       for (let i2 = parents.length - 1; i2 >= 0 && parent === null; --i2) {
@@ -6859,14 +6869,6 @@ function findReferences(node, { filterDeclaration = () => true } = {}) {
     CatchClause: declareCatchClause,
     ImportDeclaration(node2, _state, [root]) {
       node2.specifiers.forEach((specifier) => declareLocal(root, specifier.local));
-    },
-    CallExpression(node2) {
-      if (isCombinatorOf(node2, "Events", ["send"])) {
-        const arg = node2.arguments[0];
-        if (arg.type === "Identifier") {
-          sendTarget.push(arg);
-        }
-      }
     }
   });
   function identifier(node2, _state, parents) {
@@ -6877,7 +6879,8 @@ function findReferences(node, { filterDeclaration = () => true } = {}) {
         return;
       }
     }
-    if (globals[name] !== false) {
+    const wasSend = sendTargets.includes(node2);
+    if (globals[name] !== false && !wasSend) {
       references.push(node2);
     }
   }
@@ -6923,7 +6926,7 @@ function findReferences(node, { filterDeclaration = () => true } = {}) {
       }
     }
   });
-  return [references, forceVars, sendTarget, extraType];
+  return [references, forceVars, sendTargets, extraType];
 }
 function checkNested(body, baseId) {
   const rewriteSpecs = [];
@@ -8972,31 +8975,31 @@ class Sourcemap {
     this.input = input;
     this._edits = [];
   }
-  _bisectLeft(index) {
+  _bisectLeft(index2) {
     let lo = 0;
     let hi = this._edits.length;
     while (lo < hi) {
       const mid = lo + hi >>> 1;
-      if (this._edits[mid].start < index) lo = mid + 1;
+      if (this._edits[mid].start < index2) lo = mid + 1;
       else hi = mid;
     }
     return lo;
   }
-  _bisectRight(index) {
+  _bisectRight(index2) {
     let lo = 0;
     let hi = this._edits.length;
     while (lo < hi) {
       const mid = lo + hi >>> 1;
-      if (this._edits[mid].start > index) hi = mid;
+      if (this._edits[mid].start > index2) hi = mid;
       else lo = mid + 1;
     }
     return lo;
   }
-  insertLeft(index, value) {
-    return this.replaceLeft(index, index, value);
+  insertLeft(index2, value) {
+    return this.replaceLeft(index2, index2, value);
   }
-  insertRight(index, value) {
-    return this.replaceRight(index, index, value);
+  insertRight(index2, value) {
+    return this.replaceRight(index2, index2, value);
   }
   delete(start, end) {
     return this.replaceRight(start, end, "");
@@ -9008,12 +9011,12 @@ class Sourcemap {
     return this._edits.splice(this._bisectRight(start), 0, { start, end, value }), this;
   }
   translate(position) {
-    let index = 0;
+    let index2 = 0;
     let ci = { line: 1, column: 0 };
     let co = { line: 1, column: 0 };
     for (const { start, end, value } of this._edits) {
-      if (start > index) {
-        const l22 = positionLength(this.input, index, start);
+      if (start > index2) {
+        const l22 = positionLength(this.input, index2, start);
         const ci22 = positionAdd(ci, l22);
         const co22 = positionAdd(co, l22);
         if (positionCompare(co22, position) > 0) break;
@@ -9027,7 +9030,7 @@ class Sourcemap {
       if (positionCompare(co2, position) > 0) return ci;
       ci = ci2;
       co = co2;
-      index = end;
+      index2 = end;
     }
     const l2 = positionSubtract(position, co);
     return positionAdd(ci, l2);
@@ -9040,13 +9043,13 @@ class Sourcemap {
   }
   toString() {
     let output = "";
-    let index = 0;
+    let index2 = 0;
     for (const { start, end, value } of this._edits) {
-      if (start > index) output += this.input.slice(index, start);
+      if (start > index2) output += this.input.slice(index2, start);
       output += value;
-      index = end;
+      index2 = end;
     }
-    output += this.input.slice(index);
+    output += this.input.slice(index2);
     return output;
   }
 }
@@ -9248,9 +9251,7 @@ function transpileJavaScript(node) {
   var _a2;
   const outputs = Array.from(new Set((_a2 = node.declarations) == null ? void 0 : _a2.map((r) => r.name)));
   const only = outputs.length === 0 ? "" : outputs[0];
-  const inputs = Array.from(new Set(node.references.map((r) => r.name))).filter((n2) => {
-    return globals[n2] !== false && !(node.sendTargets.findIndex((s) => s.name === n2) >= 0);
-  });
+  const inputs = Array.from(new Set(node.references.map((r) => r.name)));
   const forceVars = Array.from(new Set(node.forceVars.map((r) => r.name))).filter((n2) => globals[n2] !== false);
   const output = new Sourcemap(node.input).trim();
   rewriteExport(output, node.body);
@@ -9300,7 +9301,7 @@ function getParams(node) {
     return node.params.map((p2) => p2.name);
   }
   if (node.params[0].type === "ObjectPattern") {
-    const result = [];
+    const result2 = [];
     for (const prop of node.params[0].properties) {
       if (!prop) {
         console.error("cannot convert");
@@ -9314,9 +9315,9 @@ function getParams(node) {
         console.error("cannot convert");
         return [];
       }
-      result.push(prop.key.name);
+      result2.push(prop.key.name);
     }
-    return result;
+    return result2;
   }
   return [];
 }
@@ -9366,7 +9367,7 @@ function getReturn(returnNode) {
     return null;
   }
   if (returnValue && returnValue.type === "ObjectExpression") {
-    const result = {};
+    const result2 = {};
     for (const prop of returnValue.properties) {
       if (!prop) {
         console.error("the return statemenet can only return an object with nodes.");
@@ -9380,9 +9381,9 @@ function getReturn(returnNode) {
         console.error("the return statemenet can only return an object with nodes.");
         return null;
       }
-      result[prop.key.name] = prop.value.name;
+      result2[prop.key.name] = prop.value.name;
     }
-    return result;
+    return result2;
   }
   return null;
 }
@@ -9453,7 +9454,7 @@ function rewriteRenkonCalls(output, body) {
     }
   });
 }
-const version$1 = "0.9.6";
+const version$1 = "0.10.5";
 const packageJson = {
   version: version$1
 };
@@ -9614,24 +9615,38 @@ class CalmStream extends Stream {
   }
 }
 class TimerEvent extends Stream {
-  constructor(interval, isBehavior) {
+  constructor(interval, _toggle, isBehavior) {
     super(timerType, isBehavior);
     __publicField(this, "interval");
     this.interval = interval;
   }
-  created(state, id) {
-    var _a2;
-    (_a2 = state.app) == null ? void 0 : _a2.scheduleTimer(id, this);
+  created(_state, _id) {
     return this;
   }
   ready(node, state) {
+    var _a2;
+    const toggle = (_a2 = state.resolved.get(node.inputs[1])) == null ? void 0 : _a2.value;
+    if (toggle === false) {
+      return false;
+    }
     const output = node.outputs;
     const last = state.scratch.get(output);
     const interval = this.interval;
+    if (interval <= 0) {
+      return false;
+    }
     return last === void 0 || last + interval <= state.time;
   }
   evaluate(state, node, _inputArray, _lastInputArray) {
+    var _a2;
     const interval = this.interval;
+    const toggle = (_a2 = state.resolved.get(node.inputs[1])) == null ? void 0 : _a2.value;
+    if (interval <= 0) {
+      return;
+    }
+    if (toggle === false) {
+      return;
+    }
     const logicalTrigger = interval * Math.floor(state.time / interval);
     state.requestAlarm(this.interval);
     state.setResolved(node.id, { value: logicalTrigger, time: state.time });
@@ -9639,8 +9654,8 @@ class TimerEvent extends Stream {
   }
 }
 class PromiseEvent extends Stream {
-  constructor(promise) {
-    super(promiseType, true);
+  constructor(promise, isBehavior) {
+    super(promiseType, isBehavior);
     __publicField(this, "promise");
     this.promise = promise;
   }
@@ -9981,18 +9996,18 @@ class GatherStream extends Stream {
     }
     if (hasPromise) {
       Promise.all(validInputs).then((values) => {
-        const result = {};
+        const result2 = {};
         for (let i2 = 0; i2 < validInputNames.length; i2++) {
-          result[validInputNames[i2]] = values[i2];
+          result2[validInputNames[i2]] = values[i2];
         }
-        state.setResolved(node.id, { value: result, time: state.time });
+        state.setResolved(node.id, { value: result2, time: state.time });
       });
     } else {
-      const result = {};
+      const result2 = {};
       for (let i2 = 0; i2 < validInputNames.length; i2++) {
-        result[validInputNames[i2]] = validInputs[i2];
+        result2[validInputNames[i2]] = validInputs[i2];
       }
-      state.setResolved(node.id, { value: result, time: state.time });
+      state.setResolved(node.id, { value: result2, time: state.time });
     }
   }
 }
@@ -10005,12 +10020,12 @@ class ResolvePart extends Stream {
     __publicField(this, "object");
     this.object = object;
     if (Array.isArray(this.object)) {
-      const array = this.object;
-      const indices = [...Array(array.length).keys()].filter((i2) => {
+      const array2 = this.object;
+      const indices = [...Array(array2.length).keys()].filter((i2) => {
         const elem = this.object[i2];
         return typeof elem === "object" && elem !== null && elem.then;
       });
-      const promises = indices.map((i2) => array[i2]);
+      const promises = indices.map((i2) => array2[i2]);
       this.promise = Promise.all(promises);
       this.indices = indices;
     } else {
@@ -10034,21 +10049,21 @@ class ResolvePart extends Stream {
           state.requestAlarm(1);
           state.scheduleAlarm();
           if (Array.isArray(this.object)) {
-            const result = [...this.object];
+            const result2 = [...this.object];
             const indices = this.indices;
             for (let i2 of indices) {
-              result[indices[i2]] = values[i2];
+              result2[indices[i2]] = values[i2];
             }
-            state.setResolved(id, { value: result, time: state.time });
-            return result;
+            state.setResolved(id, { value: result2, time: state.time });
+            return result2;
           } else {
-            const result = { ...this.object };
+            const result2 = { ...this.object };
             const indices = this.indices;
             for (let i2 = 0; i2 < indices.length; i2++) {
-              result[indices[i2]] = values[i2];
+              result2[indices[i2]] = values[i2];
             }
-            state.setResolved(id, { value: result, time: state.time });
-            return result;
+            state.setResolved(id, { value: result2, time: state.time });
+            return result2;
           }
         }
       });
@@ -10234,8 +10249,8 @@ class Events {
   delay(varName, delay) {
     return new DelayedEvent(delay, varName, false);
   }
-  timer(interval) {
-    return new TimerEvent(interval, false);
+  timer(interval, toggle = true) {
+    return new TimerEvent(interval, toggle, false);
   }
   calm(varName, interval) {
     return new CalmStream(interval, varName, false);
@@ -10281,9 +10296,9 @@ class Events {
       queued: options == null ? void 0 : options.queued
     });
   }
-  message(event, data2, directWindow) {
+  message(event, data3, directWindow) {
     const isInIframe = window.top !== window;
-    const obj = { event: `renkon:${event}`, data: data2 };
+    const obj = { event: `renkon:${event}`, data: data3 };
     if (isInIframe) {
       window.top.postMessage(obj, "*");
       return;
@@ -10310,8 +10325,8 @@ class Behaviors {
   collect(init, varName, updater) {
     return new CollectStream(init, varName, updater, true);
   }
-  timer(interval) {
-    return new TimerEvent(interval, true);
+  timer(interval, toggle = true) {
+    return new TimerEvent(interval, true, toggle);
   }
   calm(varName, interval) {
     return new CalmStream(interval, varName, true);
@@ -10351,8 +10366,8 @@ function topologicalSort(nodes) {
   }
   function removeEdges(src, dst) {
     let edges = [];
-    let index = dst.inputs.indexOf(src.outputs);
-    if (index >= 0) {
+    let index2 = dst.inputs.indexOf(src.outputs);
+    if (index2 >= 0) {
       edges.push(src.outputs);
     }
     dst.inputs = dst.inputs.filter((input) => !edges.includes(input));
@@ -10381,13 +10396,13 @@ function invalidatedInput(node, invalidatedVars) {
   return false;
 }
 function difference(oldSet, newSet) {
-  const result = /* @__PURE__ */ new Set();
+  const result2 = /* @__PURE__ */ new Set();
   for (const key of oldSet) {
     if (!newSet.has(key)) {
-      result.add(key);
+      result2.add(key);
     }
   }
-  return result;
+  return result2;
 }
 class ProgramState {
   constructor(startTime, app) {
@@ -10809,8 +10824,8 @@ class ProgramState {
       this.futureScripts = { scripts, path: path2 };
     }
   }
-  findDecls(code) {
-    return findDecls(code);
+  findDecls(code2) {
+    return findDecls(code2);
   }
   getFunctionBody(func) {
     const str = typeof func === "function" ? func.toString() : func;
@@ -10882,7 +10897,7 @@ class ProgramState {
         this.inputArray.set(id, inputArray);
         const maybeValue = outputs;
         if (maybeValue !== void 0 && maybeValue !== null && (maybeValue.then || maybeValue[typeKey])) {
-          const ev = maybeValue.then ? new PromiseEvent(maybeValue) : maybeValue;
+          const ev = maybeValue.then ? new PromiseEvent(maybeValue, this.types.get(id) === "Behavior") : maybeValue;
           const newStream = ev.created(this, id);
           this.streams.set(id, newStream);
           outputs = newStream;
@@ -10952,39 +10967,40 @@ class ProgramState {
     }
   }
   evalCode(arg, path2) {
-    const { id, code } = arg;
+    const { id, code: code2 } = arg;
     const hasWindow = typeof window !== "undefined";
     let body;
     const p2 = path2 === "" || !path2.endsWith("/") ? path2 : path2.slice(0, -1);
     if (hasWindow) {
       const base2 = window.location.origin === "null" ? window.location.pathname : window.location.origin;
-      body = `return ${code} //# sourceURL=${base2}/${p2}/node/${id}`;
+      body = `return ${code2} //# sourceURL=${base2}/${p2}/node/${id}`;
     } else {
-      body = `return ${code} //# sourceURL=/${p2}/node/${id}`;
+      body = `return ${code2} //# sourceURL=/${p2}/node/${id}`;
     }
     let func = new Function("Events", "Behaviors", "Renkon", body);
     let val = func(Events, Behaviors, this);
-    val.code = code;
+    val.code = code2;
     return val;
   }
   componentReady(node) {
     const set = this.hasComponent.get(node.id);
-    if (set) {
-      for (const key of set) {
-        const subgraph = this.programStates.get(key);
-        if (!subgraph) {
-          return false;
-        }
-        const programState = subgraph.programState;
-        if (!programState) {
-          return false;
-        }
-        if (programState.evaluationAlarm.length === 0) {
-          return false;
-        }
-        if (programState.evaluationAlarm[0] <= this.time) {
-          return true;
-        }
+    if (!set) {
+      return false;
+    }
+    for (const key of set) {
+      const subgraph = this.programStates.get(key);
+      if (!subgraph) {
+        continue;
+      }
+      const programState2 = subgraph.programState;
+      if (!programState2) {
+        continue;
+      }
+      if (programState2.evaluationAlarm.length === 0) {
+        continue;
+      }
+      if (programState2.evaluationAlarm[0] <= this.time) {
+        return true;
       }
     }
     return false;
@@ -11132,16 +11148,16 @@ class ProgramState {
       if (key === void 0) {
         console.log("the second argument key has to be specified");
       }
-      let programState;
+      let programState2;
       let returnValues = null;
       let newProgramState = false;
       let subProgramState = this.programStates.get(key);
       if (!subProgramState) {
         newProgramState = true;
-        programState = new ProgramState(this.time);
-        programState.componentParent = this;
+        programState2 = new ProgramState(this.time);
+        programState2.componentParent = this;
       } else {
-        programState = subProgramState.programState;
+        programState2 = subProgramState.programState;
         returnValues = subProgramState.outputNames;
       }
       const maybeOldFunc = subProgramState == null ? void 0 : subProgramState.funcString;
@@ -11149,8 +11165,8 @@ class ProgramState {
         let { params, types: types2, returnValues: rs, output } = getFunctionBody(funcString);
         returnValues = rs;
         const receivers = params.map((r) => `const ${r} = ${(types2 == null ? void 0 : types2.get(r)) === "Behavior" ? "Behaviors" : "Events"}.receiver();`).join("\n");
-        programState.setupProgram([receivers, output], func.name);
-        this.programStates.set(key, { programState, funcString, outputNames: returnValues });
+        programState2.setupProgram([receivers, output], func.name);
+        this.programStates.set(key, { programState: programState2, funcString, outputNames: returnValues });
         if (this.thisNode === void 0) {
           console.log("a component is created outside of a node definition");
         } else {
@@ -11167,14 +11183,14 @@ class ProgramState {
       }
       const trigger = (input2) => {
         for (let key2 in input2) {
-          programState.setResolvedForSubgraph(
+          programState2.setResolvedForSubgraph(
             key2,
             { value: input2[key2], time: this.time }
           );
         }
-        programState.componentUpdated = false;
-        programState.evaluator(this.time, { once: true });
-        let result = void 0;
+        programState2.componentUpdated = false;
+        programState2.evaluator(this.time, { once: true });
+        let result2 = void 0;
         const resultTest = [];
         let resultTypeBehavior = true;
         if (returnValues) {
@@ -11182,32 +11198,47 @@ class ProgramState {
             console.log("arrayform is no longer supported");
           } else {
             for (const k2 of Object.keys(returnValues)) {
-              const v2 = programState.resolved.get(returnValues[k2]);
+              const v2 = programState2.resolved.get(returnValues[k2]);
               resultTest.push(v2 ? v2.value : void 0);
-              resultTypeBehavior = resultTypeBehavior && programState.types.get(returnValues[k2]) === "Behavior";
+              resultTypeBehavior = resultTypeBehavior && programState2.types.get(returnValues[k2]) === "Behavior";
               if (v2 && v2.value !== void 0) {
-                if (result === void 0) {
-                  result = {};
+                if (result2 === void 0) {
+                  result2 = {};
                 }
-                result[k2] = v2.value;
+                result2[k2] = v2.value;
               }
             }
           }
-          if (programState.componentUpdated) {
+          if (programState2.componentUpdated) {
             this.requestAlarm(1);
             this.scheduleAlarm();
           }
         }
-        programState.conclude();
-        const equals = programState.equals(lastReturned, resultTest);
+        programState2.conclude();
+        const equals = programState2.equals(lastReturned, resultTest);
         lastReturned = resultTest;
         if (resultTypeBehavior && equals) {
           return void 0;
         }
-        return result;
+        return result2;
       };
       return trigger(input);
     };
+  }
+  finalizeComponent(key) {
+    this.programStates.delete(key);
+    for (const [id, set] of this.hasComponent) {
+      if (set.has(id)) {
+        set == null ? void 0 : set.delete(id);
+        if (set.size === 0) {
+          this.hasComponent.delete(id);
+        }
+      }
+    }
+  }
+  finalizeAllComponents() {
+    this.programStates = /* @__PURE__ */ new Map();
+    this.hasComponent = /* @__PURE__ */ new Map();
   }
   spaceURL(partialURL) {
     if (/^http(s)?:\/\//.test(partialURL)) {
@@ -11237,33 +11268,33 @@ class ProgramState {
     this.log = func;
   }
 }
-function transpileJSX(code) {
-  const node = parseJSX(code);
-  const result = rewriteJSX(node.body[0], code);
-  if (typeof result === "string") {
-    return result;
+function transpileJSX(code2) {
+  const node = parseJSX(code2);
+  const result2 = rewriteJSX(node.body[0], code2);
+  if (typeof result2 === "string") {
+    return result2;
   }
-  return result.flat(Infinity).join("");
+  return result2.flat(Infinity).join("");
 }
-function rewriteJSX(body, code) {
+function rewriteJSX(body, code2) {
   function translate(body2) {
     if (body2.type === "JSXElement") {
-      const result = [];
+      const result2 = [];
       const opening = translate(body2.openingElement);
       const children = body2.children.map((c2) => translate(c2));
-      result.push(`h(`);
-      result.push(...opening);
+      result2.push(`h(`);
+      result2.push(...opening);
       if (children.length > 0) {
         const list2 = [children[0]];
         for (let i2 = 1; i2 < children.length; i2++) {
           list2.push(", ");
           list2.push(children[i2]);
         }
-        result.push(", ");
-        result.push(list2);
+        result2.push(", ");
+        result2.push(list2);
       }
-      result.push(")");
-      return result;
+      result2.push(")");
+      return result2;
     } else if (body2.type === "JSXExpressionContainer") {
       return translate(body2.expression);
     } else if (body2.type === "JSXSpreadChild") {
@@ -11310,13 +11341,47 @@ function rewriteJSX(body, code) {
     } else if (body2.type === "Literal") {
       return body2.raw;
     }
-    return code.slice(body2.start, body2.end);
+    return code2.slice(body2.start, body2.end);
   }
   return translate(body);
+}
+function loader(programState, docName, maybeFetch) {
+  const myFetch = maybeFetch || fetch;
+  myFetch(docName).then((resp) => resp.text()).then((result) => {
+    var _a2, _b2, _c, _d, _e, _f, _g, _h;
+    const index = result.indexOf("{__codeMap: true, value:");
+    let code;
+    if (index < 0) {
+      const json = JSON.parse(result);
+      if (json.version !== 1) {
+        console.log("unknown type of data");
+      }
+      code = JSON.parse(result).code.values;
+    } else {
+      let data1 = JSON.parse(result.slice(0, index));
+      let windowEnabledMap = /* @__PURE__ */ new Map();
+      if ((_b2 = (_a2 = data1 == null ? void 0 : data1.windowEnabled) == null ? void 0 : _a2.map) == null ? void 0 : _b2.values) {
+        windowEnabledMap = new Map((_d = (_c = data1 == null ? void 0 : data1.windowEnabled) == null ? void 0 : _c.map) == null ? void 0 : _d.values);
+      }
+      let windowTypesMap = /* @__PURE__ */ new Map();
+      if ((_f = (_e = data1 == null ? void 0 : data1.windowTypes) == null ? void 0 : _e.map) == null ? void 0 : _f.values) {
+        windowTypesMap = new Map((_h = (_g = data1 == null ? void 0 : data1.windowTypes) == null ? void 0 : _g.map) == null ? void 0 : _h.values);
+      }
+      const data2 = result.slice(index);
+      const array = eval("(" + data2 + ")");
+      code = array.value;
+      code = code.filter((pair) => !windowEnabledMap.get(pair[0]) || windowEnabledMap.get(pair[0]).enabled && windowTypesMap.get(pair[0]) === "code");
+    }
+    programState.setupProgram(code.map((pair) => ({ blockId: pair[0], code: pair[1] })), docName);
+    programState.evaluate(Date.now());
+  }).catch((err) => {
+    console.error(`${docName} could not be loaded`, err);
+  });
 }
 export {
   ProgramState,
   globals,
+  loader,
   parseJSX,
   translateTS,
   transpileJSX,
