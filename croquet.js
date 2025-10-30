@@ -268,8 +268,8 @@ return {}
 }`.trim();
 }
 
-export function loader(docName, maybeFetch) {
-  const myFetch = maybeFetch || fetch;
+export function loader(docName, options = {}) {
+  const myFetch = options.fetch || fetch;
 
   myFetch(docName).then((resp) => resp.text()).then((result) => {
     const index = result.indexOf("{__codeMap: true, value:");
@@ -315,7 +315,7 @@ export function loader(docName, maybeFetch) {
     code = code.map(((pair) => pair[1]));
     const {model, view} = croquetify(toFunction(code, name), name, new Map(realm.model.map((key) => [key, "Model"])), Croquet);
 
-    window.Croquet.Session.join({...appParameters, model, view});
+    window.Croquet.Session.join({...appParameters, ...options.appParameters, model, view});
   });
 }
 /* globals Croquet */
