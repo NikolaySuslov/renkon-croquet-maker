@@ -422,7 +422,6 @@ const _onRun = ((runRequest, windowContents, windowEnabled, titles) => {
   const croquet = [...windowContents.map].find(([id, obj]) => titles.map.get(id).title === "Croquet")?.[1].state.doc.toString();;
   if (!croquet) {
     console.log("No Croquet spec found");
-    return;
   }
   iframe.dom.contentWindow.postMessage({code: code, croquet, path: id});
 })(runRequest, windowContents, windowEnabled, titles);
@@ -3083,10 +3082,11 @@ class DependencyPlugin {
     <script src="./croquet.min.js" type="text/javascript"></script>
     <script type="module">
       import {ProgramState, CodeMirror, newInspector} from "./renkon-web.js";
-      import {croquetify, toFunction} from "./croquet.js";
-      window.thisProgramState = new ProgramState(Date.now());
+      import {croquetify, toFunction, splitStrs} from "./croquet.js";
       window.CodeMirror = CodeMirror;
       window.newInspector = newInspector;
+      let session;
+      let prevView;
 
       function trimParenthesis(str) {
         let match = /^\\\\(+([^()]+)\\\\)+\$/m.exec(str);
@@ -3098,15 +3098,27 @@ class DependencyPlugin {
         if (evt.data && Array.isArray(evt.data.code) && evt.data.croquet) {
           let trimmed = trimParenthesis(evt.data.croquet)
           const {name, realm, appParameters} = JSON.parse(trimmed);
+          const func = toFunction(evt.data.code, name);
           const {model, view} = croquetify(
-            toFunction(evt.data.code, name),
+            func,
             name,
             new Map(realm.model.map((key) => [key, "Model"])),
             window.Croquet);
-          window.Croquet.Session.join({...appParameters, model, view});        
+          if (!prevView) {
+            model.register(model.name);
+            window.Croquet.Session.join({...appParameters, model, view}).then((s) => {
+              session = s;
+              prevView = session.view;
+            });
+          } else {
+            const strs = splitStrs(func, new Map(realm.model.map((key) => [key, "Model"])));
+            const {viewNodeStr, modelEventsStr} = strs;
+            prevView.programState.updateProgram([viewNodeStr, modelEventsStr]);
+          }
         }
         if (evt.data && typeof evt.data.inspector === "boolean") {
-          if (window.thisProgramState) {
+          if (session?.view?.programState) {
+            const programState = session.view.programState;
             if (document.body.querySelector(".dock")) {
               document.body.querySelector(".dock").remove();
               return;
@@ -3118,9 +3130,9 @@ class DependencyPlugin {
 
             dock.appendChild(dom);
             document.body.appendChild(dock);
-            const result = thisProgramState.order.map((id) => [
-                id + " (" + thisProgramState.types.get(id) + ")",
-                thisProgramState.resolved.get(id)]);
+            const result = programState.order.map((id) => [
+                id + " (" + programState.types.get(id) + ")",
+                programState.resolved.get(id)]);
             dom.addEventListener('contextmenu', event => {
               event.preventDefault(); event.stopPropagation();}, {capture: true});
             dom.addEventListener('pointerup', event => {
@@ -3139,7 +3151,7 @@ class DependencyPlugin {
                 const match = /(.*)\\\\W(Behavior|Event)\\\\W/.exec(text);
                 if (!match) {return;}
                 const keyName = match[1].trim();
-                console.log(window.thisProgramState.resolved.get(keyName)?.value);
+                console.log(programState.resolved.get(keyName)?.value);
               }
             });
             newInspector(Object.fromEntries(result), dom);
