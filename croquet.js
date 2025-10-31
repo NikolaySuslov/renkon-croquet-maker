@@ -83,6 +83,11 @@ function strs(decls) {
   return {modelNodeStr, viewEventsStr, viewNodeStr, modelEventsStr};
 }
 
+export function splitStrs(func, realm) {
+  const funcStr = typeof func === "function" ? func.toString() : func;
+  const d = decls(funcStr, realm);
+  return strs(d);
+}
 
 export function croquetify(func, appName, realm) {
   const funcStr = typeof func === "function" ? func.toString() : func;
@@ -255,7 +260,6 @@ class ${viewName} extends Croquet.View {
     `return {model: ${modelStr}, view: ${viewStr}}`
   )(funcStr, realm, ProgramState, Croquet, decls, strs);
 
-  result.model.register(modelName);
   return result;
 }
 
@@ -314,6 +318,7 @@ export function loader(docName, options = {}) {
     const {name, realm, appParameters} = JSON.parse(trimmed);
     code = code.map(((pair) => pair[1]));
     const {model, view} = croquetify(toFunction(code, name), name, new Map(realm.model.map((key) => [key, "Model"])), Croquet);
+    result.model.register(model.name);
 
     window.Croquet.Session.join({...appParameters, ...options.appParameters, model, view});
   });
