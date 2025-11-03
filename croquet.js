@@ -318,7 +318,7 @@ export function loader(docName, options = {}) {
     const {name, realm, appParameters} = JSON.parse(trimmed);
     code = code.map(((pair) => pair[1]));
     const {model, view} = croquetify(toFunction(code, name), name, new Map(realm.model.map((key) => [key, "Model"])), Croquet);
-    result.model.register(model.name);
+    model.register(model.name);
 
     window.Croquet.Session.join({...appParameters, ...options.appParameters, model, view});
   });
