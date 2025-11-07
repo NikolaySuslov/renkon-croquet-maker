@@ -89,7 +89,7 @@ export function splitStrs(func, realm) {
   return strs(d);
 }
 
-export function croquetify(func, appName, realm) {
+export function croquetify(func, appName, realm, typesString) {
   const funcStr = typeof func === "function" ? func.toString() : func;
   const modelName = appName + "Model";
   const viewName = appName + "View";
@@ -211,7 +211,8 @@ class ${modelName} extends Croquet.Model {
           ps.scratch = obj.scratch;
           return ps;
         }
-      }
+      },
+      ${typesString || ""}
     }
   }
 }
@@ -256,9 +257,9 @@ class ${viewName} extends Croquet.View {
 }`.trim();
 
   const result = new Function(
-    "funcStr", "realm", "ProgramState", "Croquet", "decls", "strs",
+    "funcStr", "realm", "ProgramState", "Croquet", "decls", "strs", "typesString",
     `return {model: ${modelStr}, view: ${viewStr}}`
-  )(funcStr, realm, ProgramState, Croquet, decls, strs);
+  )(funcStr, realm, ProgramState, Croquet, decls, strs, typesString);
 
   return result;
 }
@@ -309,15 +310,24 @@ export function loader(docName, options = {}) {
     ));
 
     function trimParenthesis(str) {
-      let match = /^\(+([^()]+)\)+$/m.exec(str);
-      if (!match) return str;
-      return match[1];
+      debugger;
+      let start = 0;
+      let end = str.length - 1;
+      while (str[start] === "(") {
+        start++;
+      }
+      while (str[end] === ")") {
+        end--;
+      }
+      if (start === 0 && end === str.length - 1) {return str;}
+      return str.slice(start, end + 1);
     }
 
     const trimmed = trimParenthesis(croquet);
-    const {name, realm, appParameters} = JSON.parse(trimmed);
+    
+    const {name, realm, appParameters, types} = JSON.parse(trimmed);
     code = code.map(((pair) => pair[1]));
-    const {model, view} = croquetify(toFunction(code, name), name, new Map(realm.model.map((key) => [key, "Model"])), Croquet);
+    const {model, view} = croquetify(toFunction(code, name), name, new Map(realm.model.map((key) => [key, "Model"])), types);
     model.register(model.name);
 
     window.Croquet.Session.join({...appParameters, ...options.appParameters, model, view});

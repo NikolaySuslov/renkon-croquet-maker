@@ -3089,21 +3089,28 @@ class DependencyPlugin {
       let prevView;
 
       function trimParenthesis(str) {
-        let match = /^\\\\(+([^()]+)\\\\)+\$/m.exec(str);
-        if (!match) return str;
-        return match[1];
+        let start = 0;
+        let end = str.length - 1;
+        while (str[start] === "(") {
+          start++;
+        }
+        while (str[end] === ")") {
+          end--;
+        }
+        if (start === 0 && end === str.length - 1) {return str;}
+        return str.slice(start, end + 1);
       }
 
       window.onmessage = (evt) => {
         if (evt.data && Array.isArray(evt.data.code) && evt.data.croquet) {
           let trimmed = trimParenthesis(evt.data.croquet)
-          const {name, realm, appParameters} = JSON.parse(trimmed);
+          const {name, realm, appParameters, types} = JSON.parse(trimmed);
           const func = toFunction(evt.data.code, name);
           const {model, view} = croquetify(
             func,
             name,
             new Map(realm.model.map((key) => [key, "Model"])),
-            window.Croquet);
+            types);
           if (!prevView) {
             model.register(model.name);
             window.Croquet.Session.join({...appParameters, model, view}).then((s) => {
