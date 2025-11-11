@@ -1,0 +1,60 @@
+{"padTitle":"newCodeMirror",
+"positions":{"map":{"__map":true,
+"values":[["0",{"height":410.56640625,
+"id":"0",
+"type":"resize",
+"width":615.5703125,
+"x":45,
+"y":50}],["1",{"height":760.05078125,
+"id":"1",
+"type":"resize",
+"width":988.55078125,
+"x":769.5703125,
+"y":299.30078125}]]}},
+"titles":{"map":{"__map":true,
+"values":[["0",{"id":"0",
+"state":false,
+"title":"Croquet"}],["1",{"id":"1",
+"state":false,
+"title":"untitled"}]]}},
+"version":3,
+"windowEnabled":{"map":{"__map":true,
+"values":[["0",{"enabled":true,
+"id":"0"}],["1",{"enabled":true,
+"id":"1"}]]}},
+"windowTypes":{"map":{"__map":true,
+"values":[["0","code"],["1","code"]]}},
+"windows":["0","1"],
+"zIndex":{"map":{"__map":true,
+"values":[["0",100],["1",101]]}}}
+{__codeMap: true, value: [[`0`, `({
+  "appParameters": {
+    "apiKey": "234567_Paste_Your_Own_API_Key_Here_7654321",
+    "appId": "org.tinlizzie.codemirror",
+    "name": "abab9",
+    "password": "123",
+    "box": "http://localhost:8888",
+    "tps": 2,
+    "eventRateLimit": 60,
+    "debug": "offline"
+  },
+  "realm": {"model": ["CodeMirrorModel", "editorModel", "editorModelId"]},
+  "name": "CroquetMirror"
+})`],
+[`1`, `const containers = (() => {
+  const container1 = document.createElement("div");
+  container1.id = "container1";
+  document.body.querySelector(\`#\${container1.id}\`)?.remove();
+  document.body.appendChild(container1);
+
+  return [container1]
+})();
+
+const editorModel = window.CodeMirrorModel.create({doc: "hi"});
+const editorModelId = editorModel.id;
+
+const {CodeMirrorView} = import("./codemirror.js");
+
+const editorView = new CodeMirrorView.create(editorModelId);
+
+document.body.appendChild(editorView.dom)`]]}

@@ -1,0 +1,265 @@
+{"padTitle":"CodeMirror",
+"positions":{"map":{"__map":true,
+"values":[["0",{"height":1152.8515625,
+"id":"0",
+"type":"move",
+"width":845.99609375,
+"x":-217.3630778699073,
+"y":-545.5723951845602}],["1",{"height":1708.7394593039369,
+"id":"1",
+"type":"resize",
+"width":811.3329794399399,
+"x":694.5288683365977,
+"y":-411.56242620482533}],["3",{"height":632.601493163125,
+"id":"3",
+"type":"move",
+"width":921.4332044328464,
+"x":-1197.1370887385874,
+"y":-458.55737804030014}],["20",{"height":1657.0385477835189,
+"id":"20",
+"type":"resize",
+"width":847.2626279463046,
+"x":1586.951499357069,
+"y":-401.3013324058939}]]}},
+"titles":{"map":{"__map":true,
+"values":[["0",{"id":"0",
+"state":false,
+"title":"untitled"}],["1",{"id":"1",
+"state":false,
+"title":"ModelPlugin"}],["3",{"id":"3",
+"state":false,
+"title":"Croquet"}],["20",{"id":"20",
+"state":false,
+"title":"ViewPlugin"}]]}},
+"version":3,
+"windowEnabled":{"map":{"__map":true,
+"values":[["0",{"enabled":true,
+"id":"0"}],["1",{"enabled":true,
+"id":"1"}],["3",{"enabled":true,
+"id":"3"}],["20",{"enabled":true,
+"id":"20"}]]}},
+"windowTypes":{"map":{"__map":true,
+"values":[["0","code"],["1","code"],["3","code"],["20","code"]]}},
+"windows":["0","1","3","20"],
+"zIndex":{"map":{"__map":true,
+"values":[["0",102],["1",104],["3",105],["20",100]]}}}
+{__codeMap: true, value: [[`0`, `const containers = (() => {
+  const container1 = document.createElement("div");
+  container1.id = "container1";
+  document.body.querySelector(\`#\${container1.id}\`)?.remove();
+  document.body.appendChild(container1);
+
+  return [container1]
+})();
+
+const reconcileAnnotationType = window.CodeMirror.state.Annotation.define();
+/*
+const modelState = window.CodeMirror.state.EditorState.create({
+});
+
+const viewState = window.CodeMirror.state.EditorState.create({
+
+});
+*/
+const modelConfig = {
+  doc:"hi",
+  extensions: [
+    pluginQFunc({
+      editorModelId: "M1",
+      editorViewId: "V1",
+      codemirror: window.CodeMirror,
+        reconcileAnnotationType,
+      Renkon,
+    })
+  ]
+};
+
+const viewConfig = {
+  parent: containers[0],
+  doc:"hi",
+  extensions: [
+    croquetViewPlugin({
+      editorModelId: "M1",
+      editorViewId: "V1",
+      codemirror: window.CodeMirror,
+      reconcileAnnotationType,
+    })
+  ]
+};
+
+const modelView1 = new window.CodeMirror.EditorView(modelConfig);
+
+const viewView1  = new window.CodeMirror.EditorView(viewConfig);
+`],
+[`1`, `const pluginQFunc = Renkon.app.createQFunc(function croquetModelPlugin({editorModelId, editorViewId, codemirror, reconcileAnnotationType, Renkon}) {
+  console.log("editorId", editorModelId, editorViewId)
+  const isReconcileTx = (tr) => !!tr.annotation(reconcileAnnotationType);
+
+  const applyCrEventToCm = (view, events) => {
+    let selection = view.state.selection;
+    for (const event of events) {
+      const changeSpec = handleEvent(event, view.state);
+      if (changeSpec != null) {
+        const changeSet = codemirror.state.ChangeSet.of(changeSpec, view.state.doc.length, "\\n");
+        selection = selection.map(changeSet, 1);
+        view.dispatch({
+          changes: changeSet,
+          annotations: reconcileAnnotationType.of({}),
+        });
+      }
+    }
+    view.dispatch({
+        selection,
+        annotations: reconcileAnnotationType.of({}),
+    });
+  };
+  function handleEvent(event, state) {
+      if (event.action === "insert") {
+          return handleInsert(event);
+      }
+      else if (event.action === "splice") {
+          return handleSplice(event);
+      }
+      else if (event.action === "del") {
+          return handleDel(event);
+      }
+      else {
+          return null;
+      }
+  }
+  function handleInsert(event) {
+    const index = event.index;
+    return [{ from: index, to: index, insert: event.value }];
+  }
+  function handleSplice(event) {
+    const index = event.index;
+    return [{ from: index, insert: event.value }];
+  }
+  function handleDel(event) {
+    const length = event.length || 1;
+    const index = event.index;
+    return [{ from: index, to: index + length }];
+  }
+
+  return codemirror.view.ViewPlugin.fromClass(class {
+      constructor(view) {
+        this.view = view;
+        this.onChange = this.onChange.bind(this);
+        // Renkon.app.subscribe(editorModelId, "edit", "onChange");
+      }
+      update(update) {
+        // publishCmTransactions(editorId, update.transactions);
+      }
+      onChange = (data) => {
+        console.log('change', data);
+        const view = Renkon.app.programState.resolved.get("modelView1").value;
+        applyCrEventToCm(view, data);
+        Renkon.app.publish(editorModelId, "update", data);
+      };
+      destroy() {
+        Renkon.app.unsubscribe(editorModelId, "edit", "onChange");
+      }
+  });
+});
+
+const modelEditHandler = console.log(editReceiver);
+`],
+[`3`, `({
+  "appParameters": {
+    "apiKey": "234567_Paste_Your_Own_API_Key_Here_7654321",
+    "appId": "org.tinlizzie.codemirror",
+    "name": "abab9",
+    "password": "123",
+    "box": "http://localhost:8888",
+    "tps": 2,
+    "eventRateLimit": 60,
+    "debug": "offline"
+  },
+  "realm": {"model": ["reconcileAnnotationType", "modelState", "modelConfig", "modelView1", "pluginQFunc", "modelEditHandler"]},
+  "name": "CroquetMirror",
+})`],
+[`20`, `function croquetViewPlugin({editorModelId, editorViewId, codemirror, reconcileAnnotationType}) {
+  console.log("editorId", editorModelId, editorViewId)
+  const isReconcileTx = (tr) => !!tr.annotation(reconcileAnnotationType);
+
+  const applyCrEventToCm = (view, events) => {
+    let selection = view.state.selection;
+    for (const event of events) {
+      const changeSpec = handleEvent(event, view.state);
+      if (changeSpec != null) {
+        const changeSet = codemirror.state.ChangeSet.of(changeSpec, view.state.doc.length, "\\n");
+        selection = selection.map(changeSet, 1);
+        view.dispatch({
+            changes: changeSet,
+            annotations: reconcileAnnotationType.of({}),
+        });
+      }
+    }
+    view.dispatch({
+        selection,
+        annotations: reconcileAnnotationType.of({}),
+    });
+  };
+  function handleEvent(event, state) {
+      if (event.action === "insert") {
+          return handleInsert(event);
+      }
+      else if (event.action === "splice") {
+          return handleSplice(event);
+      }
+      else if (event.action === "del") {
+          return handleDel(event);
+      }
+      else {
+          return null;
+      }
+  }
+  function handleInsert(event) {
+    const index = event.index;
+    return [{ from: index, to: index, insert: event.value }];
+  }
+  function handleSplice(event) {
+    const index = event.index;
+    return [{ from: index, insert: event.value }];
+  }
+  function handleDel(event) {
+    const length = event.length || 1;
+    const index = event.index;
+    return [{ from: index, to: index + length }];
+  }
+
+  function transationsToEvents(transactions) {
+    console.log("translate", transactions);
+    return transactions;
+  }
+
+  const publishCmTransactions = (editorModelId, transactions) => {
+    const transactionsWithChanges = transactions.filter(tr => !isReconcileTx(tr) && !tr.changes.empty);
+    if (transactionsWithChanges.length === 0) {
+        return;
+    }
+    console.log("publish", editorModelId, "edit", transactionsWithChanges);
+    Renkon.app.publish(editorModelId, "edit", transactionsWithChanges);
+  };
+  return codemirror.view.ViewPlugin.fromClass(class {
+      constructor(view) {
+        this.view = view;
+        this.onChange = this.onChange.bind(this);
+        Renkon.app.subscribe(editorModelId, "update", (data) => this.onChange(data));
+      }
+      update(update) {
+        const events = transationsToEvents(update.transactions);
+        publishCmTransactions(editorModelId, events);
+      }
+      onChange = (data) => {
+        console.log('change', data);
+        const view = Renkon.app.programState.resolved.get("viewView1").value;
+        applyCrEventToCm(view, data);
+      };
+      destroy() {
+        Renkon.app.unsubscribe(editorModelId, "update", (data) => this.onChange(data));
+      }
+  });
+}
+
+const editRequest = Events.receiver();`]]}

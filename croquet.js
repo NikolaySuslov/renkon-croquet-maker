@@ -1,4 +1,8 @@
 import {ProgramState} from "./renkon-core.js";
+import {CodeMirrorModel, CodeMirrorView} from "./codemirror.js";
+
+window.Codemirrormodel = CodeMirrorModel;
+window.CodemirrorView = CodeMirrorView;
 
 //
 // oncePerFrame that accumlates the changes for this cycle.
