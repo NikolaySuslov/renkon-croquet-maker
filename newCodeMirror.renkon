@@ -1,42 +1,57 @@
 {"padTitle":"newCodeMirror",
 "positions":{"map":{"__map":true,
-"values":[["0",{"height":410.56640625,
+"values":[["0",{"height":304.8380659635966,
 "id":"0",
-"type":"resize",
-"width":615.5703125,
-"x":45,
-"y":50}],["1",{"height":760.05078125,
+"type":"move",
+"width":555.0927335370905,
+"x":-258.5766269900489,
+"y":-424.5519039277561}],["1",{"height":434.5430032676992,
 "id":"1",
-"type":"resize",
-"width":988.55078125,
-"x":769.5703125,
-"y":299.30078125}]]}},
+"type":"move",
+"width":733.1536714745855,
+"x":552.003965148345,
+"y":-437.2699099268228}],["14",{"height":400,
+"id":"14",
+"width":800,
+"x":-255.27373596865397,
+"y":-872.2765170251238}],["15",{"height":400,
+"id":"15",
+"type":"move",
+"width":800,
+"x":559.4907266773877,
+"y":-869.6960167491235}]]}},
 "titles":{"map":{"__map":true,
 "values":[["0",{"id":"0",
 "state":false,
 "title":"Croquet"}],["1",{"id":"1",
+"state":false,
+"title":"untitled"}],["14",{"id":"14",
+"state":false,
+"title":"untitled"}],["15",{"id":"15",
 "state":false,
 "title":"untitled"}]]}},
 "version":3,
 "windowEnabled":{"map":{"__map":true,
 "values":[["0",{"enabled":true,
 "id":"0"}],["1",{"enabled":true,
-"id":"1"}]]}},
+"id":"1"}],["14",{"enabled":true,
+"id":"14"}],["15",{"enabled":true,
+"id":"15"}]]}},
 "windowTypes":{"map":{"__map":true,
-"values":[["0","code"],["1","code"]]}},
-"windows":["0","1"],
+"values":[["0","code"],["1","code"],["14","runner"],["15","runner"]]}},
+"windows":["0","1","14","15"],
 "zIndex":{"map":{"__map":true,
-"values":[["0",100],["1",101]]}}}
+"values":[["0",103],["1",100],["14",104],["15",105]]}}}
 {__codeMap: true, value: [[`0`, `({
   "appParameters": {
     "apiKey": "234567_Paste_Your_Own_API_Key_Here_7654321",
     "appId": "org.tinlizzie.codemirror",
-    "name": "abab9",
+    "name": "abacc0",
     "password": "123",
     "box": "http://localhost:8888",
     "tps": 2,
     "eventRateLimit": 60,
-    "debug": "offline"
+    "debug": ""
   },
   "realm": {"model": ["CodeMirrorModel", "editorModel", "editorModelId"]},
   "name": "CroquetMirror"
@@ -55,6 +70,6 @@ const editorModelId = editorModel.id;
 
 const {CodeMirrorView} = import("./codemirror.js");
 
-const editorView = new CodeMirrorView.create(editorModelId);
+const editorView = CodeMirrorView.create(Renkon, editorModelId);
 
-document.body.appendChild(editorView.dom)`]]}
+document.body.appendChild(editorView.editor.dom)`]]}
