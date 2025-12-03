@@ -193,7 +193,4 @@ export class CodeMirrorView extends Croquet.View {
   }
 }
 
-window.CodeMirrorView = CodeMirrorView;
-
-
 /* globals Croquet */

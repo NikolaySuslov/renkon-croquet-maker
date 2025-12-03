@@ -5,43 +5,43 @@
 "type":"move",
 "width":555.0927335370905,
 "x":-258.5766269900489,
-"y":-424.5519039277561}],["1",{"height":434.5430032676992,
+"y":-424.5519039277561}],["1",{"height":593.3266778811047,
 "id":"1",
-"type":"move",
-"width":733.1536714745855,
+"type":"resize",
+"width":853.9345568827985,
 "x":552.003965148345,
-"y":-437.2699099268228}],["14",{"height":400,
-"id":"14",
+"y":-437.2699099268228}],["16",{"height":400,
+"id":"16",
 "width":800,
 "x":-255.27373596865397,
-"y":-872.2765170251238}],["15",{"height":400,
-"id":"15",
+"y":-871.4629858136137}],["17",{"height":400,
+"id":"17",
 "type":"move",
 "width":800,
-"x":559.4907266773877,
-"y":-869.6960167491235}]]}},
+"x":592.3843326051982,
+"y":-873.4061336118066}]]}},
 "titles":{"map":{"__map":true,
 "values":[["0",{"id":"0",
 "state":false,
 "title":"Croquet"}],["1",{"id":"1",
 "state":false,
-"title":"untitled"}],["14",{"id":"14",
+"title":"untitled"}],["16",{"id":"16",
 "state":false,
-"title":"untitled"}],["15",{"id":"15",
+"title":"untitled"}],["17",{"id":"17",
 "state":false,
 "title":"untitled"}]]}},
 "version":3,
 "windowEnabled":{"map":{"__map":true,
 "values":[["0",{"enabled":true,
 "id":"0"}],["1",{"enabled":true,
-"id":"1"}],["14",{"enabled":true,
-"id":"14"}],["15",{"enabled":true,
-"id":"15"}]]}},
+"id":"1"}],["16",{"enabled":true,
+"id":"16"}],["17",{"enabled":true,
+"id":"17"}]]}},
 "windowTypes":{"map":{"__map":true,
-"values":[["0","code"],["1","code"],["14","runner"],["15","runner"]]}},
-"windows":["0","1","14","15"],
+"values":[["0","code"],["1","code"],["16","runner"],["17","runner"]]}},
+"windows":["0","1","16","17"],
 "zIndex":{"map":{"__map":true,
-"values":[["0",103],["1",100],["14",104],["15",105]]}}}
+"values":[["0",103],["1",100],["16",104],["17",105]]}}}
 {__codeMap: true, value: [[`0`, `({
   "appParameters": {
     "apiKey": "234567_Paste_Your_Own_API_Key_Here_7654321",
@@ -72,4 +72,9 @@ const {CodeMirrorView} = import("./codemirror.js");
 
 const editorView = CodeMirrorView.create(Renkon, editorModelId);
 
-document.body.appendChild(editorView.editor.dom)`]]}
+const updateDom = ((editorView) => {
+  editorView.editor.dom.id = "myeditor";
+  document.body.querySelector(\`#\${editorView.editor.dom.id}\`)?.remove();  
+  document.body.appendChild(editorView.editor.dom)
+})(editorView);
+`]]}
