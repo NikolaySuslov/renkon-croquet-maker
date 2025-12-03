@@ -5,8 +5,8 @@ const newCompartment = () => new CodeMirror.state.Compartment();
 
 function handleEvent(event, _state) {
   function handleInsert(event) {
-    const index = event.index;
-    return [{ from: index, to: index, insert: event.value }];
+    const index = event.fromA;
+    return [{ from: index, to: event.toA, insert: event.text }];
   }
   function handleSplice(event) {
     const index = event.index;
@@ -29,9 +29,10 @@ function handleEvent(event, _state) {
   }
 }
 
-function applyCrEventToCm(view, events) {
+function applyCrEventToCm(view, events, viewId) {
   let selection = view.state.selection;
   for (const event of events) {
+    if (viewId !== undefined && viewId === event.viewId) {continue;}
     const changeSpec = handleEvent(event, view.state);
     if (changeSpec != null) {
       const changeSet = CodeMirror.state.ChangeSet.of(changeSpec, view.state.doc.length, "\n");
@@ -53,6 +54,7 @@ export class CodeMirrorModel extends Croquet.Model {
     super.init();
     this.editor = new CodeMirror.EditorView(this.modelConfig(options.doc, newCompartment()));
     this.setupCroquet(this.editor, this);
+    this.subscribe(this.id, "edit", "changed")
   }
 
   modelConfig(doc, compartment) {
@@ -74,20 +76,16 @@ export class CodeMirrorModel extends Croquet.Model {
     });
   }
 
-  update(update) {
-    console.log("model update", update);
-    // publishCmTransactions(editorId, update.transactions);
-  }
-
   changed(data) {
-    console.log('changed', data);
     const view = this.editor;
+    console.log('changed', view);
     applyCrEventToCm(view, data);
-    this.publish(this.Id, "update", data);
+    
+    this.publish(this.id, "update", data);
   }
 
   destroy() {
-    this.unsubscribe(this.id, "edit", "change");
+    this.unsubscribe(this.id, "edit", "changed");
   }
 
   static types() {
@@ -106,7 +104,8 @@ export class CodeMirrorModel extends Croquet.Model {
         cls: CodeMirror.EditorView,
         read: (obj) => {
           const {model, doc} = obj;
-          const editor = new window.CodeMirror.EditorView(model.modelConfig(doc, model.croquetExt));
+          const text = CodeMirror.state.Text.of(doc);
+          const editor = new window.CodeMirror.EditorView(model.modelConfig(text, model.croquetExt));
           model.setupCroquet(editor, model);
           return editor;
         },
@@ -125,8 +124,9 @@ export class CodeMirrorView extends Croquet.View {
   constructor(model) {
     super(model);
     this.model = model;
-    this.editor = new CodeMirror.EditorView(this.viewConfig(model.editorView.doc, newCompartment()));
+    this.editor = new CodeMirror.EditorView(this.viewConfig(model.editor.state.doc, newCompartment()));
     this.setupCroquet(this.editor, this);
+    this.subscribe(this.model.id, "update", "updated");
   }
 
   viewConfig(doc, compartment) {
@@ -156,8 +156,17 @@ export class CodeMirrorView extends Croquet.View {
     if (transactionsWithChanges.length === 0) {
       return;
     }
-    console.log("translate", transactions);
-    return transactions;
+
+    const result = [];
+
+    transactionsWithChanges.forEach((tr) => {
+      tr.changes.iterChanges((fromA, toA, fromB, toB, inserted) => {
+        result.push({action: "insert", fromA, fromB, toA, toB, text: inserted.toString(), viewId: this.viewId});
+      });
+    });
+    
+    console.log("translate", result);
+    return result;
   }
 
   publishCmTransactions(events) {
@@ -172,15 +181,15 @@ export class CodeMirrorView extends Croquet.View {
     }
   }
 
-  change(data) {
+  updated(data) {
     console.log('change', data);
     const view = this.editor;
-    applyCrEventToCm(view, data);
+    applyCrEventToCm(view, data, this.viewId);
   };
 
-  static create(modelId) {
-    debugger;
-    this.session
+  static create(Renkon, modelId) {
+    const view = new this(Renkon.app.model.getModel(modelId));
+    return view;
   }
 }
 
