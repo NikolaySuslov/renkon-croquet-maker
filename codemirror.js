@@ -57,10 +57,11 @@ export class CodeMirrorModel extends Croquet.Model {
     this.subscribe(this.id, "edit", "changed")
   }
 
-  modelConfig(doc, compartment) {
+  modelConfig(doc, compartment, selection) {
     this.croquetExt = compartment;
     return {
       doc: doc || "",
+      selection,
       extensions: [
         this.croquetExt.of([]),
       ]
@@ -103,14 +104,20 @@ export class CodeMirrorModel extends Croquet.Model {
       EditorView: {
         cls: CodeMirror.EditorView,
         read: (obj) => {
-          const {model, doc} = obj;
+          const {model, doc, selection} = obj;
           const text = CodeMirror.state.Text.of(doc);
-          const editor = new window.CodeMirror.EditorView(model.modelConfig(text, model.croquetExt));
+          let sel;
+          if (selection.ranges) {
+            sel = CodeMirror.state.EditorSelection.fromJSON(selection);
+          } else {
+            sel = CodeMirror.state.EditorSelection.single(0, 0);
+          }
+          const editor = new window.CodeMirror.EditorView(model.modelConfig(text, model.croquetExt, sel));
           model.setupCroquet(editor, model);
           return editor;
         },
         write: (obj) => {
-          return {model: obj.croquetModel, doc: obj.viewState.state.doc.toJSON()};
+          return {model: obj.croquetModel, doc: obj.viewState.state.doc.toJSON(), selection: obj.viewState.state.selection.toJSON()};
         }
       }
     }
@@ -124,15 +131,16 @@ export class CodeMirrorView extends Croquet.View {
   constructor(model) {
     super(model);
     this.model = model;
-    this.editor = new CodeMirror.EditorView(this.viewConfig(model.editor.state.doc, newCompartment()));
+    this.editor = new CodeMirror.EditorView(this.viewConfig(model.editor.state.doc, newCompartment(), model.editor.state.selection));
     this.setupCroquet(this.editor, this);
     this.subscribe(this.model.id, "update", "updated");
   }
 
-  viewConfig(doc, compartment) {
+  viewConfig(doc, compartment, selection) {
     this.croquetExt = compartment;
     return {
       doc: doc || "",
+      selection,
       extensions: [
         CodeMirror.basicSetup,
         CodeMirror.EditorView.lineWrapping,
