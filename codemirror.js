@@ -30,7 +30,6 @@ function handleEvent(event, _state) {
 }
 
 function applyCrEventToCm(view, events, viewId) {
-  console.log("apply", events, viewId, view.state.doc.length);
   let selection = view.state.selection;
   for (const event of events) {
     if (viewId !== undefined && viewId === event.viewId) {continue;}
@@ -80,7 +79,6 @@ export class CodeMirrorModel extends Croquet.Model {
 
   changed(data) {
     const view = this.editor;
-    console.log('changed', view);
     applyCrEventToCm(view, data);
     this.publish(this.id, "update", data);
   }
@@ -132,7 +130,6 @@ export class CodeMirrorView extends Croquet.View {
     super(model);
     this.model = model;
     this.editor = new CodeMirror.EditorView(this.viewConfig(model.editor.state.doc, newCompartment(), model.editor.state.selection));
-    console.log("view init", this.viewId, model.editor.state.doc.length);
     this.setupCroquet(this.editor, this);
     this.subscribe(this.model.id, "update", this.updated);
     this.subscribe(this.viewId, "synced", this.synced);
@@ -158,11 +155,11 @@ export class CodeMirrorView extends Croquet.View {
 
   synced(value) {
     this.viewSynced = value;
-    console.log("synced", this.viewId, value);
     if (value === true) {
       const modelJSON = this.model.editor.viewState.state.doc.toJSON();
       const viewJSON = this.editor.viewState.state.doc.toJSON();
       if (JSON.stringify(modelJSON) !== JSON.stringify(viewJSON)) {
+        console.log("synced, and update");
         this.editor.state.update({
           changes: {
             from: 0,
@@ -198,7 +195,6 @@ export class CodeMirrorView extends Croquet.View {
       });
     });
 
-    console.log("translate", result);
     return result;
   }
 
@@ -207,7 +203,6 @@ export class CodeMirrorView extends Croquet.View {
   }
 
   update(update) {
-    console.log("codemirror update", update);
     const events = this.transationsToEvents(update.transactions);
     if (events) {
       this.publishCmTransactions(events);
