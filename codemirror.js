@@ -30,6 +30,7 @@ function handleEvent(event, _state) {
 }
 
 function applyCrEventToCm(view, events, viewId) {
+  console.log("apply", events, viewId, view.state.doc.length);
   let selection = view.state.selection;
   for (const event of events) {
     if (viewId !== undefined && viewId === event.viewId) {continue;}
@@ -81,7 +82,6 @@ export class CodeMirrorModel extends Croquet.Model {
     const view = this.editor;
     console.log('changed', view);
     applyCrEventToCm(view, data);
-    
     this.publish(this.id, "update", data);
   }
 
@@ -132,8 +132,15 @@ export class CodeMirrorView extends Croquet.View {
     super(model);
     this.model = model;
     this.editor = new CodeMirror.EditorView(this.viewConfig(model.editor.state.doc, newCompartment(), model.editor.state.selection));
+    console.log("view init", this.viewId, model.editor.state.doc.length);
     this.setupCroquet(this.editor, this);
-    this.subscribe(this.model.id, "update", "updated");
+    this.subscribe(this.model.id, "update", this.updated);
+    this.subscribe(this.viewId, "synced", this.synced);
+    this.viewSynced = false;
+  }
+
+  detach() {
+    super.detach();
   }
 
   viewConfig(doc, compartment, selection) {
@@ -146,6 +153,24 @@ export class CodeMirrorView extends Croquet.View {
         CodeMirror.EditorView.lineWrapping,
         this.croquetExt.of([]),
       ],
+    }
+  }
+
+  synced(value) {
+    this.viewSynced = value;
+    console.log("synced", this.viewId, value);
+    if (value === true) {
+      const modelJSON = this.model.editor.viewState.state.doc.toJSON();
+      const viewJSON = this.editor.viewState.state.doc.toJSON();
+      if (JSON.stringify(modelJSON) !== JSON.stringify(viewJSON)) {
+        this.editor.state.update({
+          changes: {
+            from: 0,
+            to: this.editor.state.doc.length,
+            insert: this.model.editor.state.doc.toString()
+          }
+        });
+      }
     }
   }
 
@@ -172,17 +197,17 @@ export class CodeMirrorView extends Croquet.View {
         result.push({action: "insert", fromA, fromB, toA, toB, text: inserted.toString(), viewId: this.viewId});
       });
     });
-    
+
     console.log("translate", result);
     return result;
   }
 
   publishCmTransactions(events) {
-    console.log("publish", this.model.id, "edit", events);
     this.publish(this.model.id, "edit", events);
   }
 
   update(update) {
+    console.log("codemirror update", update);
     const events = this.transationsToEvents(update.transactions);
     if (events) {
       this.publishCmTransactions(events);
@@ -190,8 +215,8 @@ export class CodeMirrorView extends Croquet.View {
   }
 
   updated(data) {
-    console.log('change', data);
     const view = this.editor;
+    if (!this.viewSynced) {return;}
     applyCrEventToCm(view, data, this.viewId);
   };
 
