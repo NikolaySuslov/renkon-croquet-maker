@@ -54,7 +54,7 @@ export class CodeMirrorModel extends Croquet.Model {
     super.init();
     this.editor = new CodeMirror.EditorView(this.modelConfig(options.doc, newCompartment()));
     this.setupCroquet(this.editor, this);
-    this.subscribe(this.id, "edit", "changed")
+    this.subscribe(this.id, "edit", "changed");
   }
 
   modelConfig(doc, compartment, selection) {
@@ -79,7 +79,9 @@ export class CodeMirrorModel extends Croquet.Model {
 
   changed(data) {
     const view = this.editor;
+    //console.log("receive model", this.id, data);
     applyCrEventToCm(view, data);
+    //console.log("changed", this.id, this.editor.state.doc.toString());
     this.publish(this.id, "update", data);
   }
 
@@ -131,9 +133,10 @@ export class CodeMirrorView extends Croquet.View {
     this.model = model;
     this.editor = new CodeMirror.EditorView(this.viewConfig(model.editor.state.doc, newCompartment(), model.editor.state.selection));
     this.setupCroquet(this.editor, this);
+    //console.log("view constructor", this.model.id, "update", this.editor.state.doc.toString());
     this.subscribe(this.model.id, "update", this.updated);
     this.subscribe(this.viewId, "synced", this.synced);
-    this.viewSynced = false;
+    this.viewSynced = true;
   }
 
   detach() {
@@ -159,7 +162,6 @@ export class CodeMirrorView extends Croquet.View {
       const modelJSON = this.model.editor.viewState.state.doc.toJSON();
       const viewJSON = this.editor.viewState.state.doc.toJSON();
       if (JSON.stringify(modelJSON) !== JSON.stringify(viewJSON)) {
-        console.log("synced, and update");
         this.editor.state.update({
           changes: {
             from: 0,
@@ -167,6 +169,7 @@ export class CodeMirrorView extends Croquet.View {
             insert: this.model.editor.state.doc.toString()
           }
         });
+        console.log("synced, and update", this.viewId, this.model.editor.state.doc.toString());
       }
     }
   }
@@ -182,6 +185,7 @@ export class CodeMirrorView extends Croquet.View {
   isReconcileTx(tr) {return !!tr.annotation(reconcileAnnotationType)};
 
   transationsToEvents(transactions) {
+    // console.log("translation", transactions);
     const transactionsWithChanges = transactions.filter(tr => !this.isReconcileTx(tr) && !tr.changes.empty);
     if (transactionsWithChanges.length === 0) {
       return;
@@ -199,10 +203,12 @@ export class CodeMirrorView extends Croquet.View {
   }
 
   publishCmTransactions(events) {
+    //console.log("publish", this.viewId, "edit", events);
     this.publish(this.model.id, "edit", events);
   }
 
   update(update) {
+    // console.log("update", this.viewId, update);
     const events = this.transationsToEvents(update.transactions);
     if (events) {
       this.publishCmTransactions(events);
@@ -210,15 +216,21 @@ export class CodeMirrorView extends Croquet.View {
   }
 
   updated(data) {
+    // console.log("view updated", this.viewId, data, this.viewSynced);
     const view = this.editor;
     if (!this.viewSynced) {return;}
+    // console.log("view before change", this.viewId, this.model.editor.state.doc.toString(), this.editor.state.doc.toString());
     applyCrEventToCm(view, data, this.viewId);
   };
 
   static create(Renkon, modelId) {
+    // console.log("view create", modelId);
     const view = new this(Renkon.app.model.getModel(modelId));
     return view;
   }
 }
+
+window.CodeMirrorView = CodeMirrorView;
+
 
 /* globals Croquet */

@@ -5,11 +5,11 @@
 "type":"move",
 "width":555.0927335370905,
 "x":-258.5766269900489,
-"y":-424.5519039277561}],["1",{"height":473.14687285846617,
+"y":-424.5519039277561}],["1",{"height":587.4772066891185,
 "id":"1",
 "type":"resize",
-"width":804.6407835382392,
-"x":552.003965148345,
+"width":936.6501446289095,
+"x":419.9946040576747,
 "y":-437.2699099268228}],["25",{"height":400,
 "id":"25",
 "width":800,
@@ -19,7 +19,7 @@
 "type":"move",
 "width":800,
 "x":580.5596305372613,
-"y":-871.1624456208265}]]}},
+"y":-904.3360654330814}]]}},
 "titles":{"map":{"__map":true,
 "values":[["0",{"id":"0",
 "state":false,
@@ -46,17 +46,21 @@
   "appParameters": {
     "apiKey": "234567_Paste_Your_Own_API_Key_Here_7654321",
     "appId": "org.tinlizzie.codemirror",
-    "name": "abacc3",
+    "name": "abacf1",
     "password": "123",
     "box": "http://localhost:8888",
     "tps": 2,
     "eventRateLimit": 60,
     "debug": "snapshot"
   },
-  "realm": {"model": ["CodeMirrorModel", "editorModel", "editorModelId"]},
+  "realm": {"model": ["editorModel", "editorModelId"]},
   "name": "CroquetMirror"
 })`],
-[`1`, `const containers = (() => {
+[`1`, `
+const editorModel = window.CodeMirrorModel.create({doc: "hi"});
+const editorModelId = editorModel.id;
+
+const containers = (() => {
   const container1 = document.createElement("div");
   container1.id = "container1";
   document.body.querySelector(\`#\${container1.id}\`)?.remove();
@@ -65,8 +69,6 @@
   return [container1]
 })();
 
-const editorModel = window.CodeMirrorModel.create({doc: "hi"});
-const editorModelId = editorModel.id;
 
 const {CodeMirrorView} = import("./codemirror.js");
 

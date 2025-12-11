@@ -1,31 +1,31 @@
 {"padTitle":"Croquet-Renkon-pad",
 "positions":{"map":{"__map":true,
-"values":[["0",{"height":4822.864959845357,
+"values":[["0",{"height":4887.3191400162905,
 "id":"0",
-"type":"move",
-"width":797.4618559570529,
+"type":"resize",
+"width":801.7304636536788,
 "x":-1878.8130607777096,
-"y":114.62152857671515}],["2",{"height":1134.022838684509,
+"y":114.62152857671515}],["2",{"height":1141.263402693206,
 "id":"2",
-"type":"move",
-"width":871.7915472338467,
+"type":"resize",
+"width":908.6139453970677,
 "x":-5164.832020292665,
 "y":113.30799052853577}],["4",{"height":8172.458544362332,
 "id":"4",
 "type":"move",
 "width":1614.5564430990082,
 "x":4304.950912486707,
-"y":87.43692724389496}],["8",{"height":3649.026261319223,
+"y":87.43692724389496}],["8",{"height":3785.727098052647,
 "id":"8",
-"type":"move",
-"width":838.048995947202,
-"x":-3141.373850438804,
-"y":115.83863846374467}],["10",{"height":202.6561745755442,
-"id":"10",
 "type":"resize",
-"width":320.02348382430154,
-"x":-5650.99364079922,
-"y":-449.6284785315489}],["14",{"height":2958.083961462451,
+"width":864.6608432810268,
+"x":-3141.373850438804,
+"y":115.83863846374467}],["10",{"height":333.179406873354,
+"id":"10",
+"type":"move",
+"width":673.2043575372438,
+"x":-6078.06869573811,
+"y":-1338.600300779871}],["14",{"height":2958.083961462451,
 "id":"14",
 "type":"move",
 "width":837.9109588736378,
@@ -34,8 +34,8 @@
 "id":"16",
 "type":"move",
 "width":763.0884327402407,
-"x":-3128.279360325957,
-"y":3868.7664161774674}],["18",{"height":4399.724965804616,
+"x":-3120.586069181566,
+"y":4060.97470943439}],["18",{"height":4399.724965804616,
 "id":"18",
 "type":"move",
 "width":922.9187780638681,
@@ -50,10 +50,10 @@
 "type":"move",
 "width":739.2688656962409,
 "x":2203.8342248341337,
-"y":124.89928974372444}],["25",{"height":3393.889666703824,
+"y":124.89928974372444}],["25",{"height":3334.841876589889,
 "id":"25",
 "type":"resize",
-"width":753.4109189050636,
+"width":826.9741052867979,
 "x":2198.6072570198103,
 "y":2753.3447050640784}],["26",{"height":4887.997318144188,
 "id":"26",
@@ -70,12 +70,22 @@
 "type":"resize",
 "width":727.8147537960531,
 "x":-926.2159510292836,
-"y":108.24020115880211}],["29",{"height":1744.3331575637922,
+"y":108.24020115880211}],["29",{"height":1949.6352674766872,
 "id":"29",
+"type":"resize",
+"width":838.5632587504983,
+"x":-5169.826923034553,
+"y":1400.0197067392255}],["88",{"height":1429.1394616748878,
+"id":"88",
+"type":"resize",
+"width":965.7125419060119,
+"x":2189.945127731428,
+"y":6546.70231775092}],["119",{"height":670.0091579822331,
+"id":"119",
 "type":"move",
-"width":818.0175902029348,
-"x":-5191.439764160982,
-"y":1337.5293258924787}]]}},
+"width":1172.1363735316163,
+"x":-1407.1947830367724,
+"y":3122.705758630158}]]}},
 "titles":{"map":{"__map":true,
 "values":[["0",{"id":"0",
 "state":false,
@@ -107,7 +117,11 @@
 "state":false,
 "title":"User Interaction"}],["29",{"id":"29",
 "state":false,
-"title":"Runner"}]]}},
+"title":"Runner"}],["88",{"id":"88",
+"state":false,
+"title":"untitled"}],["119",{"id":"119",
+"state":false,
+"title":"untitled"}]]}},
 "version":3,
 "windowEnabled":{"map":{"__map":true,
 "values":[["0",{"enabled":true,
@@ -125,22 +139,23 @@
 "id":"26"}],["27",{"enabled":true,
 "id":"27"}],["28",{"enabled":true,
 "id":"28"}],["29",{"enabled":true,
-"id":"29"}]]}},
+"id":"29"}],["88",{"enabled":true,
+"id":"88"}],["119",{"enabled":true,
+"id":"119"}]]}},
 "windowTypes":{"map":{"__map":true,
-"values":[["0","code"],["2","code"],["4","code"],["8","code"],["10","code"],["14","code"],["16","code"],["18","code"],["23","code"],["24","code"],["25","code"],["26","code"],["27","code"],["28","code"],["29","code"]]}},
-"windows":["0","2","4","8","10","14","16","18","23","24","25","26","27","28","29"],
+"values":[["0","code"],["2","code"],["4","code"],["8","code"],["10","code"],["14","code"],["16","code"],["18","code"],["23","code"],["24","code"],["25","code"],["26","code"],["27","code"],["28","code"],["29","code"],["88","code"],["119","runner"]]}},
+"windows":["0","2","4","8","10","14","16","18","23","24","25","26","27","28","29","88","119"],
 "zIndex":{"map":{"__map":true,
-"values":[["0",102],["2",115],["4",103],["8",106],["10",113],["14",112],["16",108],["18",100],["23",110],["24",111],["25",107],["26",105],["27",109],["28",114],["29",116]]}}}
+"values":[["0",102],["2",115],["4",103],["8",106],["10",118],["14",112],["16",113],["18",100],["23",110],["24",111],["25",107],["26",105],["27",109],["28",114],["29",108],["88",117],["119",119]]}}}
 {__codeMap: true, value: [[`0`, `const viewExit = Events.receiver({queued: true});
 const viewJoin = Events.receiver({queued: true});
 
-const loadDone = Events.receiver();
 const newWindowRequest = {...newWindowRequestFromView, id: \`\${newId}\`};
-const xxx = console.log(newWindowRequest);
+// const xxx = console.log(newWindowRequest);
 
 const newId = Behaviors.select(
   0,
-  loadDone, (_prev, data) => {
+  loadHandler, (_prev, data) => {
     if (data.windows.length === 0) {return 1;}
     const max = Math.max(...data.windows.map((w) => Number.parseInt(w)));
     return max;
@@ -151,7 +166,7 @@ const newId = Behaviors.select(
 // [id:string]
 const windows = Behaviors.select(
   [],
-  loadDone, (_prev, data) => {
+  loadHandler, (_prev, data) => {
     return data.windows;
   },
   newWindowRequest, (prev, spec) => [...prev, spec.id],
@@ -161,7 +176,7 @@ const windows = Behaviors.select(
 // {map: Map<id, type:"code"|"runner">
 const windowTypes = Behaviors.select(
   {map: new Map()},
-  loadDone, (_prev, data) => {
+  loadHandler, (_prev, data) => {
     return data.windowTypes;
   },
   newWindowRequest, (prev, spec) => {
@@ -177,7 +192,7 @@ const windowTypes = Behaviors.select(
 // [id, {id, x: number, y: number, width: number, height: number}]
 const positions = Behaviors.select(
   {map: new Map()},
-  loadDone, (_prev, data) => {
+  loadHandler, (_prev, data) => {
     return data.positions;
   },
   newWindowRequest, (prev, request) => {
@@ -221,7 +236,6 @@ const padViews = Behaviors.select(
     return {map: prev.map};
   },
   padViewChange, (prev, view) => {
-    console.log("model padViewChange", view);
     let {x, y, scale, viewId, force} = view;
     if (!force) {
       if (scale < 0.1) {
@@ -243,7 +257,7 @@ const padViews = Behaviors.select(
   
 const zIndex = Behaviors.select(
   {map: new Map()},
-  loadDone, (_prev, data) => {
+  loadHandler, (_prev, data) => {
     if (data.zIndex) return data.zIndex;
     return {map: new Map(data.windows.map((w, i) => [w, i + 100]))};
   },
@@ -299,7 +313,7 @@ const zIndex = Behaviors.select(
 
 const titles = Behaviors.select(
   {map: new Map()},
-  loadDone, (_prev, data) => {
+  loadHandler, (_prev, data) => {
     return data.titles || {map: new Map()};
   },
   newWindowRequest, (prev, request) => {
@@ -321,7 +335,7 @@ const titles = Behaviors.select(
 
 const windowEnabled = Behaviors.select(
   {map: new Map()},
-  loadDone, (_prev, loaded) => {
+  loadHandler, (_prev, loaded) => {
     return loaded.windowEnabled || {map: new Map()};
   },
   newWindowRequest, (prev, request) => {
@@ -344,7 +358,7 @@ const windowEnabled = Behaviors.select(
 // Map<id:string, {type: string, doc?: string}>
 const windowContentsModel = Behaviors.select(
   {map: new Map()},
-  loadDone, (prev, loaded) => {
+  loadHandler, (prev, loaded) => {
     for (let editor of prev.map.values()) {
       editor.dom.remove();
     }
@@ -354,8 +368,10 @@ const windowContentsModel = Behaviors.select(
       let elem;
       if (type === "runner") {
         elem = {type};
-      } else if (type === "doc" || type === "code") {
+      } else if (type === "doc") {
         elem = {type, doc: loaded.code.get(id)};
+      } else if (type === "code") {
+        elem = {type, doc: window.CodeMirrorModel.create({doc: loaded.code.get(id)})};
       } else {
         elem = {type, doc: loaded.code.get(id)};
       }
@@ -369,8 +385,10 @@ const windowContentsModel = Behaviors.select(
     let elem;
     if (type === "runner") {
       elem = {type};
-    } else if (type === "doc" || type === "code") {
+    } else if (type === "doc") {
       elem = {type, doc: ""};
+    } else if (type === "code") {
+      elem = {type, doc: window.CodeMirrorModel.create({doc: ""})}
     }
     prev.map.set(id, elem);
     return {map: prev.map};
@@ -451,6 +469,7 @@ const searchPanel = ((renkon) => {
   renkon.appendChild(search);
   return search;
 })(renkon);
+
 `],
 [`4`, `const css = \`
 @font-face {
@@ -896,7 +915,7 @@ const allUseOf = (varName) => {
   return uses;
 };
 
-const newEditor = (id, doc) => {
+const newEditor = (id, docModel) => {
   const mirror = window.CodeMirror;
 
   const config = {
@@ -1019,6 +1038,12 @@ const newEditor = (id, doc) => {
     }
   });
 
+  
+  const editorView = window.CodeMirrorView.create(Renkon, docModel.id);
+
+  const editor = editorView.editor;
+
+  /*
   const editor = new mirror.EditorView({
     doc: doc || \`console.log("hello")\`,
     extensions: [
@@ -1035,6 +1060,7 @@ const newEditor = (id, doc) => {
       cursorChange,
     ],
   });
+  */
   editor.dom.id = \`\${id}-editor\`;
   return editor;
 };
@@ -1043,7 +1069,7 @@ const newEditor = (id, doc) => {
   "appParameters": {
     "apiKey": "234567_Paste_Your_Own_API_Key_Here_7654321",
     "appId": "org.tinlizzie.pad",
-    "name": "abab5",
+    "name": "abaf9",
     "password": "123",
     "box": "http://localhost:8888",
     "tps": 2,
@@ -1051,7 +1077,7 @@ const newEditor = (id, doc) => {
   },
   "realm": {"model": [
     "windows", "windowTypes", "positions", "titles", "windowEnabled", "zIndex", "windowContentsModel",
-  "initialData", "newId", "padViews", "newWindowRequest", "padTitle", "viewJoin", "viewExit", "xxx"]},
+  "initialData", "newId", "padViews", "newWindowRequest", "padTitle", "viewJoin", "viewExit", "xxx", "loadReceiver", "loadHandler"]},
   "name": "pad"
 })`],
 [`14`, `// {type: "code"|"doc"|"runner"}
@@ -1156,7 +1182,7 @@ const readyMessages = Events.listener(
 
 const pinnedPositions = Behaviors.select(
   {map: new Map()},
-  loadDone, (_prev, _data) => {
+  loadHandler, (_prev, _data) => {
     return {map: new Map()}
   },
   pinRequest, (prev, pinRequest) => {
@@ -2062,10 +2088,11 @@ const _saver2 = ((windows, positions, zIndex, titles, windowContents, windowType
   div.click();
 })(windows, positions, zIndex, titles, windowContents, windowTypes, padTitle, windowEnabled, save);
 
-const _loader = (() => {
+const loader = (() => {
   const input = document.createElement("div");
   input.innerHTML = \`<input id="imageinput" type="file" accept=".json,.renkon">\`;
   const imageInput = input.firstChild;
+  const key = Math.random();
 
   imageInput.onchange = () => {
     const file = imageInput.files[0];
@@ -2074,9 +2101,27 @@ const _loader = (() => {
       let reader = new FileReader();
       reader.onload = () => resolve(reader.result);
       reader.readAsArrayBuffer(file);
-    }).then((data) => {
+    }).then(async (data) => {
       const result = new TextDecoder("utf-8").decode(data);
-      loadData(result, imageInput);
+      const array = new TextEncoder().encode(result);
+      console.log("array", array);
+      let ind = 0;
+
+      Events.send(loadStart, key);
+      const throttle = array.length > 80000;
+
+      while (ind < array.length) {
+        let buf = array.slice(ind, ind + 2880);
+        Events.send(loadOne, {key, array: buf});
+        ind += 2880;
+        if (throttle) {
+          await new Promise((resolve) => {
+            setTimeout(resolve, 16);
+          });
+        }
+      }
+      Events.send(loadDone, key);
+      imageInput.remove();
     });
     imageInput.value = "";
   };
@@ -2093,39 +2138,12 @@ const nameFromUrl = (() => {
   return undefined;
 })();
 
-const loadData = (result, maybeImageInput) => {
-  const index = result.indexOf("{__codeMap: true, value:");
-  if (index < 0) {
-    const loaded = parse(result);
-    if (loaded.version === 1) {
-      Events.send(loadRequest, loaded);
-      maybeImageInput?.remove();
-      return;
-    }
-    console.log("unknown type of data");
-    maybeImageInput?.remove();
-    return;
-  }
-
-  const data1 = result.slice(0, index);
-  const data2 = result.slice(index);
-
-  const loaded = parse(data1);
-
-  if (loaded.version === 2 || loaded.version === 3) {
-    const code = parseCodeMap(data2);
-    loaded.code = code;
-    Events.send(loadRequest, loaded);
-    maybeImageInput?.remove();
-    return;
-  }
-  console.log("unknown type of data");
-  maybeImageInput.remove();
-}
-
+/*
 const _loadFromUrl = fetch(nameFromUrl).then((resp) => resp.text()).then((result) => {
   loadData(result, null);
 });
+
+*/
 
 const stringifyInner = (node, seen) => {
   if (node === undefined) return undefined;
@@ -2197,11 +2215,6 @@ const stringifyCodeMap = (map) => {
   return "\\n{__codeMap: true, value: " + "[" +
     [...map].map(([key, value]) => ("[" + "\`" + replace(key) + "\`" + ", " + "\`" +
                                     replace(value) + "\`" + "]")).join(",\\n") + "]" + "}"
-}
-
-const parseCodeMap = (string) => {
-  const array = eval("(" + string + ")");
-  return new Map(array.value);
 }
 `],
 [`26`, `const inputHandler = (evt) => {
@@ -2867,14 +2880,20 @@ const showGraph = Behaviors.collect(
   document.querySelector("#showGraph").textContent = str;
 })(showGraph);
 
-const _onRun = ((runRequest, windowContents, windowEnabled) => {
+const _onRun = ((runRequest, windowContents, windowEnabled, titles) => {
   const id = runRequest.id;
   const iframe = windowContents.map.get(id);
   const code = [...windowContents.map]
     .filter(([id, obj]) => obj.state && windowEnabled.map.get(id).enabled)
+    .filter(([id, obj]) => titles.map.get(id).title !== "Croquet")
     .map(([_id, editor]) => editor.state.doc.toString());
-  iframe.dom.contentWindow.postMessage({code: code, path: id});
-})(runRequest, windowContents, windowEnabled);
+  const croquet = [...windowContents.map].find(([id, obj]) => titles.map.get(id).title === "Croquet")?.[1].state.doc.toString();;
+  if (!croquet) {
+    console.log("No Croquet spec found");
+  }
+  iframe.dom.contentWindow.postMessage({code: code, croquet, path: id});
+})(runRequest, windowContents, windowEnabled, titles);
+
 
 const resetHandler = Events.select(
   {},
@@ -2967,18 +2986,54 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
         border: 1px solid black;
       }
     </style>
+    <script src="./croquet.min.js" type="text/javascript"></script>
     <script type="module">
       import {ProgramState, CodeMirror, newInspector} from "./renkon-web.js";
       window.thisProgramState = new ProgramState(Date.now());
+      import {croquetify, toFunction, splitStrs} from "./croquet.js";
       window.CodeMirror = CodeMirror;
       window.newInspector = newInspector;
+      let session;
+      let prevView;
+
+     function trimParenthesis(str) {
+        let start = 0;
+        let end = str.length - 1;
+        while (str[start] === "(") {
+          start++;
+        }
+        while (str[end] === ")") {
+          end--;
+        }
+        if (start === 0 && end === str.length - 1) {return str;}
+        return str.slice(start, end + 1);
+      }
 
       window.onmessage = (evt) => {
-        if (evt.data && Array.isArray(evt.data.code)) {
-          window.thisProgramState.updateProgram(evt.data.code, evt.data.path);
+        if (evt.data && Array.isArray(evt.data.code) && evt.data.croquet) {
+          let trimmed = trimParenthesis(evt.data.croquet)
+          const {name, realm, appParameters, types} = JSON.parse(trimmed);
+          const func = toFunction(evt.data.code, name);
+          const {model, view} = croquetify(
+            func,
+            name,
+            new Map(realm.model.map((key) => [key, "Model"])),
+            types);
+          if (!prevView) {
+            model.register(model.name);
+            window.Croquet.Session.join({...appParameters, model, view}).then((s) => {
+              session = s;
+              prevView = session.view;
+            });
+          } else {
+            const strs = splitStrs(func, new Map(realm.model.map((key) => [key, "Model"])));
+            const {viewNodeStr, modelEventsStr} = strs;
+            prevView.programState.updateProgram([viewNodeStr, modelEventsStr]);
+          }
         }
         if (evt.data && typeof evt.data.inspector === "boolean") {
-          if (window.thisProgramState) {
+          if (session?.view?.programState) {
+            const programState = session.view.programState;
             if (document.body.querySelector(".dock")) {
               document.body.querySelector(".dock").remove();
               return;
@@ -2990,9 +3045,9 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
 
             dock.appendChild(dom);
             document.body.appendChild(dock);
-            const result = thisProgramState.order.map((id) => [
-                id + " (" + thisProgramState.types.get(id) + ")",
-                thisProgramState.resolved.get(id)]);
+            const result = programState.order.map((id) => [
+                id + " (" + programState.types.get(id) + ")",
+                programState.resolved.get(id)]);
             dom.addEventListener('contextmenu', event => {
               event.preventDefault(); event.stopPropagation();}, {capture: true});
             dom.addEventListener('pointerup', event => {
@@ -3011,7 +3066,7 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
                 const match = /(.*)\\\\W(Behavior|Event)\\\\W/.exec(text);
                 if (!match) {return;}
                 const keyName = match[1].trim();
-                console.log(window.thisProgramState.resolved.get(keyName)?.value);
+                console.log(programState.resolved.get(keyName)?.value);
               }
             });
             newInspector(Object.fromEntries(result), dom);
@@ -3028,4 +3083,78 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
   runnerIframe.id = \`runner-\${id}\`;
   return {dom: runnerIframe};
 };
-`]]}
+`],
+[`88`, `const loadStart = Events.receiver();
+const loadOne = Events.receiver();
+const loadDone = Events.receiver();
+const xxx = console.log(loadStart)
+
+const loadReceiver = Behaviors.select(
+  undefined, // {key:number, array}
+  loadStart, (prev, start) => {
+    return {key: start, array: []};
+  },
+  loadOne, (prev, one) => {
+    console.log("loadOne");
+    if (prev?.key !== one.key) {
+      return undefined;
+    }
+    return {key: prev.key, array: [...prev.array, one.array]};
+  },
+  loadDone, (prev, done) => {
+    console.log("loadDone");
+    if (prev?.key !== done) {
+      return undefined;
+    }
+    return {key: prev.key, array: prev.array, done: true};
+  }
+);
+
+const loadHandler = ((loadReceiver) => {
+  console.log("loadHandler")
+  if (!loadReceiver?.done) {return;}
+
+  const array = loadReceiver.array;
+  let len = array.reduce((acc, cur) => acc + cur.length, 0);
+  let all = new Uint8Array(len);
+  let ind = 0;
+  for (let i = 0; i < array.length; i++) {
+    all.set(array[i], ind);
+    ind += array[i].length;
+  }
+
+  
+  const parse = (string) => {
+    return JSON.parse(string, (_key, value) => {
+      if (typeof value === "object" && value !== null && value.__map) {
+        return new Map(value.values);
+      } else if (typeof value === "object" && value !== null && value.__set) {
+        return new Set(value.values);
+      }
+      return value;
+    });
+  }
+
+  const parseCodeMap = (string) => {
+    const array = eval("(" + string + ")");
+    return new Map(array.value);
+  }
+
+  let result = new TextDecoder("utf-8").decode(all);
+  console.log(result);
+
+  const index = result.indexOf("{__codeMap: true, value:");
+
+  const data1 = result.slice(0, index);
+  const data2 = result.slice(index);
+
+  const loaded = parse(data1);
+
+  if (loaded.version === 2 || loaded.version === 3) {
+    const code = parseCodeMap(data2);
+    loaded.code = code;
+    return loaded;
+  }
+  console.log("unknown type of data");
+  return;
+})(loadReceiver);`]]}
