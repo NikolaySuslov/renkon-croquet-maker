@@ -24,8 +24,8 @@
 "id":"10",
 "type":"move",
 "width":673.2043575372438,
-"x":-6078.06869573811,
-"y":-1338.600300779871}],["14",{"height":2958.083961462451,
+"x":-5181.202104589995,
+"y":-288.2336040692783}],["14",{"height":2958.083961462451,
 "id":"14",
 "type":"move",
 "width":837.9109588736378,
@@ -60,32 +60,27 @@
 "type":"resize",
 "width":899.0683565432789,
 "x":1042.9492775570598,
-"y":126.29650565939713}],["27",{"height":3922.7456686410796,
+"y":126.29650565939713}],["27",{"height":3826.4482007133524,
 "id":"27",
 "type":"resize",
-"width":973.6269521278333,
+"width":968.0255044801081,
 "x":-56.689174552520825,
 "y":115.72276358168935}],["28",{"height":5066.344843425494,
 "id":"28",
 "type":"resize",
 "width":727.8147537960531,
 "x":-926.2159510292836,
-"y":108.24020115880211}],["29",{"height":1949.6352674766872,
+"y":108.24020115880211}],["29",{"height":2357.070182028929,
 "id":"29",
 "type":"resize",
-"width":838.5632587504983,
+"width":864.62687162323,
 "x":-5169.826923034553,
-"y":1400.0197067392255}],["88",{"height":1429.1394616748878,
+"y":1400.0197067392255}],["88",{"height":1340.0308428140609,
 "id":"88",
-"type":"resize",
-"width":965.7125419060119,
-"x":2189.945127731428,
-"y":6546.70231775092}],["119",{"height":670.0091579822331,
-"id":"119",
 "type":"move",
-"width":1172.1363735316163,
-"x":-1407.1947830367724,
-"y":3122.705758630158}]]}},
+"width":873.0713759186815,
+"x":2184.697263476027,
+"y":6205.169575242241}]]}},
 "titles":{"map":{"__map":true,
 "values":[["0",{"id":"0",
 "state":false,
@@ -119,9 +114,7 @@
 "state":false,
 "title":"Runner"}],["88",{"id":"88",
 "state":false,
-"title":"untitled"}],["119",{"id":"119",
-"state":false,
-"title":"untitled"}]]}},
+"title":"Load Model"}]]}},
 "version":3,
 "windowEnabled":{"map":{"__map":true,
 "values":[["0",{"enabled":true,
@@ -140,13 +133,12 @@
 "id":"27"}],["28",{"enabled":true,
 "id":"28"}],["29",{"enabled":true,
 "id":"29"}],["88",{"enabled":true,
-"id":"88"}],["119",{"enabled":true,
-"id":"119"}]]}},
+"id":"88"}]]}},
 "windowTypes":{"map":{"__map":true,
-"values":[["0","code"],["2","code"],["4","code"],["8","code"],["10","code"],["14","code"],["16","code"],["18","code"],["23","code"],["24","code"],["25","code"],["26","code"],["27","code"],["28","code"],["29","code"],["88","code"],["119","runner"]]}},
-"windows":["0","2","4","8","10","14","16","18","23","24","25","26","27","28","29","88","119"],
+"values":[["0","code"],["2","code"],["4","code"],["8","code"],["10","code"],["14","code"],["16","code"],["18","code"],["23","code"],["24","code"],["25","code"],["26","code"],["27","code"],["28","code"],["29","code"],["88","code"]]}},
+"windows":["0","2","4","8","10","14","16","18","23","24","25","26","27","28","29","88"],
 "zIndex":{"map":{"__map":true,
-"values":[["0",102],["2",115],["4",103],["8",106],["10",118],["14",112],["16",113],["18",100],["23",110],["24",111],["25",107],["26",105],["27",109],["28",114],["29",108],["88",117],["119",119]]}}}
+"values":[["0",102],["2",115],["4",103],["8",106],["10",117],["14",112],["16",113],["18",100],["23",110],["24",111],["25",107],["26",105],["27",109],["28",114],["29",108],["88",118]]}}}
 {__codeMap: true, value: [[`0`, `const viewExit = Events.receiver({queued: true});
 const viewJoin = Events.receiver({queued: true});
 
@@ -2196,16 +2188,6 @@ const stringify = (obj) => {
   return stringifyInner(obj, seen);
 }
 
-const parse = (string) => {
-  return JSON.parse(string, (_key, value) => {
-    if (typeof value === "object" && value !== null && value.__map) {
-      return new Map(value.values);
-    } else if (typeof value === "object" && value !== null && value.__set) {
-      return new Set(value.values);
-    }
-    return value;
-  });
-}
 
 const stringifyCodeMap = (map) => {
   const replace = (str) => {
@@ -3095,14 +3077,12 @@ const loadReceiver = Behaviors.select(
     return {key: start, array: []};
   },
   loadOne, (prev, one) => {
-    console.log("loadOne");
     if (prev?.key !== one.key) {
       return undefined;
     }
     return {key: prev.key, array: [...prev.array, one.array]};
   },
   loadDone, (prev, done) => {
-    console.log("loadDone");
     if (prev?.key !== done) {
       return undefined;
     }
@@ -3111,7 +3091,6 @@ const loadReceiver = Behaviors.select(
 );
 
 const loadHandler = ((loadReceiver) => {
-  console.log("loadHandler")
   if (!loadReceiver?.done) {return;}
 
   const array = loadReceiver.array;
@@ -3123,7 +3102,6 @@ const loadHandler = ((loadReceiver) => {
     ind += array[i].length;
   }
 
-  
   const parse = (string) => {
     return JSON.parse(string, (_key, value) => {
       if (typeof value === "object" && value !== null && value.__map) {
@@ -3141,7 +3119,6 @@ const loadHandler = ((loadReceiver) => {
   }
 
   let result = new TextDecoder("utf-8").decode(all);
-  console.log(result);
 
   const index = result.indexOf("{__codeMap: true, value:");
 

@@ -8,9 +8,12 @@
 
   <body>
     <script src="./croquet.min.js" type="text/javascript"></script>
-    <script src="./start-pad.js" type="module">
+    <script type="module">
       import {loader} from "./croquet.js";
-      loader("pad.renkon");
+      window.CodeMirror = CodeMirror;
+      window.newInspector = newInspector;
+        
+      loader("Croquet-Renkon-pad.renkon");
     </script>
   </body>
 </html>
