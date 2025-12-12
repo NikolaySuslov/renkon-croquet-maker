@@ -1,9 +1,9 @@
 {"padTitle":"Croquet-Renkon-pad",
 "positions":{"map":{"__map":true,
-"values":[["0",{"height":4887.3191400162905,
+"values":[["0",{"height":4789.085507617101,
 "id":"0",
 "type":"resize",
-"width":801.7304636536788,
+"width":757.9474605131314,
 "x":-1878.8130607777096,
 "y":114.62152857671515}],["2",{"height":1141.263402693206,
 "id":"2",
@@ -351,9 +351,6 @@ const windowEnabled = Behaviors.select(
 const windowContentsModel = Behaviors.select(
   {map: new Map()},
   loadHandler, (prev, loaded) => {
-    for (let editor of prev.map.values()) {
-      editor.dom.remove();
-    }
     prev.map.clear();
 
     for (let [id, type] of loaded.windowTypes.map) {
@@ -1061,7 +1058,7 @@ const newEditor = (id, docModel) => {
   "appParameters": {
     "apiKey": "234567_Paste_Your_Own_API_Key_Here_7654321",
     "appId": "org.tinlizzie.pad",
-    "name": "abaf9",
+    "name": "abag1",
     "password": "123",
     "box": "http://localhost:8888",
     "tps": 2,
