@@ -1,4 +1,5 @@
-import {CodeMirror} from "./renkon-web.js";
+import {CodeMirror} from "./renkon-codemirror.js";
+export {CodeMirror} from "./renkon-codemirror.js";
 const reconcileAnnotationType = CodeMirror.state.Annotation.define();
 
 const newCompartment = () => new CodeMirror.state.Compartment();
@@ -128,10 +129,10 @@ CodeMirrorModel.register("CodeMirrorModel");
 window.CodeMirrorModel = CodeMirrorModel;
 
 export class CodeMirrorView extends Croquet.View {
-  constructor(model) {
+  constructor(model, extensions) {
     super(model);
     this.model = model;
-    this.editor = new CodeMirror.EditorView(this.viewConfig(model.editor.state.doc, newCompartment(), model.editor.state.selection));
+    this.editor = new CodeMirror.EditorView(this.viewConfig(model.editor.state.doc, model.editor.state.selection, extensions || [], newCompartment()));
     this.setupCroquet(this.editor, this);
     //console.log("view constructor", this.model.id, "update", this.editor.state.doc.toString());
     this.subscribe(this.model.id, "update", this.updated);
@@ -143,16 +144,12 @@ export class CodeMirrorView extends Croquet.View {
     super.detach();
   }
 
-  viewConfig(doc, compartment, selection) {
+  viewConfig(doc, selection, extensions, compartment) {
     this.croquetExt = compartment;
     return {
       doc: doc || "",
       selection,
-      extensions: [
-        CodeMirror.basicSetup,
-        CodeMirror.EditorView.lineWrapping,
-        this.croquetExt.of([]),
-      ],
+      extensions: [...extensions, this.croquetExt.of([])],
     }
   }
 
@@ -223,9 +220,9 @@ export class CodeMirrorView extends Croquet.View {
     applyCrEventToCm(view, data, this.viewId);
   };
 
-  static create(Renkon, modelId) {
+  static create(Renkon, modelId, extensions) {
     // console.log("view create", modelId);
-    const view = new this(Renkon.app.model.getModel(modelId));
+    const view = new this(Renkon.app.model.getModel(modelId), extensions);
     return view;
   }
 }

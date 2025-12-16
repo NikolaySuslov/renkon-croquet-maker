@@ -910,7 +910,7 @@ const newEditor = (id, docModel) => {
   const config = {
     // eslint configuration
     languageOptions: {
-      globals: mirror.globals,
+      globals: window.RenkonWeb.globals,
       parserOptions: {
         ecmaVersion: 2022,
         sourceType: "module",
@@ -2967,11 +2967,11 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
     </style>
     <script src="./croquet.min.js" type="text/javascript"></script>
     <script type="module">
-      import {ProgramState, CodeMirror, newInspector} from "./renkon-web.js";
+      import {ProgramState, CodeMirror, newInspector, globals} from "./renkon-web.js";
       window.thisProgramState = new ProgramState(Date.now());
       import {croquetify, toFunction, splitStrs} from "./croquet.js";
       window.CodeMirror = CodeMirror;
-      window.newInspector = newInspector;
+      window.RenkonWeb = {globals};
       let session;
       let prevView;
 

@@ -10,10 +10,13 @@
     <script src="./croquet.min.js" type="text/javascript"></script>
     <script type="module">
       import {loader} from "./croquet.js";
+      import {ProgramState} from "./renkon-core.js";
+      import {CodeMirrorModel, CodeMirrorView} from "./codemirror.js";
       window.CodeMirror = CodeMirror;
       window.newInspector = newInspector;
-        
-      loader("Croquet-Renkon-pad.renkon");
+      window.Codemirrormodel = CodeMirrorModel;
+      window.CodemirrorView = CodeMirrorView;
+      loader("Croquet-Renkon-pad.renkon", ProgramState);
     </script>
   </body>
 </html>

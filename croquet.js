@@ -1,14 +1,4 @@
-import {ProgramState} from "./renkon-core.js";
-import {CodeMirrorModel, CodeMirrorView} from "./codemirror.js";
-
-window.Codemirrormodel = CodeMirrorModel;
-window.CodemirrorView = CodeMirrorView;
-
-//
-// oncePerFrame that accumlates the changes for this cycle.
-// returnValues for func for now would say what are the values that are interests of view
-// can we figure out the events that the model part needs by looking at
-
+let ProgramState;
 
 function decls(funcStr, realm) {
   const state = new ProgramState(0);
@@ -93,7 +83,8 @@ export function splitStrs(func, realm) {
   return strs(d);
 }
 
-export function croquetify(func, appName, realm, typesString) {
+export function croquetify(func, p, appName, realm, typesString) {
+  ProgramState = p;
   const funcStr = typeof func === "function" ? func.toString() : func;
   const modelName = appName + "Model";
   const viewName = appName + "View";
@@ -219,6 +210,7 @@ class ${modelName} extends Croquet.Model {
       ${typesString || ""}
     }
   }
+  static okayToIgnore() {return ["$changedKeys", "$lastPublishTime"];}
 }
 `.trim();
 
@@ -277,8 +269,9 @@ return {}
 }`.trim();
 }
 
-export function loader(docName, options = {}) {
+export function loader(docName, p, options = {}) {
   const myFetch = options.fetch || fetch;
+  ProgramState = p;
 
   myFetch(docName).then((resp) => resp.text()).then((result) => {
     const index = result.indexOf("{__codeMap: true, value:");
@@ -314,7 +307,6 @@ export function loader(docName, options = {}) {
     ));
 
     function trimParenthesis(str) {
-      debugger;
       let start = 0;
       let end = str.length - 1;
       while (str[start] === "(") {
@@ -327,14 +319,45 @@ export function loader(docName, options = {}) {
       return str.slice(start, end + 1);
     }
 
-    const trimmed = trimParenthesis(croquet);
+    let parsed;
+    if (croquet) {
+      const trimmed = trimParenthesis(croquet);
+      parsed = JSON.parse(trimmed);
+    } else {
+      parsed = {
+        "appParameters": {
+          "apiKey": "234567_Paste_Your_Own_API_Key_Here_7654321",
+          "appId": "org.test.test",
+          "name": "abc",
+          "password": "123",
+          "debug": ["offline"],
+          "tps": 2,
+          "eventRateLimit": 60
+        },
+        "name": "test"
+      }
+    }
     
-    const {name, realm, appParameters, types, methods} = JSON.parse(trimmed);
+    const {name, realm, appParameters, types, methods} = parsed;
     code = code.map(((pair) => pair[1]));
-    const {model, view} = croquetify(toFunction(code, name), name, new Map(realm.model.map((key) => [key, "Model"])), types, methods);
+    debugger;
+    const {model, view} = croquetify(
+      toFunction(code, name),
+      ProgramState,
+      name,
+      realm ? new Map(realm.model.map((key) => [key, "Model"])) : new Map(),
+      types,
+      methods);
     model.register(model.name);
 
-    window.Croquet.Session.join({...appParameters, ...options.appParameters, model, view});
+    let debug = [];
+    if (appParameters.debug) {
+      debug = [...appParameters.debug];
+    }
+    if (options.additionalDebug) {
+      debug = [...debug, ...options.additionalDebug];
+    }
+    window.Croquet.Session.join({...appParameters, ...options.appParameters, debug, model, view});
   });
 }
 /* globals Croquet */
