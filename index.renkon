@@ -15,19 +15,19 @@
 "type":"move",
 "width":1614.5564430990082,
 "x":4304.950912486707,
-"y":87.43692724389496}],["8",{"height":3785.727098052647,
+"y":87.43692724389496}],["8",{"height":3713.836947558356,
 "id":"8",
 "type":"resize",
-"width":864.6608432810268,
+"width":846.8519048295801,
 "x":-3141.373850438804,
 "y":115.83863846374467}],["10",{"height":316.00546513909563,
 "id":"10",
 "type":"resize",
 "width":686.8759318239001,
 "x":-5183.4395152190145,
-"y":-283.8223784621929}],["14",{"height":2958.083961462451,
+"y":-283.8223784621929}],["14",{"height":2910.6402015458675,
 "id":"14",
-"type":"move",
+"type":"resize",
 "width":837.9109588736378,
 "x":-4123.330508161269,
 "y":116.90867745550928}],["16",{"height":2915.9198423892362,
@@ -70,10 +70,10 @@
 "type":"resize",
 "width":727.8147537960531,
 "x":-926.2159510292836,
-"y":108.24020115880211}],["29",{"height":2668.383083145238,
+"y":108.24020115880211}],["29",{"height":2771.9179877907873,
 "id":"29",
 "type":"resize",
-"width":862.3549197249587,
+"width":906.3553065901252,
 "x":-5169.826923034553,
 "y":1400.0197067392255}],["88",{"height":1340.0308428140609,
 "id":"88",
@@ -1061,6 +1061,8 @@ const newEditor = (id, docModel) => {
     "appId": "org.tinlizzie.pad",
     "box": "http://localhost:8888",
     "tps": 2,
+    "name": "123abc",
+    "password": "",
     "eventRateLimit": 60
   },
   "realm": {"model": [
@@ -1072,11 +1074,10 @@ const newEditor = (id, docModel) => {
 })`],
 [`14`, `// {type: "code"|"doc"|"runner"}
 const newWindowRequestFromView = ((viewId, type, padViews) => {
-  console.log("newWindowRequestFromView", padViews, Renkon.app);
-  return {viewId, type, padView: padViews.map.get(viewId)};
-})(viewId, Events.or(addCode, addRunner, addDoc), padViews);
+  return {viewId, type, padView: padViews.map.get(viewId) || padView};
+})(viewId, Events.or(addCode, addRunner, addDoc), padViews, padView);
 
-const viewId = Renkon.app.viewId;
+const viewId = Renkon.app?.viewId || "local";
 
 const padView = Behaviors.select(
   {x: 0, y: 0, scale: 1},
@@ -2963,8 +2964,7 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
     <script src="./croquet.min.js" type="text/javascript"></script>
     <script type="module">
       import {ProgramState, globals} from "./renkon-core.js";
-      // import {newInspector} from "./renkon-web.js";
-      const newInspector = () => {};
+      import {newInspector} from "./renkon-inspector.js";
       import {croquetify, toFunction, splitStrs} from "./croquet.js";
       import {CodeMirrorModel, CodeMirrorView, CodeMirror} from "./codemirror.js";
       window.CodeMirror = CodeMirror;
@@ -3000,8 +3000,9 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
           if (!Croquet) {
             window.thisProgramState.updateProgram(evt.data.code, evt.data.path);
           } else {
-            let trimmed = trimParenthesis(evt.data.croquet)
-            const {name, realm, appParameters, types} = JSON.parse(trimmed);
+            let trimmed = trimParenthesis(evt.data.croquet);
+            let parsed = JSON.parse(trimmed);
+            const {name, realm, appParameters, types} = parsed;
             const func = toFunction(evt.data.code, name);
             const {model, view} = croquetify(
               func,
@@ -3011,6 +3012,10 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
               types);
             if (!prevView) {
               model.register(model.name);
+              if (!appParameters.name || !appParameters.password) {
+                appParameters.name = "abc";
+                appParameters.password = "123"
+              }
               window.Croquet.Session.join({...appParameters, model, view}).then((s) => {
                 session = s;
                 prevView = session.view;

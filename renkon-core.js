@@ -9454,7 +9454,7 @@ function rewriteRenkonCalls(output, body) {
     }
   });
 }
-const version$1 = "0.10.5";
+const version$1 = "0.10.6";
 const packageJson = {
   version: version$1
 };
@@ -11378,6 +11378,7 @@ function loader(programState, docName, maybeFetch) {
     console.error(`${docName} could not be loaded`, err);
   });
 }
+console.log("Renkon core version:" + version);
 export {
   ProgramState,
   globals,

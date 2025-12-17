@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
         <meta charset="utf-8">
         <title>Croquet Maker</title>
-        <script id="croquetScript type="text/javascript" src="./croquet.min.js"></script>
+        <script id="croquetScript" type="text/javascript" src="./croquet.min.js"></script>
         <script type="module">
             // this is for running a renkon program with croquet.
             // For a non-collaborative app, you use a different .html file.
@@ -55,11 +55,16 @@
                 const options = {appParameters: {}};
                 const q = url.searchParams.get("q");
 
-                if (q) {
-                  options.appParameters.name = q;
-                  if (url.hash && url.hash.startsWith("#pw=")) {
-                    options.appParameters.password = url.hash.slice("#pw=".length) || "abc";
-                  }
+               if (q) {
+                    if (q === "offline") {
+                        options.appParameters.name = "abc";
+                        options.appParameters.password = "123";
+                    } else {
+                        options.appParameters.name = q;
+                        if (url.hash && url.hash.startsWith("#pw=")) {
+                            options.appParameters.password = url.hash.slice("#pw=".length) || "abc";
+                        }
+                    }
                 }
 
                 loader(docName, ProgramState, options);
