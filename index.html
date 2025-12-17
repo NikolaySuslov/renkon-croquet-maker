@@ -6,31 +6,22 @@
         <title>Croquet Maker</title>
         <script id="croquetScript type="text/javascript" src="./croquet.min.js"></script>
         <script type="module">
-            // this part of code identifies what renkon application, including renkon-pad as default,
-            // to load.
-            // 1) When there is a ?pad= option, and the option ends with ".json" or ".renkon" and
-            //    the (partial) URL, that .json or .renkon is used as the top level app.
-            // 2) When the .html file name is other than "index.html", the basename for the .html file
-            //    is used to construct a path "./${basename}.renkon", and it is used as the top-level app.
-            // 3) otherwise (no ?pad=, or the HTML is named "index.html"), the bootstrap version of renkon-pad
-            //    in pad.js is loaded.
+            // this is for running a renkon program with croquet.
+            // For a non-collaborative app, you use a different .html file.
+            // If the program file has "Croquet" window, and it has appId, name, and password we use it.
+            // We override or add the name parameter with ?q= url parameter
+            // We override or add the password parameter with #pw= url hash
 
-            // it could be renkon-core.js here, though it is just handy to use a package
-            // with CodeMirror bundled.
-            import {ProgramState, newInspector, globals} from "./renkon-web.js";
-            import {CodeMirror, CodeMirrorModel, CodeMirrorView} from "./codemirror.js";
-            import {croquetify, splitStrs, toFunction, loader} from "./croquet.js";
+            // If the combined result does not have any of those fields, we supply dummy values but run it as "offline".
+
+            import {ProgramState, globals} from "./renkon-core.js";
+            import {newInspector} from "./renkon-inspector.js";
+            import {loader} from "./croquet.js";
+            import {CodeMirrorModel, CodeMirrorView, CodeMirror} from "./codemirror.js";
             window.CodeMirror = CodeMirror;
-            window.CodeMirrorModel = CodeMirrorModel;
-            window.CodeMirrorView = CodeMirrorView;
-            window.RenkonWeb = {newInspector, globals};
-            window.CodeMirror = CodeMirror;
-            window.ProgramState = ProgramState;
-            const programState = new ProgramState(Date.now());
             window.RenkonWeb = {globals};
 
             // for debugging purpose, store the current programState to window
-            window.programState = programState;
 
             function launcher() {
                 const pathname = window.location.pathname;
@@ -41,12 +32,13 @@
                 const bootstrap = url.searchParams.get("bootstrap");
 
                 if (bootstrap) {
+                    window.programState = new ProgramState(0);
                     // bootstrap version if this file name is index.html and the file? padOption is not specified
-                    programState.setupProgram([`
+                    window.programState.setupProgram([`
                         const {pad} = import("./pad.js");
                         console.log("default renkon-pad is starting");
                     Renkon.merge(pad);`]);
-                    programState.evaluate(Date.now());
+                    window.programState.evaluate(Date.now());
                     return;
                 }
 
@@ -60,17 +52,14 @@
                     }
                 }
 
+                const options = {appParameters: {}};
                 const q = url.searchParams.get("q");
-
-                const options = {};
 
                 if (q) {
                   options.appParameters.name = q;
-                  if (url.hash && url.has.beginsWith("pw=")) {
-                    options.appParameters.password = url.hash.slice("pw=".length) || "abc";
+                  if (url.hash && url.hash.startsWith("#pw=")) {
+                    options.appParameters.password = url.hash.slice("#pw=".length) || "abc";
                   }
-                } else {
-                  options.additionalDebug = ["offline"];
                 }
 
                 loader(docName, ProgramState, options);

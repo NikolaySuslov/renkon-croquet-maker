@@ -319,6 +319,8 @@ export function loader(docName, p, options = {}) {
       return str.slice(start, end + 1);
     }
 
+    let parameters;
+
     let parsed;
     if (croquet) {
       const trimmed = trimParenthesis(croquet);
@@ -332,15 +334,15 @@ export function loader(docName, p, options = {}) {
           "password": "123",
           "debug": ["offline"],
           "tps": 2,
-          "eventRateLimit": 60
+          "eventRateLimit": 60,
+          "autoSleep": 0,
         },
-        "name": "test"
+        "name": "test",
       }
     }
-    
+
     const {name, realm, appParameters, types, methods} = parsed;
     code = code.map(((pair) => pair[1]));
-    debugger;
     const {model, view} = croquetify(
       toFunction(code, name),
       ProgramState,
@@ -350,14 +352,18 @@ export function loader(docName, p, options = {}) {
       methods);
     model.register(model.name);
 
+    parameters = {...appParameters, ...options.appParameters};
     let debug = [];
-    if (appParameters.debug) {
+    if (parameters.debug) {
       debug = [...appParameters.debug];
     }
-    if (options.additionalDebug) {
-      debug = [...debug, ...options.additionalDebug];
+    if (!parameters.name || !parameters.password) {
+      parameters.autoSleep = 0;
+      debug = [...debug, "offline"];
+      parameters.name = "abc";
+      parameters.password = "abc";
     }
-    window.Croquet.Session.join({...appParameters, ...options.appParameters, debug, model, view});
+    window.Croquet.Session.join({...parameters, debug, model, view});
   });
 }
 /* globals Croquet */

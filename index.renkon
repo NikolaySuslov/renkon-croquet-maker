@@ -1,9 +1,9 @@
 {"padTitle":"Croquet-Renkon-pad",
 "positions":{"map":{"__map":true,
-"values":[["0",{"height":4789.085507617101,
+"values":[["0",{"height":4967.898299925756,
 "id":"0",
 "type":"resize",
-"width":757.9474605131314,
+"width":782.5317288797971,
 "x":-1878.8130607777096,
 "y":114.62152857671515}],["2",{"height":1141.263402693206,
 "id":"2",
@@ -20,12 +20,12 @@
 "type":"resize",
 "width":864.6608432810268,
 "x":-3141.373850438804,
-"y":115.83863846374467}],["10",{"height":333.179406873354,
+"y":115.83863846374467}],["10",{"height":316.00546513909563,
 "id":"10",
-"type":"move",
-"width":673.2043575372438,
-"x":-5181.202104589995,
-"y":-288.2336040692783}],["14",{"height":2958.083961462451,
+"type":"resize",
+"width":686.8759318239001,
+"x":-5183.4395152190145,
+"y":-283.8223784621929}],["14",{"height":2958.083961462451,
 "id":"14",
 "type":"move",
 "width":837.9109588736378,
@@ -70,22 +70,17 @@
 "type":"resize",
 "width":727.8147537960531,
 "x":-926.2159510292836,
-"y":108.24020115880211}],["29",{"height":2917.460791546432,
+"y":108.24020115880211}],["29",{"height":2668.383083145238,
 "id":"29",
 "type":"resize",
-"width":915.1182585763122,
+"width":862.3549197249587,
 "x":-5169.826923034553,
 "y":1400.0197067392255}],["88",{"height":1340.0308428140609,
 "id":"88",
 "type":"move",
 "width":873.0713759186815,
 "x":2184.697263476027,
-"y":6205.169575242241}],["89",{"height":785.7625142807246,
-"id":"89",
-"type":"move",
-"width":1154.286291477851,
-"x":-6709.604249382855,
-"y":-50.451934804253256}]]}},
+"y":6205.169575242241}]]}},
 "titles":{"map":{"__map":true,
 "values":[["0",{"id":"0",
 "state":false,
@@ -119,9 +114,7 @@
 "state":false,
 "title":"Runner"}],["88",{"id":"88",
 "state":false,
-"title":"Load Model"}],["89",{"id":"89",
-"state":false,
-"title":"untitled"}]]}},
+"title":"Load Model"}]]}},
 "version":3,
 "windowEnabled":{"map":{"__map":true,
 "values":[["0",{"enabled":true,
@@ -140,13 +133,12 @@
 "id":"27"}],["28",{"enabled":true,
 "id":"28"}],["29",{"enabled":true,
 "id":"29"}],["88",{"enabled":true,
-"id":"88"}],["89",{"enabled":true,
-"id":"89"}]]}},
+"id":"88"}]]}},
 "windowTypes":{"map":{"__map":true,
-"values":[["0","code"],["2","code"],["4","code"],["8","code"],["10","code"],["14","code"],["16","code"],["18","code"],["23","code"],["24","code"],["25","code"],["26","code"],["27","code"],["28","code"],["29","code"],["88","code"],["89","runner"]]}},
-"windows":["0","2","4","8","10","14","16","18","23","24","25","26","27","28","29","88","89"],
+"values":[["0","code"],["2","code"],["4","code"],["8","code"],["10","code"],["14","code"],["16","code"],["18","code"],["23","code"],["24","code"],["25","code"],["26","code"],["27","code"],["28","code"],["29","code"],["88","code"]]}},
+"windows":["0","2","4","8","10","14","16","18","23","24","25","26","27","28","29","88"],
 "zIndex":{"map":{"__map":true,
-"values":[["0",102],["2",115],["4",103],["8",106],["10",117],["14",112],["16",113],["18",100],["23",110],["24",111],["25",107],["26",105],["27",109],["28",114],["29",108],["88",118],["89",119]]}}}
+"values":[["0",102],["2",115],["4",103],["8",106],["10",119],["14",112],["16",113],["18",100],["23",110],["24",111],["25",107],["26",105],["27",109],["28",114],["29",108],["88",118]]}}}
 {__codeMap: true, value: [[`0`, `const viewExit = Events.receiver({queued: true});
 const viewJoin = Events.receiver({queued: true});
 
@@ -374,7 +366,7 @@ const windowContentsModel = Behaviors.select(
       }
       prev.map.set(id, elem);
     }
-    return {map: prev.map};
+    return {map: prev.map, loaded: true};
   },
   newWindowRequest, (prev, request) => {
     const id = request.id;
@@ -385,7 +377,7 @@ const windowContentsModel = Behaviors.select(
     } else if (type === "doc") {
       elem = {type, doc: ""};
     } else if (type === "code") {
-      elem = {type, doc: window.CodeMirrorModel.create({doc: ""})}
+      elem = {type, doc: window.CodeMirrorModel.create({doc: \`console.log("hello")\`})}
     }
     prev.map.set(id, elem);
     return {map: prev.map};
@@ -406,6 +398,14 @@ const windowContentsModel = Behaviors.select(
     prev.map.set(id, {type: "runner"});
     return {map: prev.map};
   }
+);
+
+const padTitle = Behaviors.select(
+  "untitled",
+  loadHandler, (_prev, data) => {
+    return data.padTitle || "untitled"
+  },
+  titleChange, (_prev, request) => request
 );
 `],
 [`2`, `const {h, html, render} = import("./preact.standalone.module.js");
@@ -1035,29 +1035,22 @@ const newEditor = (id, docModel) => {
     }
   });
 
-  
-  const editorView = window.CodeMirrorView.create(Renkon, docModel.id);
+  const extensions = [
+    mirror.view.keymap.of([search]),
+    mirror.basicSetup,
+    mirror["lang-javascript"].javascript({typescript: true}),
+    mirror.EditorView.lineWrapping,
+    mirror.EditorView.editorAttributes.of({"class": "editor"}),
+    mirror.view.keymap.of([mirror.commands.indentWithTab]),
+    mirror.lint.linter(
+      mirror["lang-javascript"]
+        .esLint(new mirror["eslint-linter-browserify"].Linter(), config)),
+    wordHover,
+    cursorChange,
+  ];
 
+  const editorView = window.CodeMirrorView.create(Renkon, docModel.id, extensions);
   const editor = editorView.editor;
-
-  /*
-  const editor = new mirror.EditorView({
-    doc: doc || \`console.log("hello")\`,
-    extensions: [
-      mirror.view.keymap.of([search]),
-      mirror.basicSetup,
-      mirror["lang-javascript"].javascript({typescript: true}),
-      mirror.EditorView.lineWrapping,
-      mirror.EditorView.editorAttributes.of({"class": "editor"}),
-      mirror.view.keymap.of([mirror.commands.indentWithTab]),
-      mirror.lint.linter(
-        mirror["lang-javascript"]
-          .esLint(new mirror["eslint-linter-browserify"].Linter(), config)),
-      wordHover,
-      cursorChange,
-    ],
-  });
-  */
   editor.dom.id = \`\${id}-editor\`;
   return editor;
 };
@@ -1066,15 +1059,15 @@ const newEditor = (id, docModel) => {
   "appParameters": {
     "apiKey": "234567_Paste_Your_Own_API_Key_Here_7654321",
     "appId": "org.tinlizzie.pad",
-    "name": "abag1",
-    "password": "123",
     "box": "http://localhost:8888",
     "tps": 2,
     "eventRateLimit": 60
   },
   "realm": {"model": [
-    "windows", "windowTypes", "positions", "titles", "windowEnabled", "zIndex", "windowContentsModel",
-  "initialData", "newId", "padViews", "newWindowRequest", "padTitle", "viewJoin", "viewExit", "xxx", "loadReceiver", "loadHandler"]},
+    "windows", "windowTypes", "positions", "titles", "windowEnabled",
+    "zIndex", "windowContentsModel", "padTitle", "initialData",
+    "newId", "padViews", "newWindowRequest", "padTitle", "viewJoin",
+    "viewExit", "xxx", "loadReceiver", "loadHandler"]},
   "name": "pad"
 })`],
 [`14`, `// {type: "code"|"doc"|"runner"}
@@ -1138,14 +1131,6 @@ const modifierState = Behaviors.select(
     }
     return prev;
   }
-);
-
-const padTitle = Behaviors.select(
-  "untitled",
-  loadRequest, (_prev, data) => {
-    return data.padTitle || "untitled"
-  },
-  titleChange, (_prev, request) => request
 );
 
 const titleChange = Events.observe((notify) => {
@@ -1212,6 +1197,9 @@ const pinnedPositions = Behaviors.select(
 const windowContents = Behaviors.select(
   {map: new Map()},
   windowContentsModel, (prev, windowContentsModel) => {
+    if (windowContentsModel.loaded) {
+      prev.map.clear();
+    }
     const prevKeys = [...prev.map.keys()];
     const newKeys = [...windowContentsModel.map.keys()];
     const olds = prevKeys.filter((e) => !newKeys.includes(e));
@@ -1289,7 +1277,7 @@ class DependencyPlugin {
   startHover() {
     clearTimeout(this.restartTimeout);
     let {view, lastMove} = this;
-    let desc = view.docView.nearest(lastMove.target);
+    let desc = view.docView.tile.nearest(lastMove.target);
     if (!desc) return;
     let pos = view.posAtCoords(lastMove);
 
@@ -2101,7 +2089,6 @@ const loader = (() => {
     }).then(async (data) => {
       const result = new TextDecoder("utf-8").decode(data);
       const array = new TextEncoder().encode(result);
-      console.log("array", array);
       let ind = 0;
 
       Events.send(loadStart, key);
@@ -2975,8 +2962,11 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
     </style>
     <script src="./croquet.min.js" type="text/javascript"></script>
     <script type="module">
-      import {ProgramState, CodeMirror, newInspector, globals} from "./renkon-web.js";
+      import {ProgramState, globals} from "./renkon-core.js";
+      // import {newInspector} from "./renkon-web.js";
+      const newInspector = () => {};
       import {croquetify, toFunction, splitStrs} from "./croquet.js";
+      import {CodeMirrorModel, CodeMirrorView, CodeMirror} from "./codemirror.js";
       window.CodeMirror = CodeMirror;
       window.RenkonWeb = {globals};
       let session;
@@ -3090,7 +3080,6 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
 [`88`, `const loadStart = Events.receiver();
 const loadOne = Events.receiver();
 const loadDone = Events.receiver();
-const xxx = console.log(loadStart)
 
 const loadReceiver = Behaviors.select(
   undefined, // {key:number, array}
