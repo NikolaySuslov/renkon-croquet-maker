@@ -84,7 +84,6 @@ async function loadApiKey() {
 }
 
 export async function launcher() {
-  debugger;
   const {basename} = basenames();
   const url = new URL(window.location);
   const padOption = url.searchParams.get("pad");
