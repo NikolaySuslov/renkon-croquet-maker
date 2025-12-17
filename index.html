@@ -6,69 +6,11 @@
         <title>Croquet Maker</title>
         <script id="croquetScript" type="text/javascript" src="./croquet.min.js"></script>
         <script type="module">
-            // this is for running a renkon program with croquet.
-            // For a non-collaborative app, you use a different .html file.
-            // If the program file has "Croquet" window, and it has appId, name, and password we use it.
-            // We override or add the name parameter with ?q= url parameter
-            // We override or add the password parameter with #pw= url hash
-
-            // If the combined result does not have any of those fields, we supply dummy values but run it as "offline".
-
-            import {ProgramState, globals} from "./renkon-core.js";
-            import {newInspector} from "./renkon-inspector.js";
-            import {loader} from "./croquet.js";
-            import {CodeMirrorModel, CodeMirrorView, CodeMirror} from "./codemirror.js";
+            import {launcher, CodeMirrorModel, CodeMirrorView, CodeMirror, globals} from "./loader.js";
             window.CodeMirror = CodeMirror;
+            window.CodeMirrorModel = CodeMirrorModel;
+            window.CodeMirrorView = CodeMirrorView;
             window.RenkonWeb = {globals};
-
-            // for debugging purpose, store the current programState to window
-
-            function launcher() {
-                const pathname = window.location.pathname;
-                const match = /^.*\/([^/]*)\.html?$/.exec(pathname);
-                let basename = match ? match[1] : "index";
-                const url = new URL(window.location);
-                const padOption = url.searchParams.get("pad");
-                const bootstrap = url.searchParams.get("bootstrap");
-
-                if (bootstrap) {
-                    window.programState = new ProgramState(0);
-                    // bootstrap version if this file name is index.html and the file? padOption is not specified
-                    window.programState.setupProgram([`
-                        const {pad} = import("./pad.js");
-                        console.log("default renkon-pad is starting");
-                    Renkon.merge(pad);`]);
-                    window.programState.evaluate(Date.now());
-                    return;
-                }
-
-                let docName = `${basename}.renkon`;
-                if (padOption) {
-                    if (padOption.endsWith(".json") || padOption.endsWith(".renkon")) {
-                        docName = padOption;
-                    } else {
-                        console.log("pad option does not have .renkon suffix.")
-                        return;
-                    }
-                }
-
-                const options = {appParameters: {}};
-                const q = url.searchParams.get("q");
-
-               if (q) {
-                    if (q === "offline") {
-                        options.appParameters.name = "abc";
-                        options.appParameters.password = "123";
-                    } else {
-                        options.appParameters.name = q;
-                        if (url.hash && url.hash.startsWith("#pw=")) {
-                            options.appParameters.password = url.hash.slice("#pw=".length) || "abc";
-                        }
-                    }
-                }
-
-                loader(docName, ProgramState, options);
-            }
             window.onload = launcher;
         </script>
     </head>

@@ -322,6 +322,8 @@ export function loader(docName, p, options = {}) {
     let parameters;
 
     let parsed;
+    // If there is no "Croquet" text box, it will be definitely offline, and no need to add anything
+    //
     if (croquet) {
       const trimmed = trimParenthesis(croquet);
       parsed = JSON.parse(trimmed);
@@ -341,27 +343,31 @@ export function loader(docName, p, options = {}) {
       }
     }
 
-    const {name, realm, appParameters, types, methods} = parsed;
+    let {name, realm, appParameters, types, methods} = parsed;
+
     code = code.map(((pair) => pair[1]));
+    realm = realm ? new Map(realm.model.map((key) => [key, "Model"])) : new Map();
     const {model, view} = croquetify(
       toFunction(code, name),
       ProgramState,
       name,
-      realm ? new Map(realm.model.map((key) => [key, "Model"])) : new Map(),
+      realm,
       types,
       methods);
     model.register(model.name);
 
-    parameters = {...appParameters, ...options.appParameters};
     let debug = [];
-    if (parameters.debug) {
-      debug = [...appParameters.debug];
-    }
-    if (!parameters.name || !parameters.password) {
-      parameters.autoSleep = 0;
-      debug = [...debug, "offline"];
-      parameters.name = "abc";
-      parameters.password = "abc";
+    if (croquet) {
+      parameters = {...appParameters, ...options.appParameters};
+      if (parameters.debug) {
+        debug = [...parameters.debug];
+      }
+      if (!parameters.name || !parameters.password) {
+        parameters.autoSleep = 0;
+        debug = [...debug, "offline"];
+        parameters.name = "abc";
+        parameters.password = "abc";
+      }
     }
     window.Croquet.Session.join({...parameters, debug, model, view});
   });
