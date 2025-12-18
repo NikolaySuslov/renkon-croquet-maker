@@ -1,31 +1,31 @@
 {"padTitle":"Croquet-Renkon-pad",
 "positions":{"map":{"__map":true,
-"values":[["0",{"height":4967.898299925756,
+"values":[["0",{"height":5294.345725924719,
 "id":"0",
 "type":"resize",
-"width":782.5317288797971,
-"x":-1878.8130607777096,
-"y":114.62152857671515}],["2",{"height":1500.922508117649,
+"width":854.3484637422912,
+"x":-1874.4644157380214,
+"y":114.62152857671515}],["2",{"height":1384.996947232564,
 "id":"2",
 "type":"resize",
-"width":922.0110891026154,
+"width":898.7536951612279,
 "x":-5178.229163998213,
-"y":113.30799052853577}],["4",{"height":8788.660965544712,
+"y":113.30799052853577}],["4",{"height":8646.599624601682,
 "id":"4",
 "type":"resize",
-"width":1870.2038402339304,
-"x":4304.950912486707,
-"y":87.43692724389496}],["8",{"height":3713.836947558356,
+"width":1862.4276500381839,
+"x":4300.2618591899545,
+"y":124.14309106010592}],["8",{"height":3713.836947558356,
 "id":"8",
 "type":"resize",
 "width":846.8519048295801,
 "x":-3141.373850438804,
-"y":115.83863846374467}],["10",{"height":301.82307338156704,
+"y":115.83863846374467}],["10",{"height":357.40107992762125,
 "id":"10",
 "type":"move",
-"width":553.4607279790316,
-"x":-5588.498998154565,
-"y":-709.4227460118908}],["14",{"height":2910.6402015458675,
+"width":616.0946360001138,
+"x":-5197.701793823919,
+"y":-346.7953777996702}],["14",{"height":2910.6402015458675,
 "id":"14",
 "type":"resize",
 "width":837.9109588736378,
@@ -35,57 +35,52 @@
 "type":"move",
 "width":763.0884327402407,
 "x":-3120.586069181566,
-"y":4060.97470943439}],["18",{"height":4399.724965804616,
+"y":3975.330750119018}],["18",{"height":4399.724965804616,
 "id":"18",
 "type":"move",
 "width":922.9187780638681,
-"x":-58.90153462386215,
-"y":4152.66680838187}],["23",{"height":5197.304080434585,
-"id":"23",
-"type":"move",
-"width":799.0793368882896,
-"x":3279.1930415832035,
-"y":123.47533423270207}],["24",{"height":2558.6994626918395,
+"x":-61.21986103933419,
+"y":4389.672574988393}],["24",{"height":2558.6994626918395,
 "id":"24",
 "type":"move",
 "width":739.2688656962409,
 "x":2203.8342248341337,
-"y":124.89928974372444}],["25",{"height":3334.841876589889,
+"y":124.89928974372444}],["25",{"height":3061.465179623042,
 "id":"25",
 "type":"resize",
-"width":826.9741052867979,
+"width":770.1127022065618,
 "x":2198.6072570198103,
-"y":2753.3447050640784}],["26",{"height":4887.997318144188,
+"y":2753.3447050640784}],["26",{"height":4892.327415416062,
 "id":"26",
 "type":"resize",
-"width":899.0683565432789,
+"width":851.32232821802,
 "x":1042.9492775570598,
-"y":126.29650565939713}],["27",{"height":3826.4482007133524,
+"y":126.29650565939713}],["27",{"height":4147.830893817172,
 "id":"27",
 "type":"resize",
-"width":968.0255044801081,
+"width":949.9557370066167,
 "x":-56.689174552520825,
-"y":115.72276358168935}],["28",{"height":5066.344843425494,
+"y":115.72276358168935}],["28",{"height":5066.90047537631,
 "id":"28",
 "type":"resize",
-"width":727.8147537960531,
+"width":746.5529623442486,
 "x":-926.2159510292836,
 "y":108.24020115880211}],["29",{"height":2771.9179877907873,
 "id":"29",
 "type":"move",
 "width":906.3553065901252,
-"x":-5166.255897278336,
-"y":1845.2906763971296}],["88",{"height":1340.0308428140609,
+"x":-5171.916960187742,
+"y":1742.1432070785786}],["88",{"height":1339.3514084153062,
 "id":"88",
-"type":"move",
-"width":873.0713759186815,
-"x":2184.697263476027,
-"y":6205.169575242241}],["89",{"height":1008.6136665182653,
-"id":"89",
 "type":"resize",
-"width":1100.3226237383776,
-"x":2799.843245593973,
-"y":7824.0609371458}]]}},
+"width":790.4244479381388,
+"x":2195.000919115392,
+"y":5922.326971846143}],["89",{"height":1340.5829696281978,
+"id":"89",
+"type":"move",
+"width":938.4421833398912,
+"x":3163.8266626451177,
+"y":120.93298134222152}]]}},
 "titles":{"map":{"__map":true,
 "values":[["0",{"id":"0",
 "state":false,
@@ -103,9 +98,7 @@
 "state":false,
 "title":"HoverPlugin"}],["18",{"id":"18",
 "state":false,
-"title":"Search"}],["23",{"id":"23",
-"state":false,
-"title":"Doc Window"}],["24",{"id":"24",
+"title":"Search"}],["24",{"id":"24",
 "state":false,
 "title":"Graph Visualizer"}],["25",{"id":"25",
 "state":false,
@@ -132,8 +125,7 @@
 "id":"10"}],["14",{"enabled":true,
 "id":"14"}],["16",{"enabled":true,
 "id":"16"}],["18",{"enabled":true,
-"id":"18"}],["23",{"enabled":false,
-"id":"23"}],["24",{"enabled":true,
+"id":"18"}],["24",{"enabled":true,
 "id":"24"}],["25",{"enabled":true,
 "id":"25"}],["26",{"enabled":true,
 "id":"26"}],["27",{"enabled":true,
@@ -143,10 +135,10 @@
 "id":"88"}],["89",{"enabled":true,
 "id":"89"}]]}},
 "windowTypes":{"map":{"__map":true,
-"values":[["0","code"],["2","code"],["4","code"],["8","code"],["10","code"],["14","code"],["16","code"],["18","code"],["23","code"],["24","code"],["25","code"],["26","code"],["27","code"],["28","code"],["29","code"],["88","code"],["89","code"]]}},
-"windows":["0","2","4","8","10","14","16","18","23","24","25","26","27","28","29","88","89"],
+"values":[["0","code"],["2","code"],["4","code"],["8","code"],["10","code"],["14","code"],["16","code"],["18","code"],["24","code"],["25","code"],["26","code"],["27","code"],["28","code"],["29","code"],["88","code"],["89","code"]]}},
+"windows":["0","2","4","8","10","14","16","18","24","25","26","27","28","29","88","89"],
 "zIndex":{"map":{"__map":true,
-"values":[["0",102],["2",115],["4",103],["8",106],["10",120],["14",112],["16",113],["18",100],["23",119],["24",111],["25",107],["26",105],["27",109],["28",114],["29",121],["88",118],["89",108]]}}}
+"values":[["0",102],["2",115],["4",118],["8",106],["10",121],["14",112],["16",108],["18",113],["24",111],["25",107],["26",105],["27",109],["28",114],["29",120],["88",100],["89",103]]}}}
 {__codeMap: true, value: [[`0`, `const viewExit = Events.receiver({queued: true});
 const viewJoin = Events.receiver({queued: true});
 
@@ -408,7 +400,33 @@ const padTitle = Behaviors.select(
   },
   titleChange, (_prev, request) => request
 );
-`],
+
+const docSeparators = Behaviors.select(
+  {map: new Map()},
+  separatorMove, (prev, separatorMove) => {
+    const id = separatorMove.id;
+    const containerPosition = positions.map.get(id);
+    const containerWidth = containerPosition.width;
+    const newX = separatorMove.x;
+    const docWidth = Math.min(containerWidth - 8, Math.max(newX - 8, 0));
+    const editorWidth = Math.max(containerWidth - 22 - docWidth, 60);
+    const editorRight = editorWidth === 60 ? -60 - 16 + (containerWidth - newX) : 0;
+    prev.map.set(id, {docWidth, editorWidth, editorRight});
+    return {map: prev.map};   
+  },
+  moveOrResize, (prev, command) => {
+    if (command.type !== "resize") {return prev;}
+    const id = command.id;
+    const containerPosition = positions.map.get(id);
+    const containerWidth = containerPosition.width;
+    const newX = containerWidth - 22;
+    const docWidth = containerWidth - 8;
+    const editorWidth = 60;
+    const editorRight = -60;
+    prev.map.set(id, {docWidth, editorWidth, editorRight});
+    return {map: prev.map};
+  }
+)`],
 [`2`, `const {h, html, render} = import("./preact.standalone.module.js");
 
 const renkon = (() => {
@@ -482,8 +500,7 @@ const md = (() => {
   document.head.appendChild(script);
   return promise.then((markdownit) => markdownit({html: true}));
 })();
-
-console.log("md", md);`],
+`],
 [`4`, `const css = \`
 @font-face {
   font-family: "OpenSans-Regular";
@@ -875,24 +892,29 @@ html, body {
   overflow: scroll;
   scroll-behavior: smooth;
   font-size: 13px;
+  background-color: #fff;
 }
 
 .doc-separator {
-   width: 8px;
-   min-width: 8px;
-   height: 100%;
-   background-color: #f8f8f8;
+  width: 8px;
+  min-width: 8px;
+  height: 100%;
+  background-color: #f8f8f8;
 }
 
 .doc-separator:hover {
-   background-color: #e8e8e8;
-   cursor: ew-resize;
+  background-color: #e8e8e8;
+  cursor: ew-resize;
+}
+
+.doc-editor {
+  width: 100%;
 }
 
 .doc-editor-container {
+  position: fixed;
   right: 0px;
-  min-height: 100%;
-  height: 100%;
+  height: calc(100% - 36px);
   width: 200px;
   border: 1px solid black;
   padding: 6px;
@@ -1113,15 +1135,12 @@ const newEditor = (id, docModel) => {
   "appParameters": {
     "apiKey": "234567_Paste_Your_Own_API_Key_Here_7654321",
     "appId": "org.tinlizzie.pad",
-    "name": "offline",
-    "debug": ["offline"],
-    "password": "1",
     "tps": 2,
     "eventRateLimit": 60
   },
   "realm": {"model": [
     "windows", "windowTypes", "positions", "titles", "windowEnabled",
-    "zIndex", "windowContentsModel", "padTitle", "initialData",
+    "zIndex", "windowContentsModel", "padTitle", "docSeparators", "initialData",
     "newId", "padViews", "newWindowRequest", "padTitle", "viewJoin",
     "viewExit", "xxx", "loadReceiver", "loadHandler"]},
   "name": "pad"
@@ -1671,288 +1690,6 @@ const searchCSS = \`
   renkon.appendChild(style);
 })(searchCSS, renkon);
 `],
-[`23`, `function doc(id) {
-  const init = (() => {
-    const script = document.createElement("script");
-    script.id = "markdownit";
-    script.src = "./markdown-it.min.js";
-    const promise = new Promise((resolve) => {
-      script.onload = () => {
-         resolve(window.markdownit);
-      };
-    });
-
-    document.head.querySelector("#markdownit")?.remove();
-    document.head.appendChild(script);
-
-    const container = document.createElement("div");
-    container.id = "container";
-    document.body.querySelector("#container")?.remove();
-    document.body.appendChild(container);
-    container.innerHTML = \`
-   <div id="result"></div>
-   <div id="separator"></div>
-   <div id="editorContainer"></div>
-\`.trim();
-    return {markdownit: promise, container};
-  })();
-
-  const resolved = Behaviors.resolvePart(init);
-  const md = resolved.markdownit({html: true});
-  const container = resolved.container;
-  const separator = container.querySelector("#separator");
-
-  const docString = Events.receiver();
-
-  const _update = ((docString, container) => {
-    const result = md.render(docString);
-    const div = document.createElement("div");
-    div.id = "renkon";
-    container.querySelector("#renkon")?.remove();
-    container.querySelector("#result").appendChild(div);
-    div.innerHTML = result;
-    return div;
-  })(docString, container);
-
-  const docEditor = ((id, doc) => {
-    const mirror = window.CodeMirror;
-    const callback = (id, viewUpdate) => {
-      if (viewUpdate.docChanged) {
-        const  str = viewUpdate.state.doc.toString();
-        Events.send(docString, str);
-        window.parent.postMessage({type: "renkon-doc-updated", id, code: str});
-      }
-    };
-    const editor = new mirror.EditorView({
-        doc: doc || "",
-        extensions: [
-            mirror.basicSetup,
-            mirror.EditorView.lineWrapping,
-            mirror.EditorView.updateListener.of((viewUpdate) => callback(id, viewUpdate)),
-            mirror.EditorView.editorAttributes.of({"class": "editor"}),
-            mirror.view.keymap.of([mirror.commands.indentWithTab])
-        ],
-    });
-    editor.dom.id = \`\${id}-docEditor\`;
-    return editor;
-  })(id);
-
-  const contentsEvent = Events.listener(window, "message", evt => {
-    if (evt.data.type === "renkon-doc" && typeof evt.data.doc === "string") {
-      const isEmpty = evt.data.doc === "";
-      const doc = isEmpty ? "# Hello, Renkon-pad" : evt.data.doc;
-      docEditor.dispatch({
-        changes: {
-          from: 0,
-          to: docEditor.state.doc.length,
-          insert: doc
-        }
-      });
-      if (!isEmpty) {
-        return {type: "resize"};
-      }
-    }
-  });
-
-  const _init = ((container, docEditor) => {
-    container.querySelector("#editorContainer").appendChild(docEditor.dom);
-    window.parent.postMessage({ready: "renkon-ready", type: "doc", id});
-  })(container, docEditor);
-
-  const sepDown = Events.listener(
-     separator,
-     "pointerdown",
-     evt => evt);
-
-  const down = Events.collect(undefined, sepDown, (old, evt) => {
-    if (evt.isPrimary) {
-      evt.target.setPointerCapture(evt.pointerId);
-    }
-    return {type: "sepDown", x: evt.clientX};
-  });
-
-  const up = Events.listener(
-    separator,
-    "pointerup",
-    (evt) => {
-      if (evt.isPrimary) {
-        evt.target.releasePointerCapture(evt.pointerId);
-      }
-      return {type: "sepUp"}
-    }
-  );
-
-  const _sepMove = Events.listener(separator, "pointermove", moveCompute);
-
-  const moveCompute = Behaviors.select(
-    evt => evt,
-    down, (_old, down) => {
-      return (move) => {
-        const newX = move.clientX;
-        const newRenkonWidth = Math.min(window.innerWidth - 8, Math.max(newX - 8, 0));
-        const newEditorWidth = Math.max(window.innerWidth - 22 - newRenkonWidth, 60);
-        const right = newEditorWidth === 60 ? -60 - 16 + (window.innerWidth - newX) : 0;
-
-        document.head.querySelector("#separator-style").textContent = \`
-  #result {
-    width: \${newRenkonWidth}px;
-  }
-  #editorContainer {
-    width: \${newEditorWidth}px;
-    right: \${right}px;
-  }
-  \`.trim();
-        return move;
-      }
-    },
-    up, (_old, _up) => (move) => move,
-    Events.or(resize, contentsEvent), (old, resize) => {
-      const newX = window.innerWidth - 22;
-      const newEditorWidth = 60;
-      const right = -60;
-        document.head.querySelector("#separator-style").textContent = \`
-  #result {
-    width: \${newX}px;
-  }
-  #editorContainer {
-    width: \${newEditorWidth}px;
-    right: \${right}px;
-  }
-  \`.trim();
-      return old;
-    }
-  );
-
-  const resize = Events.listener(window, "resize", (evt) => ({type: "resize"}));
-
-  Events.listener(document.body, "gesturestart", preventDefaultSafari);
-  Events.listener(document.body, "gesturechange", preventDefaultSafari);
-  Events.listener(document.body, "gestureend", preventDefaultSafari);
-
-  const isSafari = window.navigator.userAgent.includes("Safari") && !window.navigator.userAgent.includes("Chrome");
-  const isMobile = !!("ontouchstart" in window);
-
-  const preventDefault = (evt) => {
-    evt.preventDefault();
-    return evt;
-  };
-
-  const preventDefaultSafari = (evt) => {
-    if (!isSafari || isMobile) {
-      evt.preventDefault();
-    }
-    return evt;
-  };
-
-  const wheel = Events.listener(container, "wheel", (evt) => {
-    let pinch;
-    if (isSafari) {
-      pinch = (Number.isInteger(evt.deltaX) && !Number.isInteger(evt.deltaY)) || evt.metaKey;
-    } else {
-      pinch = evt.ctrlKey || evt.metaKey;
-    }
-    if (pinch) {
-      evt.preventDefault();
-      evt.stopPropagation();
-    }
-    return evt;
-  });
-
-  const css = \`
-#container, html, body {
-  width: 100%;
-  height: 100%;
-  margin: 0px;
-}
-
-#container {
-  display: flex;
-}
-
-#result {
-  height: 100%;
-  width: calc(100% - 220px);
-  overflow: scroll;
-  scroll-behavior: smooth;
-  font-size: 13px;
-}
-
-#renkon {
-  height: 100%;
-}
-
-#separator {
-   width: 8px;
-   min-width: 8px;
-   height: 100%;
-   background-color: #f8f8f8;
-}
-
-#separator:hover {
-   background-color: #e8e8e8;
-   cursor: ew-resize;
-}
-
-#editorContainer {
-  position: fixed;
-  right: 0px;
-  min-height: 100%;
-  height: 100%;
-  width: 200px;
-  border: 1px solid black;
-  padding: 6px;
-  min-width: 0px;
-  background-color: white;
-  white-space: pre-wrap;
-  overflow: scroll;
-}
-
-\`;
-
-  ((css) => {
-    document.head.querySelector("#presenter-style")?.remove();
-    const style = document.createElement("style");
-    style.id = "presenter-style";
-    style.textContent = css;
-    document.head.appendChild(style);
-
-    document.head.querySelector("#separator-style")?.remove();
-    const sepStyle = document.createElement("style");
-    sepStyle.id = "separator-style";
-    document.head.appendChild(sepStyle);
-  })(css, container);
-
-  return {};
-}
-
-const newDocPane = (id, doc) => {
-  const runner = newRunner(id);
-  return {dom: runner.dom, doc: doc};
-}
-
-const _handleDocReady = ((readyMessages, windowContents, windowTypes) => {
-  for (const ready of readyMessages) {
-    const id = ready.data.id;
-    const type = windowTypes.map.get(id);
-    const content = windowContents.map.get(id);
-    if (ready.data.type === "runner" && type === "doc") {
-      if (content) {
-        if (type) {
-          const {output:code} = Renkon.getFunctionBody(Renkon.findDecl(type));
-          content.dom.contentWindow.postMessage({code: [code, \`const id = "\${id}"\`]});
-        }
-      }
-    } else if (ready.data.type === "doc") {
-      content.dom.contentWindow.postMessage({type: "renkon-doc", doc: content.doc});
-    }
-  }
-})(readyMessages, windowContents, windowTypes);
-
-/*
-const docUpdate = Events.listener(window, "message", evt => {
-  if (evt.data.type === "renkon-doc-updated") {return evt.data;}
-});
-*/`],
 [`24`, `const analyzed = ((windowContents, windowEnabled, trigger, showGraph) => {
   if (!showGraph) {return new Map()}
   if (trigger === null) {return new Map()}
@@ -2551,6 +2288,8 @@ const padDown = Events.collect(undefined, rawPadDown, (old, evts) => {
       } else if (strId.endsWith("-resize")) {
         corner = (/[0-9]+-(.*)-resize/.exec(strId))[1];
         type = "windowResizeDown";
+      } else if (strId.endsWith("-doc-separator")) {
+        type = "docSeparator";
       }
     }
     if (type) {
@@ -2665,6 +2404,21 @@ const moveCompute = ((downOrUpOrResize, positions, padView, viewId) => {
       Events.send(padViewChange, result);
       return move;
     };
+  } else if (downOrUpOrResize.type === "docSeparator") {
+    const start = positions.map.get(downOrUpOrResize.id);
+    const scale = padView.scale;
+    const downPoint = {x: downOrUpOrResize.x, y: downOrUpOrResize.y};
+    const scaledDownX =  downOrUpOrResize.x / scale - padView.x - start.x;
+    const type = downOrUpOrResize.type;
+    return (move) => {
+      const winX = move.clientX / scale - padView.x - start.x;
+      const result = {id: downOrUpOrResize.id, type};
+      if (pinnedPositions.map.get(downOrUpOrResize.id)) {return move;}
+      result.x = winX;
+      result.startX = scaledDownX;
+      Events.send(separatorMove, result);
+      return move;
+    }
   } else if (downOrUpOrResize.type === "pinch") {
     return (move) => {
       const keys = [...evCache.keys()];
@@ -3221,7 +2975,6 @@ const loadHandler = ((loadReceiver) => {
   const callback = (id, viewUpdate) => {
     if (viewUpdate.docChanged) {
       const str = viewUpdate.state.doc.toString();
-      console.log("str", str);
       Events.send(docUpdate, {id, doc: str});
     }
   };
@@ -3229,7 +2982,7 @@ const loadHandler = ((loadReceiver) => {
     mirror.basicSetup,
     mirror.EditorView.lineWrapping,
     mirror.EditorView.updateListener.of((viewUpdate) => callback(id, viewUpdate)),
-    mirror.EditorView.editorAttributes.of({"class": "editor"}),
+    mirror.EditorView.editorAttributes.of({"class": "doc-editor"}),
     mirror.view.keymap.of([mirror.commands.indentWithTab])
   ];
 
@@ -3242,12 +2995,7 @@ const loadHandler = ((loadReceiver) => {
 
 const separatorMove = Events.receiver();
 const docUpdate = Events.receiver();
-
-const markdownUpdate = ((docUpdate) => {
-  const {id, doc} = docUpdate;
-  console.log(id, doc);
-  const container = windowContents.map.get(id);
-  if (!container) {return;}
+const updateMarkdownDom = (container, id, doc, md) => {
   const result = md.render(doc);
   const div = document.createElement("div");
   div.id = \`\${id}-markdown\`;
@@ -3255,5 +3003,32 @@ const markdownUpdate = ((docUpdate) => {
   container.dom.querySelector(".markdown")?.remove();
   container.dom.querySelector(".doc-result").appendChild(div);
   div.innerHTML = result;
-  return div;
-})(docUpdate);`]]}
+  return div;  
+}
+
+const markdownUpdate = ((docUpdate) => {
+  const {id, doc} = docUpdate;
+  const container = windowContents.map.get(id);
+  if (!container) {return;}
+  updateMarkdownDom(container, id, doc, md);
+})(docUpdate);
+
+const initialDoc = ((md) => {
+  for (const [id, contents] of windowContents.map) {
+    if (!contents.editor) {continue;}
+    const doc = contents.editor.editor.state.doc.toString();
+    const container = contents;
+    updateMarkdownDom(container, id, doc, md);
+  }
+})(md);
+
+const moveSeparator = ((docSeparators) => {
+  for (const [id, docSeparator] of docSeparators.map) {
+    const container = windowContents.map.get(id);
+    container.dom.querySelector(".doc-result").style.width = \`\${docSeparator.docWidth}px\`;
+    container.dom.querySelector(".doc-editor-container").style.width = \`\${docSeparator.editorWidth}px\`;
+    container.dom.querySelector(".doc-editor-container").style.right = \`\${docSeparator.editorRight}px\`;
+    container.dom.querySelector(".doc-editor-container").style.display = docSeparator.editorWidth <= 60 ? "none" : "inherit";
+  }
+})(docSeparators);
+`]]}
