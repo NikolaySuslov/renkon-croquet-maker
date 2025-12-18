@@ -5,15 +5,15 @@
 "type":"resize",
 "width":782.5317288797971,
 "x":-1878.8130607777096,
-"y":114.62152857671515}],["2",{"height":1141.263402693206,
+"y":114.62152857671515}],["2",{"height":1500.922508117649,
 "id":"2",
 "type":"resize",
-"width":908.6139453970677,
-"x":-5164.832020292665,
-"y":113.30799052853577}],["4",{"height":8172.458544362332,
+"width":922.0110891026154,
+"x":-5178.229163998213,
+"y":113.30799052853577}],["4",{"height":8788.660965544712,
 "id":"4",
-"type":"move",
-"width":1614.5564430990082,
+"type":"resize",
+"width":1870.2038402339304,
 "x":4304.950912486707,
 "y":87.43692724389496}],["8",{"height":3713.836947558356,
 "id":"8",
@@ -22,10 +22,10 @@
 "x":-3141.373850438804,
 "y":115.83863846374467}],["10",{"height":301.82307338156704,
 "id":"10",
-"type":"resize",
+"type":"move",
 "width":553.4607279790316,
-"x":-5158.125641060445,
-"y":-285.9479709487904}],["14",{"height":2910.6402015458675,
+"x":-5588.498998154565,
+"y":-709.4227460118908}],["14",{"height":2910.6402015458675,
 "id":"14",
 "type":"resize",
 "width":837.9109588736378,
@@ -44,8 +44,8 @@
 "id":"23",
 "type":"move",
 "width":799.0793368882896,
-"x":3279.081530264296,
-"y":103.87323738758852}],["24",{"height":2558.6994626918395,
+"x":3279.1930415832035,
+"y":123.47533423270207}],["24",{"height":2558.6994626918395,
 "id":"24",
 "type":"move",
 "width":739.2688656962409,
@@ -72,15 +72,20 @@
 "x":-926.2159510292836,
 "y":108.24020115880211}],["29",{"height":2771.9179877907873,
 "id":"29",
-"type":"resize",
+"type":"move",
 "width":906.3553065901252,
-"x":-5169.826923034553,
-"y":1400.0197067392255}],["88",{"height":1340.0308428140609,
+"x":-5166.255897278336,
+"y":1845.2906763971296}],["88",{"height":1340.0308428140609,
 "id":"88",
 "type":"move",
 "width":873.0713759186815,
 "x":2184.697263476027,
-"y":6205.169575242241}]]}},
+"y":6205.169575242241}],["89",{"height":1008.6136665182653,
+"id":"89",
+"type":"resize",
+"width":1100.3226237383776,
+"x":2799.843245593973,
+"y":7824.0609371458}]]}},
 "titles":{"map":{"__map":true,
 "values":[["0",{"id":"0",
 "state":false,
@@ -114,7 +119,9 @@
 "state":false,
 "title":"Runner"}],["88",{"id":"88",
 "state":false,
-"title":"Load Model"}]]}},
+"title":"Load Model"}],["89",{"id":"89",
+"state":false,
+"title":"New Doc Window"}]]}},
 "version":3,
 "windowEnabled":{"map":{"__map":true,
 "values":[["0",{"enabled":true,
@@ -125,7 +132,7 @@
 "id":"10"}],["14",{"enabled":true,
 "id":"14"}],["16",{"enabled":true,
 "id":"16"}],["18",{"enabled":true,
-"id":"18"}],["23",{"enabled":true,
+"id":"18"}],["23",{"enabled":false,
 "id":"23"}],["24",{"enabled":true,
 "id":"24"}],["25",{"enabled":true,
 "id":"25"}],["26",{"enabled":true,
@@ -133,12 +140,13 @@
 "id":"27"}],["28",{"enabled":true,
 "id":"28"}],["29",{"enabled":true,
 "id":"29"}],["88",{"enabled":true,
-"id":"88"}]]}},
+"id":"88"}],["89",{"enabled":true,
+"id":"89"}]]}},
 "windowTypes":{"map":{"__map":true,
-"values":[["0","code"],["2","code"],["4","code"],["8","code"],["10","code"],["14","code"],["16","code"],["18","code"],["23","code"],["24","code"],["25","code"],["26","code"],["27","code"],["28","code"],["29","code"],["88","code"]]}},
-"windows":["0","2","4","8","10","14","16","18","23","24","25","26","27","28","29","88"],
+"values":[["0","code"],["2","code"],["4","code"],["8","code"],["10","code"],["14","code"],["16","code"],["18","code"],["23","code"],["24","code"],["25","code"],["26","code"],["27","code"],["28","code"],["29","code"],["88","code"],["89","code"]]}},
+"windows":["0","2","4","8","10","14","16","18","23","24","25","26","27","28","29","88","89"],
 "zIndex":{"map":{"__map":true,
-"values":[["0",102],["2",115],["4",103],["8",106],["10",119],["14",112],["16",113],["18",100],["23",110],["24",111],["25",107],["26",105],["27",109],["28",114],["29",108],["88",118]]}}}
+"values":[["0",102],["2",115],["4",103],["8",106],["10",120],["14",112],["16",113],["18",100],["23",119],["24",111],["25",107],["26",105],["27",109],["28",114],["29",121],["88",118],["89",108]]}}}
 {__codeMap: true, value: [[`0`, `const viewExit = Events.receiver({queued: true});
 const viewJoin = Events.receiver({queued: true});
 
@@ -375,7 +383,7 @@ const windowContentsModel = Behaviors.select(
     if (type === "runner") {
       elem = {type};
     } else if (type === "doc") {
-      elem = {type, doc: ""};
+      elem = {type, doc: window.CodeMirrorModel.create({doc: \`# Hello\`})};
     } else if (type === "code") {
       elem = {type, doc: window.CodeMirrorModel.create({doc: \`console.log("hello")\`})}
     }
@@ -384,13 +392,6 @@ const windowContentsModel = Behaviors.select(
   },
   remove, (prev, remove) => {
     prev.map.delete(remove.id);
-    return {map: prev.map};
-  },
-  docUpdate, (prev, docUpdate) => {
-    const {id, code} = docUpdate;
-    let elem = prev.map.get(id);
-    if (!elem) {return prev;}
-    elem.doc = code;
     return {map: prev.map};
   },
   resetRequest, (prev, resetRequest) => {
@@ -467,7 +468,22 @@ const searchPanel = ((renkon) => {
   return search;
 })(renkon);
 
-`],
+const md = (() => {
+  const script = document.createElement("script");
+  script.id = "markdownit";
+  script.src = "./markdown-it.min.js";
+  const promise = new Promise((resolve) => {
+    script.onload = () => {
+       resolve(window.markdownit);
+    };
+  });
+
+  document.head.querySelector("#markdownit")?.remove();
+  document.head.appendChild(script);
+  return promise.then((markdownit) => markdownit({html: true}));
+})();
+
+console.log("md", md);`],
 [`4`, `const css = \`
 @font-face {
   font-family: "OpenSans-Regular";
@@ -847,6 +863,44 @@ html, body {
   border-style: outset;
   background-color: #88c;
 }
+
+.doc-container {
+  display: flex;
+  height: 100%;
+}
+
+.doc-result {
+  height: 100%;
+  width: calc(100% - 220px);
+  overflow: scroll;
+  scroll-behavior: smooth;
+  font-size: 13px;
+}
+
+.doc-separator {
+   width: 8px;
+   min-width: 8px;
+   height: 100%;
+   background-color: #f8f8f8;
+}
+
+.doc-separator:hover {
+   background-color: #e8e8e8;
+   cursor: ew-resize;
+}
+
+.doc-editor-container {
+  right: 0px;
+  min-height: 100%;
+  height: 100%;
+  width: 200px;
+  border: 1px solid black;
+  padding: 6px;
+  min-width: 0px;
+  background-color: white;
+  white-space: pre-wrap;
+  overflow: scroll;
+}
 \`;
 
 ((css, renkon) => {
@@ -1059,6 +1113,9 @@ const newEditor = (id, docModel) => {
   "appParameters": {
     "apiKey": "234567_Paste_Your_Own_API_Key_Here_7654321",
     "appId": "org.tinlizzie.pad",
+    "name": "offline",
+    "debug": ["offline"],
+    "password": "1",
     "tps": 2,
     "eventRateLimit": 60
   },
@@ -1891,10 +1948,11 @@ const _handleDocReady = ((readyMessages, windowContents, windowTypes) => {
   }
 })(readyMessages, windowContents, windowTypes);
 
+/*
 const docUpdate = Events.listener(window, "message", evt => {
   if (evt.data.type === "renkon-doc-updated") {return evt.data;}
 });
-`],
+*/`],
 [`24`, `const analyzed = ((windowContents, windowEnabled, trigger, showGraph) => {
   if (!showGraph) {return new Map()}
   if (trigger === null) {return new Map()}
@@ -2038,6 +2096,8 @@ const saveData = (windows, positions, zIndex, titles, windowContents, windowType
     [...windowContents.map].map(([id, content]) => {
       if (content.state) {
         return [id, content.state.doc.toString()];
+      } else if (content.editor) {
+        return [id, content.editor.editor.state.doc.toString()];
       } else if (content.doc) {
         return [id, content.doc];
       } else {
@@ -3146,4 +3206,54 @@ const loadHandler = ((loadReceiver) => {
   }
   console.log("unknown type of data");
   return;
-})(loadReceiver);`]]}
+})(loadReceiver);`],
+[`89`, `const newDocPane = (id, docModel) => {
+  const mirror = window.CodeMirror;
+  const container = document.createElement("div");
+  container.id = \`\${id}-doc-container\`;
+  container.classList.add("doc-container");
+  container.innerHTML = \`
+   <div id="\${id}-doc-result" class="doc-result"></div>
+   <div id="\${id}-doc-separator" class="doc-separator"></div>
+   <div id="\${id}-editor-container" class="doc-editor-container"></div>
+\`.trim();
+
+  const callback = (id, viewUpdate) => {
+    if (viewUpdate.docChanged) {
+      const str = viewUpdate.state.doc.toString();
+      console.log("str", str);
+      Events.send(docUpdate, {id, doc: str});
+    }
+  };
+  const extensions = [
+    mirror.basicSetup,
+    mirror.EditorView.lineWrapping,
+    mirror.EditorView.updateListener.of((viewUpdate) => callback(id, viewUpdate)),
+    mirror.EditorView.editorAttributes.of({"class": "editor"}),
+    mirror.view.keymap.of([mirror.commands.indentWithTab])
+  ];
+
+  const editorView = window.CodeMirrorView.create(Renkon, docModel.id, extensions);
+  const editor = editorView.editor;
+  editor.dom.id = \`\${id}-doc-editor\`;
+  container.querySelector(".doc-editor-container").appendChild(editor.dom);
+  return {dom: container, editor: editorView};
+}
+
+const separatorMove = Events.receiver();
+const docUpdate = Events.receiver();
+
+const markdownUpdate = ((docUpdate) => {
+  const {id, doc} = docUpdate;
+  console.log(id, doc);
+  const container = windowContents.map.get(id);
+  if (!container) {return;}
+  const result = md.render(doc);
+  const div = document.createElement("div");
+  div.id = \`\${id}-markdown\`;
+  div.classList.add("markdown");
+  container.dom.querySelector(".markdown")?.remove();
+  container.dom.querySelector(".doc-result").appendChild(div);
+  div.innerHTML = result;
+  return div;
+})(docUpdate);`]]}
