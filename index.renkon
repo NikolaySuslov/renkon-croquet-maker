@@ -1,9 +1,9 @@
 {"padTitle":"Croquet-Renkon-pad",
 "positions":{"map":{"__map":true,
-"values":[["0",{"height":5294.345725924719,
+"values":[["0",{"height":5395.935569674719,
 "id":"0",
 "type":"resize",
-"width":854.3484637422912,
+"width":846.9226824922912,
 "x":-1874.4644157380214,
 "y":114.62152857671515}],["2",{"height":1384.996947232564,
 "id":"2",
@@ -414,9 +414,15 @@ const docSeparators = Behaviors.select(
     prev.map.set(id, {docWidth, editorWidth, editorRight});
     return {map: prev.map};   
   },
+  remove, (prev, remove) => {
+    prev.map.delete(remove.id);
+    return {map: prev.map};
+  },
   moveOrResize, (prev, command) => {
     if (command.type !== "resize") {return prev;}
     const id = command.id;
+    const winType = windowTypes.map.get(id);
+    if (winType !== "doc") {return prev;}
     const containerPosition = positions.map.get(id);
     const containerWidth = containerPosition.width;
     const newX = containerWidth - 22;
