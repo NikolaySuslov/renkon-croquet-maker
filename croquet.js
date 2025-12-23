@@ -1,4 +1,5 @@
 let ProgramState;
+let codeMirrorObj;
 
 function decls(funcStr, realm) {
   const state = new ProgramState(0);
@@ -260,6 +261,19 @@ class ${viewName} extends Croquet.View {
   return result;
 }
 
+export function trimParenthesis(str) {
+  let start = 0;
+  let end = str.length - 1;
+  while (str[start] === "(") {
+    start++;
+  }
+  while (str[end] === ")") {
+    end--;
+  }
+  if (start === 0 && end === str.length - 1) {return str;}
+  return str.slice(start, end + 1);
+}
+
 export function toFunction(code, name) {
   return `
 function ${name}({}) {
@@ -269,107 +283,252 @@ return {}
 }`.trim();
 }
 
-export function loader(docName, p, options = {}) {
-  const myFetch = options.fetch || fetch;
-  ProgramState = p;
-
-  myFetch(docName).then((resp) => resp.text()).then((result) => {
-    const index = result.indexOf("{__codeMap: true, value:");
-    let code;
-    if (index < 0) {
-      console.log("unknown type of data");
-      return;
-    }
-
-    let data1 = JSON.parse(result.slice(0, index));
-    let windowEnabledMap = new Map();
-    if (data1?.windowEnabled?.map?.values) {
-      windowEnabledMap = new Map(data1?.windowEnabled?.map?.values);
-    }
-    let windowTypesMap = new Map();
-    if (data1?.windowTypes?.map?.values) {
-      windowTypesMap = new Map(data1?.windowTypes?.map?.values);
-    }
-
-    let titlesMap = new Map();
-    if (data1?.titles?.map?.values) {
-      titlesMap = new Map(data1?.titles?.map?.values);
-    }
-
-    const data2 = result.slice(index);
-    const array = eval("(" + data2 + ")");
-    code = array.value;
-    const croquet = code.find(([id, _obj]) => titlesMap.get(id).title === "Croquet")?.[1];
-    code = code.filter((pair) => (
-      !windowEnabledMap.get(pair[0]) ||
-        (windowEnabledMap.get(pair[0]).enabled && windowTypesMap.get(pair[0]) === "code" &&
-         titlesMap.get(pair[0]).title !== "Croquet")
-    ));
-
-    function trimParenthesis(str) {
-      let start = 0;
-      let end = str.length - 1;
-      while (str[start] === "(") {
-        start++;
-      }
-      while (str[end] === ")") {
-        end--;
-      }
-      if (start === 0 && end === str.length - 1) {return str;}
-      return str.slice(start, end + 1);
-    }
-
-    let parameters;
-
-    let parsed;
-    // If there is no "Croquet" text box, it will be definitely offline, and no need to add anything
-    //
-    if (croquet) {
-      const trimmed = trimParenthesis(croquet);
-      parsed = JSON.parse(trimmed);
-    } else {
-      parsed = {
-        "appParameters": {
-          "apiKey": "234567_Paste_Your_Own_API_Key_Here_7654321",
-          "appId": "org.test.test",
-          "name": "abc",
-          "password": "123",
-          "debug": ["offline"],
-          "tps": 2,
-          "eventRateLimit": 60,
-          "autoSleep": 0,
-        },
-        "name": "test",
-      }
-    }
-
-    let {name, realm, appParameters, types, methods} = parsed;
-
-    code = code.map(((pair) => pair[1]));
-    realm = realm ? new Map(realm.model.map((key) => [key, "Model"])) : new Map();
-    const {model, view} = croquetify(
-      toFunction(code, name),
-      ProgramState,
-      name,
-      realm,
-      types,
-      methods);
-    model.register(model.name);
-
-    let debug = [];
-    if (croquet) {
-      parameters = {...appParameters, ...options.appParameters};
-      if (parameters.debug) {
-        debug = [...parameters.debug];
-      }
-      if (!parameters.name || !parameters.password) {
-        parameters.autoSleep = 0;
-        debug = [...debug, "offline"];
-        parameters.name = "abc";
-        parameters.password = "abc";
-      }
-    }
-    window.Croquet.Session.join({...parameters, debug, model, view});
-  });
+export function retrive(docName) {
+  return fetch(docName).then((resp) => resp.text()).then((result) => result);
 }
+
+export function parse(result) {
+  const index = result.indexOf("{__codeMap: true, value:");
+  if (index < 0) {
+    console.log("unknown type of data");
+    return {};
+  }
+
+  let data1 = JSON.parse(result.slice(0, index));
+  const data2 = result.slice(index);
+  const loaded = eval("(" + data2 + ")");
+  if (!loaded.__codeMap) {console.log("wrong file format"); return null};
+  return {codeArray: loaded.value, data1};
+}
+
+export function extract(codeArray, data1) {
+  let windowEnabledMap = new Map();
+  if (data1?.windowEnabled?.map?.values) {
+    windowEnabledMap = new Map(data1?.windowEnabled?.map?.values);
+  }
+  let windowTypesMap = new Map();
+  if (data1?.windowTypes?.map?.values) {
+    windowTypesMap = new Map(data1?.windowTypes?.map?.values);
+  }
+
+  let titlesMap = new Map();
+  if (data1?.titles?.map?.values) {
+    titlesMap = new Map(data1?.titles?.map?.values);
+  }
+
+  const croquet = codeArray.find(([id, _obj]) => titlesMap.get(id).title === "Croquet" && windowEnabledMap?.get(id))?.[1];
+  const code = codeArray.filter((pair) => (
+    !windowEnabledMap.get(pair[0]) ||
+      (windowEnabledMap.get(pair[0]).enabled && windowTypesMap.get(pair[0]) === "code" &&
+       titlesMap.get(pair[0]).title !== "Croquet")
+  ));
+  if (croquet) {
+    const trimmed = trimParenthesis(croquet);
+    const parsed = JSON.parse(trimmed);
+    return {code, croquet: parsed};
+  }
+  return {code, croquet: null}
+}
+
+function basenames() {
+  let url = window.location.origin + window.location.pathname;
+  let match = /([^/]+)\.html$/.exec(url);
+  let basename = new URL(window.location).searchParams.get("world");
+
+  if (!basename) {
+    basename = (!match || match[1] === "index") ? "index" : match[1];
+  }
+
+  let baseurl;
+  if (match) {
+    baseurl = url.slice(0, match.index);
+  } else {
+    let slash = url.lastIndexOf("/");
+    baseurl = url.slice(0, slash + 1);
+  }
+
+  return {baseurl, basename};
+}
+
+function isRunningLocalNetwork() {
+  let hostname = window.location.hostname;
+
+  if (/^\[.*\]$/.test(hostname)) {
+    hostname = hostname.slice(1, hostname.length - 1);
+  }
+
+  let local_patterns = [
+    /^localhost$/,
+    /^.*\.local$/,
+    /^.*\.ngrok.io$/,
+    // 10.0.0.0 - 10.255.255.255
+    /^(::ffff:)?10(?:\.\d{1,3}){3}$/,
+    // 127.0.0.0 - 127.255.255.255
+    /^(::ffff:)?127(?:\.\d{1,3}){3}$/,
+    // 169.254.1.0 - 169.254.254.255
+    /^(::f{4}:)?169\.254\.([1-9]|1?\d\d|2[0-4]\d|25[0-4])\.\d{1,3}$/,
+    // 172.16.0.0 - 172.31.255.255
+    /^(::ffff:)?(172\.1[6-9]|172\.2\d|172\.3[01])(?:\.\d{1,3}){2}$/,
+    // 192.168.0.0 - 192.168.255.255
+    /^(::ffff:)?192\.168(?:\.\d{1,3}){2}$/,
+    // fc00::/7
+    /^f[cd][\da-f]{2}(::1$|:[\da-f]{1,4}){1,7}$/,
+    // fe80::/10
+    /^fe[89ab][\da-f](::1$|:[\da-f]{1,4}){1,7}$/,
+    // ::1
+    /^::1$/,
+  ];
+
+  for (let i = 0; i < local_patterns.length; i++) {
+    if (local_patterns[i].test(hostname)) {return true;}
+  }
+
+  return false;
+}
+
+async function loadApiKey() {
+  let local = isRunningLocalNetwork();
+  let apiKeysFile = local ? "apiKey-dev.js" : "apiKey.js";
+  let {baseurl} = basenames();
+
+  try {
+    // use eval to hide import from webpack
+    const apiKeysModule = await eval(`import('${baseurl}${apiKeysFile}')`);
+    return apiKeysModule.default;
+  } catch (error) {
+    return;
+  }
+}
+
+export async function startNoCroquet(args) {
+  ProgramState = args.ProgramState;
+  const codeArray = args.code;
+
+  const {CodeMirror} = await import("./renkon-codemirror.js");
+  const newProgramState = !window.programState;
+  if (newProgramState) {
+    window.programState = new ProgramState(Date.now());
+  }
+  window.programState.updateProgram(codeArray.map((pair) => ({ blockId: pair[0], code: pair[1] })), args.docName);
+  if (newProgramState) {
+    window.programState.evaluate(Date.now());
+  }
+
+  window.CodeMirror = CodeMirror;
+  window.CodeMirrorModel = {
+    create: ({doc, id, creator}) => {
+      const newEditor = window.programState.resolved.get(creator)?.value;
+      // this may not have a value, when the program being run does not have "newEditor.
+      return newEditor(id, {doc});
+    }
+  };
+  window.CodeMirrorView = {
+    create: (Renkon, docModel, extensions) => {
+      if (!docModel.viewState) {
+        return {editor: new CodeMirror.EditorView({doc: docModel.doc, extensions})};
+      }
+      return {editor: docModel}
+    }
+  };
+  return {CodeMirror, CodeMirrorModel: window.CodeMirrorModel, CodeMirrorView: window.CodeMirrorView};
+}
+
+export async function start(args) {
+  // {code, croquet, docName, ProgramState, useApiKeyFile, options = {}}
+  ProgramState = args.ProgramState;
+  const options = args.options;
+  const codeArray = args.code;
+  const croquet = args.croquet;
+
+  let apiKeyParameters;
+
+  if (args.useApiKeyFile) {
+    apiKeyParameters = await loadApiKey();
+  }
+
+  let appParameters = {...croquet.appParameters, ...apiKeyParameters?.appParameters, ...options.appParameters};
+
+  let parameters = {...croquet, ...apiKeyParameters};
+  // parameters.appParameters = appParameters;
+
+  let {name, realm, types, methods} = parameters;
+
+  const code = codeArray.map(((pair) => pair[1]));
+
+  let debug = appParameters.debug || [];
+  if (!appParameters.name || !appParameters.password) {
+    if (options.offline) {
+      appParameters.autoSleep = 0;
+      debug = [...debug, "offline"];
+      appParameters.name = "abc";
+      appParameters.password = "abc";
+    }
+  }
+
+  if (!document.head.querySelector("#croquet-script")) {
+    const script = document.createElement("script");
+    script.id = "croquet-script";
+    script.src = "./croquet.min.js";
+    script.type = "text/javascript";
+    await new Promise((resolve) => {
+      script.onload = () => resolve(Croquet);
+      document.head.appendChild(script);
+    });
+  }
+
+  if (!codeMirrorObj) {
+    const {CodeMirrorModel, CodeMirrorView, CodeMirror} = await import("./codemirror.js");
+    codeMirrorObj = {CodeMirrorModel, CodeMirrorView, CodeMirror};
+    window.CodeMirrorModel = CodeMirrorModel;
+    window.CodeMirrorView = CodeMirrorView;
+    window.CodeMirror = CodeMirror;
+  }
+
+  realm = realm ? new Map(realm.model.map((key) => [key, "Model"])) : new Map();
+  const {model, view} = croquetify(
+    toFunction(code, name),
+    ProgramState,
+    name,
+    realm,
+    types,
+    methods);
+  model.register(model.name);
+
+  const session = await window.Croquet.Session.join({...appParameters, debug, model, view});
+  return {session, ...codeMirrorObj, Croquet, croquetify, toFunction, splitStrs, trimParenthesis};
+}
+
+export async function loader() {
+  const {basename} = basenames();
+  const docName = `${basename}.renkon`;
+  const result = await retrive(docName);
+  const {codeArray, data1} = parse(result);
+  const {code, croquet} = extract(codeArray, data1);
+  const url = new URL(window.location);
+  const apiKeyParameters = await loadApiKey();
+
+  const q = url.searchParams.get("q");
+
+  if (croquet?.appParameters?.name || q || apiKeyParameters?.appParameters?.name) {
+
+    const options = {appParameters: {}};
+    if (q) {
+      if (q === "offline") {
+        options.appParameters.name = "abc";
+        options.appParameters.password = "123";
+        options.debug = ["offline"];
+      } else {
+        options.appParameters.name = q;
+        if (url.hash && url.hash.startsWith("#pw=")) {
+          options.appParameters.password = url.hash.slice("#pw=".length) || "abc";
+        }
+      }
+    }
+    return start({code, croquet, ProgramState: window.ProgramState, useApiKeyFile: true, options});
+  }
+
+  return startNoCroquet({ProgramState: window.ProgramState, code: codeArray});
+}
+
 /* globals Croquet */
+

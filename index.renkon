@@ -24,11 +24,11 @@
 "id":"10",
 "type":"move",
 "width":616.0946360001138,
-"x":-5197.701793823919,
-"y":-346.7953777996702}],["14",{"height":2910.6402015458675,
+"x":-5195.647383209227,
+"y":-333.59561064464594}],["14",{"height":2872.4448890458675,
 "id":"14",
 "type":"resize",
-"width":837.9109588736378,
+"width":831.8992401236378,
 "x":-4123.330508161269,
 "y":116.90867745550928}],["16",{"height":2915.9198423892362,
 "id":"16",
@@ -65,20 +65,20 @@
 "type":"resize",
 "width":746.5529623442486,
 "x":-926.2159510292836,
-"y":108.24020115880211}],["29",{"height":2771.9179877907873,
+"y":108.24020115880211}],["29",{"height":2166.4833719799344,
 "id":"29",
-"type":"move",
-"width":906.3553065901252,
+"type":"resize",
+"width":992.392383446219,
 "x":-5171.916960187742,
 "y":1742.1432070785786}],["88",{"height":1339.3514084153062,
 "id":"88",
 "type":"resize",
 "width":790.4244479381388,
 "x":2195.000919115392,
-"y":5922.326971846143}],["89",{"height":1340.5829696281978,
+"y":5922.326971846143}],["89",{"height":1436.4184955864093,
 "id":"89",
-"type":"move",
-"width":938.4421833398912,
+"type":"resize",
+"width":946.8236481392878,
 "x":3163.8266626451177,
 "y":120.93298134222152}]]}},
 "titles":{"map":{"__map":true,
@@ -121,7 +121,7 @@
 "id":"0"}],["2",{"enabled":true,
 "id":"2"}],["4",{"enabled":true,
 "id":"4"}],["8",{"enabled":true,
-"id":"8"}],["10",{"enabled":true,
+"id":"8"}],["10",{"enabled":false,
 "id":"10"}],["14",{"enabled":true,
 "id":"14"}],["16",{"enabled":true,
 "id":"16"}],["18",{"enabled":true,
@@ -358,9 +358,9 @@ const windowContentsModel = Behaviors.select(
       if (type === "runner") {
         elem = {type};
       } else if (type === "doc") {
-        elem = {type, doc: loaded.code.get(id)};
+        elem = {type, doc: window.CodeMirrorModel.create({doc: loaded.code.get(id), creator: "newDocPane", id})};
       } else if (type === "code") {
-        elem = {type, doc: window.CodeMirrorModel.create({doc: loaded.code.get(id)})};
+        elem = {type, doc: window.CodeMirrorModel.create({doc: loaded.code.get(id), creator: "newEditor", id})};
       } else {
         elem = {type, doc: loaded.code.get(id)};
       }
@@ -375,9 +375,9 @@ const windowContentsModel = Behaviors.select(
     if (type === "runner") {
       elem = {type};
     } else if (type === "doc") {
-      elem = {type, doc: window.CodeMirrorModel.create({doc: \`# Hello\`})};
+      elem = {type, doc: window.CodeMirrorModel.create({id, creator: "newDocPane", doc: \`# Hello\`})};
     } else if (type === "code") {
-      elem = {type, doc: window.CodeMirrorModel.create({doc: \`console.log("hello")\`})}
+      elem = {type, doc: window.CodeMirrorModel.create({id, creator: "newEditor", doc: \`console.log("hello")\`})}
     }
     prev.map.set(id, elem);
     return {map: prev.map};
@@ -1135,7 +1135,7 @@ const newEditor = (id, docModel) => {
     cursorChange,
   ];
 
-  const editorView = window.CodeMirrorView.create(Renkon, docModel.id, extensions);
+  const editorView = window.CodeMirrorView.create(Renkon, docModel, extensions);
   const editor = editorView.editor;
   editor.dom.id = \`\${id}-editor\`;
   return editor;
@@ -1145,6 +1145,8 @@ const newEditor = (id, docModel) => {
   "appParameters": {
     "apiKey": "234567_Paste_Your_Own_API_Key_Here_7654321",
     "appId": "org.tinlizzie.pad",
+    "name": "ejdkeme1",
+    "password": "1",
     "tps": 2,
     "eventRateLimit": 60
   },
@@ -1885,6 +1887,7 @@ const loader = (() => {
   const key = Math.random();
 
   imageInput.onchange = () => {
+
     const file = imageInput.files[0];
     if (!file) {imageInput.remove(); return;}
     new Promise(resolve => {
@@ -1894,6 +1897,11 @@ const loader = (() => {
     }).then(async (data) => {
       const result = new TextDecoder("utf-8").decode(data);
       const array = new TextEncoder().encode(result);
+      if (!Renkon.app) {
+        Events.send(loadAtOnce, {key: 1, array: [array], done: true});
+        return;
+      }
+      
       let ind = 0;
 
       Events.send(loadStart, key);
@@ -2028,7 +2036,6 @@ const playDownHandler = (evt) => {
   }
   Events.send(playDown, evt);
 };
-
 
 const playUpHandler = (evt) => {
   evt.target.releasePointerCapture(evt.pointerId);
@@ -2679,11 +2686,13 @@ const showGraph = Behaviors.collect(
 const _onRun = ((runRequest, windowContents, windowEnabled, titles) => {
   const id = runRequest.id;
   const iframe = windowContents.map.get(id);
-  const code = [...windowContents.map]
-    .filter(([id, obj]) => obj.state && windowEnabled.map.get(id).enabled)
+  const enabled = [...windowContents.map]
+    .filter(([id, obj]) => obj.state && windowEnabled.map.get(id).enabled);
+  const code = enabled
     .filter(([id, obj]) => titles.map.get(id).title !== "Croquet")
     .map(([_id, editor]) => editor.state.doc.toString());
-  const croquet = [...windowContents.map].find(([id, obj]) => titles.map.get(id).title === "Croquet")?.[1].state.doc.toString();;
+  const croquet = enabled.find(([id, obj]) => {
+    return titles.map.get(id).title === "Croquet"})?.[1].state.doc.toString();
   if (!croquet) {
     console.log("No Croquet spec found");
   }
@@ -2782,69 +2791,34 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
         border: 1px solid black;
       }
     </style>
-    <script src="./croquet.min.js" type="text/javascript"></script>
     <script type="module">
       import {ProgramState, globals} from "./renkon-core.js";
       import {newInspector} from "./renkon-inspector.js";
-      import {croquetify, toFunction, splitStrs} from "./croquet.js";
-      import {CodeMirrorModel, CodeMirrorView, CodeMirror} from "./codemirror.js";
-      window.CodeMirror = CodeMirror;
+      import {start, startNoCroquet, parse, extract, splitStrs, toFunction, trimParenthesis} from "./croquet.js";
       window.RenkonWeb = {globals};
-      let session;
+      let prevSession;
       let prevView;
 
-     function trimParenthesis(str) {
-        let start = 0;
-        let end = str.length - 1;
-        while (str[start] === "(") {
-          start++;
-        }
-        while (str[end] === ")") {
-          end--;
-        }
-        if (start === 0 && end === str.length - 1) {return str;}
-        return str.slice(start, end + 1);
-      }
-
-       window.onmessage = async (evt) => {
+      window.onmessage = async (evt) => {
         let promise;
+        let croquet;
+        if (evt.data.croquet) {
+          croquet = JSON.parse(trimParenthesis(evt.data.croquet.trim()));
+        }
         if (evt.data && Array.isArray(evt.data.code)) {
-          if (evt.data.croquet) {
-            promise = Promise.resolve(window.Croquet);
+          if (!croquet?.appParameters?.name) {
+              startNoCroquet({code: evt.data.code.map((c, i) => ([(i).toString(), c])), ProgramState});
           } else {
-            if (!window.thisProgramState) {
-              window.thisProgramState = new ProgramState(Date.now());
-            }
-            promise = Promise.resolve(null);
-          }
-          const Croquet = await promise;
-          if (!Croquet) {
-            window.thisProgramState.updateProgram(evt.data.code, evt.data.path);
-          } else {
-            let trimmed = trimParenthesis(evt.data.croquet);
-            let parsed = JSON.parse(trimmed);
-            const {name, realm, appParameters, types} = parsed;
-            const func = toFunction(evt.data.code, name);
-            const {model, view} = croquetify(
-              func,
-              ProgramState,
-              name,
-              new Map(realm.model.map((key) => [key, "Model"])),
-              types);
             if (!prevView) {
-              model.register(model.name);
-              if (!appParameters.name || !appParameters.password) {
-                appParameters.name = "abc";
-                appParameters.password = "123"
-              }
-              window.Croquet.Session.join({...appParameters, model, view}).then((s) => {
-                session = s;
-                prevView = session.view;
-              });
+              const obj = await start({code: evt.data.code.map((c, i) => ([(i).toString(), c])), ProgramState, croquet, options: {}});
+              const {CodeMirror, CodeMirrorModel, CodeMirrorView, session} = obj;
+              prevSession = session;
+              prevView = session.view;
             } else {
-              const strs = splitStrs(func, new Map(realm.model.map((key) => [key, "Model"])));
+              const func = toFunction(evt.data.code, prevSession.name);
+              const strs = splitStrs(func, new Map(croquet.realm.model.map((key) => [key, "Model"])));
               const {viewNodeStr, modelEventsStr} = strs;
-              prevView.programState.updateProgram([viewNodeStr, modelEventsStr]);
+              prevView.programState.updateProgram([viewNodeStr, modelEventsStr]);            
             }
           }
         }
@@ -2892,7 +2866,6 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
         }
       };
 
-
       window.parent.postMessage({ready: "renkon-ready", type: "runner", id: "\${id}"});
     </script>
   </head>
@@ -2906,6 +2879,7 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
 [`88`, `const loadStart = Events.receiver();
 const loadOne = Events.receiver();
 const loadDone = Events.receiver();
+const loadAtOnce = Events.receiver();
 
 const loadReceiver = Behaviors.select(
   undefined, // {key:number, array}
@@ -2923,6 +2897,9 @@ const loadReceiver = Behaviors.select(
       return undefined;
     }
     return {key: prev.key, array: prev.array, done: true};
+  },
+  loadAtOnce, (_prev, value) => {
+    return value;
   }
 );
 
@@ -2995,16 +2972,16 @@ const loadHandler = ((loadReceiver) => {
     mirror.EditorView.editorAttributes.of({"class": "doc-editor"}),
     mirror.view.keymap.of([mirror.commands.indentWithTab])
   ];
-
-  const editorView = window.CodeMirrorView.create(Renkon, docModel.id, extensions);
+  const editorView = window.CodeMirrorView.create(Renkon, docModel, extensions);
   const editor = editorView.editor;
   editor.dom.id = \`\${id}-doc-editor\`;
   container.querySelector(".doc-editor-container").appendChild(editor.dom);
-  return {dom: container, editor: editorView};
+  return {dom: container, editor: editor, viewState: true};
 }
 
 const separatorMove = Events.receiver();
 const docUpdate = Events.receiver();
+
 const updateMarkdownDom = (container, id, doc, md) => {
   const result = md.render(doc);
   const div = document.createElement("div");
@@ -3026,7 +3003,11 @@ const markdownUpdate = ((docUpdate) => {
 const initialDoc = ((md) => {
   for (const [id, contents] of windowContents.map) {
     if (!contents.editor) {continue;}
-    const doc = contents.editor.editor.state.doc.toString();
+    let editor = contents.editor;
+    if (editor.editor) {
+      editor = editor.editor;
+    }
+    const doc = editor.state.doc.toString();
     const container = contents;
     updateMarkdownDom(container, id, doc, md);
   }

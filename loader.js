@@ -1,6 +1,5 @@
-import {ProgramState, globals} from "./renkon-core.js";
+import {ProgramState} from "./renkon-core.js";
 import {loader} from "./croquet.js";
-import {CodeMirrorModel, CodeMirrorView, CodeMirror} from "./codemirror.js";
 
 export {ProgramState, globals} from "./renkon-core.js";
 export {CodeMirrorModel, CodeMirrorView, CodeMirror} from "./codemirror.js";
@@ -124,4 +123,3 @@ export async function launcher() {
 
   loader(docName, ProgramState, options);
 }
-window.onload = launcher;

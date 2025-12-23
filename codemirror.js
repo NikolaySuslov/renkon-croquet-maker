@@ -126,7 +126,6 @@ export class CodeMirrorModel extends Croquet.Model {
 }
 
 CodeMirrorModel.register("CodeMirrorModel");
-window.CodeMirrorModel = CodeMirrorModel;
 
 export class CodeMirrorView extends Croquet.View {
   constructor(model, extensions) {
@@ -220,14 +219,11 @@ export class CodeMirrorView extends Croquet.View {
     applyCrEventToCm(view, data, this.viewId);
   };
 
-  static create(Renkon, modelId, extensions) {
-    // console.log("view create", modelId);
-    const view = new this(Renkon.app.model.getModel(modelId), extensions);
+  static create(Renkon, model, extensions) {
+    // console.log("view create", model);
+    const view = new this(Renkon.app.model.getModel(model.id), extensions);
     return view;
   }
 }
-
-window.CodeMirrorView = CodeMirrorView;
-
 
 /* globals Croquet */
