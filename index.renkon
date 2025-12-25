@@ -2877,7 +2877,7 @@ const _goTo = ((padView, positions, dblClick, viewId) => {
 };
 `],
 [`88`, `const loadStart = Events.receiver();
-const loadOne = Events.receiver();
+const loadOne = Events.receiver({queued: true});
 const loadDone = Events.receiver();
 const loadAtOnce = Events.receiver();
 
@@ -2887,16 +2887,16 @@ const loadReceiver = Behaviors.select(
     return {key: start, array: []};
   },
   loadOne, (prev, one) => {
-    if (prev?.key !== one.key) {
+    if (prev?.key !== one.at(-1).key) {
       return undefined;
     }
-    return {key: prev.key, array: [...prev.array, one.array]};
+    return {key: prev.key, array: [...prev.array, one.map(el=>{return new Uint8Array([...el.array])}).flat()]};
   },
   loadDone, (prev, done) => {
     if (prev?.key !== done) {
       return undefined;
     }
-    return {key: prev.key, array: prev.array, done: true};
+    return {key: prev.key, array: prev.array[0], done: true};
   },
   loadAtOnce, (_prev, value) => {
     return value;
